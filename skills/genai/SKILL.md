@@ -1,0 +1,298 @@
+---
+name: genai
+description: "Use when scaffolding AI/NLP components in Ruby - RAG pipelines, LLM agents, neuro-symbolic processors, MCP servers, embeddings, pgvector integration. Prioritizes clause-level granularity (SFL), RRF hybrid retrieval, and verified gem APIs (ruby_llm, dspy.rb, fast-mcp)."
+---
+
+# RubyDev GenAI — AI/NLP Component Scaffolding
+
+## Overview
+
+This skill scaffolds **AI/NLP components** in Ruby with verified APIs and architectural best practices. It embodies "The Cognitive Architect" persona: structured, modern, and evidence-based. This skill implements **Systemic Functional Linguistics (SFL)** principles for clause-level semantic processing and **Reciprocal Rank Fusion (RRF)** for hybrid retrieval.
+
+**Core Mandate**: Treat the clause, not the document, as the primary unit of meaning.
+
+## When to Use
+
+- **RAG pipelines**: Retrieval-Augmented Generation with pgvector
+- **LLM agents**: Chatbots, tool-using agents, multi-agent systems
+- **Embeddings**: Semantic search, similarity scoring, clustering
+- **MCP servers**: Model Context Protocol tool servers
+- **Neuro-symbolic**: Combining neural (LLMs) with symbolic (knowledge graphs)
+- **DSPy workflows**: Structured prompting and optimization
+- **Hybrid retrieval**: Semantic + keyword search with RRF
+
+**Don't use for:**
+- **General Ruby code** (use the [ruby-dev orchestrator](../ruby-dev/SKILL.md))
+- **Data pipelines without AI** (use [data-engineer/SKILL.md](../data-engineer/SKILL.md))
+- **Frontend AI clients** (this is for Ruby backends)
+- **Python AI code** (this is Ruby-specific)
+
+## Required Gems
+
+All gems listed below MUST have their API verified via Context7 MCP (or DeepWiki for the gem's GitHub repo) **at the point of use** — there is no central registry or verification skill to dispatch to. Query inline before writing code against any of these.
+
+| Gem | Purpose | Context7 Library ID | Status |
+|:----|:--------|:-------------------|:-------|
+| `ruby_llm` | LLM API abstraction | `/mariochavez/ruby-llm` | ✅ Verified |
+| `pgvector` | Vector embeddings in PostgreSQL | `/pgvector/pgvector-ruby` | ✅ Verified |
+| `sequel` | Database abstraction | `/jeremyevans/sequel` | ✅ Verified |
+| `fast-mcp` | MCP server framework | `/tompng/fast-mcp` | ✅ Verified |
+| `dspy.rb` | Structured prompting (Ruby port) | `/vicentereig/dspy.rb` | ✅ Verified |
+| `ruby-spacy` | spaCy NLP bindings | `/yohasebe/ruby-spacy` | ✅ Verified |
+| `pragmatic_segmenter` | Sentence segmentation | `/diasks2/pragmatic_segmenter` | ✅ Verified |
+| `circuit_breaker` | Fault tolerance | `/wsargent/circuit_breaker` | ✅ Verified |
+| `journald-logger` | Structured logging | `/theforeman/journald-logger` | ✅ Verified |
+| `opentelemetry-instrumentation-ruby_llm` | Distributed tracing for `ruby_llm` calls | `/thoughtbot/opentelemetry-instrumentation-ruby_llm` | ✅ Verified |
+| `opentelemetry-sdk` | Core tracer/span provider (required by the instrumentation gem above) | — | 🔴 To Verify |
+| `dotenv` | Environment variables | `/bkeepers/dotenv` | ✅ Verified |
+| `dry-struct` | Type-safe structs | `/dry-rb/dry-struct` | ✅ Verified |
+| `dry-types` | Type system | `/dry-rb/dry-types` | ✅ Verified |
+| `pry` | REPL/debugging | `/websites/rdoc_info_github_pry_pry_master` | ✅ Verified |
+
+`opentelemetry-sdk` is a hard dependency of the instrumentation gem but doesn't yet have a verified Context7 ID — resolve it inline via `mcp__plugin_context7_context7__resolve-library-id` before locking a version, don't assume the ID.
+
+**Prerequisites**:
+1. Verify each gem's API inline via Context7 MCP before use (no central dispatch step)
+2. Set environment variables (see `../ruby-dev/references/environment-variables.md`)
+3. Configure logging (see `../ruby-dev/references/logging-patterns.md`)
+4. Configure tracing (see Architectural Principle 5 below)
+
+---
+
+## Project Setup
+
+See [references/project-setup.md](references/project-setup.md) for the Gemfile, environment variable setup (`.env` / `.env.example`), and application bootstrap/config validation pattern.
+
+---
+
+## Architectural Principles
+
+### 1. Clause-Level Granularity (SFL)
+
+**Not This** (document-level chunking):
+```ruby
+# Bad: Treating documents as atomic units
+embeddings = documents.map { |doc| embed(doc.full_text) }
+```
+
+**This** (clause-level processing):
+```ruby
+# Good: Treating clauses as primary units
+clauses = documents.flat_map { |doc| segment_into_clauses(doc) }
+embeddings = clauses.map do |clause|
+  {
+    clause_id: clause.id,
+    text: clause.text,
+    embedding: embed(clause.text),
+    pos_tags: clause.pos_tags,      # Coarse
+    fine_tags: clause.fine_tags,    # Fine-grained (tag_)
+    dependencies: clause.dependencies
+  }
+end
+```
+
+**Why**: Clauses capture propositional content better than arbitrary character chunks or full documents.
+
+### 2. Hybrid Retrieval with RRF
+
+**Reciprocal Rank Fusion** formula:
+```ruby
+RRF_score = 1.0 / (60 + rank)
+```
+
+**Implementation**:
+```ruby
+# Semantic search (pgvector)
+semantic_results = DB[:embeddings]
+  .order(Sequel.lit("embedding <=> ?", query_embedding))
+  .limit(100)
+  .select(:clause_id, Sequel.lit("ROW_NUMBER() OVER (ORDER BY embedding <=> ?) AS rank", query_embedding))
+
+# Keyword search (full-text)
+keyword_results = DB[:clauses]
+  .where(Sequel.ilike(:text, "%#{query}%"))
+  .select(:clause_id, Sequel.lit("ROW_NUMBER() OVER (ORDER BY ts_rank(tsv, plainto_tsquery(?)) DESC) AS rank", query))
+
+# Merge with RRF
+merged = DB.from(
+  semantic_results.full_outer_join(keyword_results, clause_id: :clause_id)
+).select(
+  Sequel.lit("COALESCE(semantic.clause_id, keyword.clause_id) AS clause_id"),
+  Sequel.lit("(1.0 / (60 + COALESCE(semantic.rank, 100))) + (1.0 / (60 + COALESCE(keyword.rank, 100))) AS rrf_score")
+).order(Sequel.desc(:rrf_score))
+```
+
+**Why**: RRF outperforms pure semantic or pure keyword search for most retrieval tasks.
+
+### 3. Circuit Breaker for LLM Calls
+
+**Always wrap external LLM APIs**:
+```ruby
+require "circuit_breaker"
+
+circuit = CircuitBreaker.new(
+  threshold: 5,         # Open after 5 failures
+  timeout: 30,          # 30 seconds timeout
+  reevaluate_after: 60  # Check again after 60s
+)
+
+response = circuit.call do
+  llm.complete(prompt: prompt, max_tokens: 500)
+end
+```
+
+**Why**: LLM APIs fail (rate limits, timeouts, outages). Circuit breakers prevent cascading failures.
+
+### 4. Structured Logging for AI Pipelines
+
+```ruby
+require "journald/logger"
+
+logger = Journald::Logger.new("rag_pipeline")
+
+logger.info("embedding_generated", {
+  clause_id: clause.id,
+  model: "text-embedding-ada-002",
+  latency_ms: elapsed_ms,
+  token_count: tokens
+})
+```
+
+**Why**: AI pipelines need observability. Log inputs, outputs, latency, token counts, and errors.
+
+### 5. Distributed Tracing for LLM Calls (OpenTelemetry)
+
+Structured logs tell you *that* a call happened; traces tell you *where it sat* in a multi-step pipeline (retrieval → rerank → LLM call → tool call) and how the latency breaks down across hops. Use `opentelemetry-instrumentation-ruby_llm` to auto-instrument `ruby_llm` calls instead of hand-rolling spans:
+
+```ruby
+require "opentelemetry/sdk"
+require "opentelemetry/instrumentation/ruby_llm"
+
+OpenTelemetry::SDK.configure do |c|
+  c.service_name = "rag_pipeline"
+  c.use "OpenTelemetry::Instrumentation::RubyLLM"
+end
+
+tracer = OpenTelemetry.tracer_provider.tracer("rag_pipeline")
+
+tracer.in_span("rag.retrieve_and_generate") do |span|
+  span.set_attribute("clause_id", clause.id)
+
+  results = retriever.retrieve(query)        # nested span from instrumentation, if retriever calls an instrumented client
+  response = circuit.call { llm.complete(prompt: build_prompt(results)) }  # auto-traced by the ruby_llm instrumentation
+
+  span.set_attribute("results_count", results.size)
+  response
+end
+```
+
+The `ruby_llm` instrumentation gem creates its own child spans around the actual API call (model, token usage, latency) — you only need an outer `in_span` for the surrounding business operation (a retrieval step, a tool call, an agent turn), not for the LLM call itself.
+
+**Why**: A RAG pipeline has too many hops (retrieve, rerank, generate, tool-call) for latency logs alone to localize a slowdown. Traces let you see the waterfall across hops in one view (Honeycomb, Jaeger, Tempo, etc.), where logs alone require manually correlating timestamps across separate log lines.
+
+**Pairs with, doesn't replace, structured logging**: keep emitting `journald-logger` events for business-significant facts (which model, which user, success/failure) — traces are for latency/causality across hops, logs are for searchable, durable event records. Use both; don't pick one over the other.
+
+## Component Templates
+
+See [references/component-templates.md](references/component-templates.md) for three full scaffolds: a RAG pipeline with pgvector (schema, embedder, retriever), an MCP server with tools, and DSPy-style structured prompting.
+
+## Integration Patterns
+
+### Pattern 1: RAG + MCP Server
+
+```ruby
+# Expose RAG pipeline as MCP tools
+server = MyApp::MCP::Server.new(port: 8080)
+
+server.register_tool(MyApp::MCP::Tools::Search.new(
+  retriever: MyApp::RAG::Retriever.new(db: DB, embedder: embedder)
+))
+
+server.start
+```
+
+### Pattern 2: Async Embedding Generation
+
+```ruby
+require "async"
+
+Async do
+  clauses.each_slice(10) do |batch|
+    Async do
+      batch.each do |clause|
+        embedding = embedder.embed(clause.text)
+        DB[:embeddings].insert(
+          clause_id: clause.id,
+          embedding: embedding,
+          model: "text-embedding-ada-002",
+          created_at: Time.now
+        )
+      end
+    end
+  end
+end
+```
+
+### Pattern 3: Neuro-Symbolic with Knowledge Graph
+
+```ruby
+# Combine neural retrieval with symbolic reasoning
+results = retriever.retrieve(query)
+
+# Expand with graph relationships
+expanded = results.flat_map do |result|
+  clause = result[:clause_id]
+  related = graph.neighbors(clause, max_hops: 2)
+  [result] + related
+end
+
+# Re-rank with hybrid score
+reranked = expanded.map do |item|
+  {
+    **item,
+    final_score: (item[:rrf_score] * 0.7) + (item[:graph_score] * 0.3)
+  }
+end.sort_by { |i| -i[:final_score] }
+```
+
+## Failover
+
+| Dependency | If Unavailable | Fallback |
+|------------|---------------|----------|
+| Context7 / DeepWiki | Both unreachable | Skip gem verification. Output code with `[WARNING: APIs unverified]` annotation on every non-stdlib gem call. Append a summary of unverified gems at the end of the response. |
+| `circuit_breaker` gem | Not in Gemfile or unavailable | Wrap external calls in a plain `begin/rescue/retry` block with max 3 retries and exponential backoff instead. Document the missing circuit breaker as a tech debt note. |
+| `opentelemetry-instrumentation-ruby_llm` / `opentelemetry-sdk` | Not in Gemfile or unavailable | Fall back to structured logging alone (latency, tokens, model already captured by the `journald-logger` calls). Note in the output that distributed tracing is unavailable, so multi-hop latency must be reconstructed manually from log timestamps. |
+
+## Common Pitfalls
+
+1. **Skipping verification.** Generating code with unverified gem APIs is the #1 source of hallucinated Ruby code.
+
+2. **Pure semantic search without keyword fallback.** RRF hybrid retrieval is more robust.
+
+3. **Not wrapping LLM calls in circuit breakers.** One API outage shouldn't crash your entire pipeline.
+
+4. **Ignoring token limits.** Count tokens before sending to LLM. Truncate or summarize if needed.
+
+5. **Hardcoding API keys.** Always use `ENV["OPENAI_API_KEY"]`, never commit secrets.
+
+6. **Not caching embeddings.** Re-embedding the same text is expensive. Use database cache.
+
+7. **Blocking I/O in tight loops.** Use `Async {}` for concurrent embedding generation.
+
+8. **No observability.** Log every LLM call with latency, token count, and cost estimates.
+
+9. **Tracing the LLM call but not the pipeline around it.** The `ruby_llm` instrumentation gem auto-traces the API call itself; if you don't also wrap the surrounding retrieve/rerank/generate steps in your own spans, you still can't see where time went across the whole pipeline — only inside the LLM call.
+
+## Verification Checklist
+
+- [ ] All non-stdlib gem APIs verified inline via Context7/DeepWiki before use
+- [ ] Clause-level granularity implemented (not document-level)
+- [ ] RRF hybrid retrieval used (not pure semantic or pure keyword)
+- [ ] Circuit breakers wrap all LLM API calls
+- [ ] Structured logging with Journald (includes latency, tokens, model)
+- [ ] OpenTelemetry tracing configured with the `ruby_llm` instrumentation, plus outer spans around each pipeline stage (retrieve, rerank, generate, tool call)
+- [ ] API keys loaded from ENV (not hardcoded)
+- [ ] Embeddings cached in database (not re-generated on every query)
+- [ ] Async used for concurrent operations (embedding generation, batch processing)
+- [ ] pgvector indexes created (ivfflat or hnsw for vector columns)
+- [ ] Full-text search indexes created (GIN for tsvector columns)
