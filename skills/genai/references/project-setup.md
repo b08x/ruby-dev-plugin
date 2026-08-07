@@ -12,17 +12,21 @@
 
 source "https://rubygems.org"
 
-# AI/ML
+# LLM client — see ../../ruby-llm/SKILL.md for the gem's own Gemfile fragment
+# (ruby_llm, ruby_llm-mcp, ruby_llm-schema, ruby_llm-rails, opentelemetry-instrumentation-ruby_llm)
 gem "ruby_llm"
+
+# AI/RAG (non-LLM-client, non-NLP-toolkit)
 gem "pgvector"
 gem "dspy"
-gem "ruby-spacy"
-gem "pragmatic_segmenter"
+
+# Tokenization/tagging — see ../../ruby-nlp/SKILL.md for the gem's own Gemfile fragment
+# (pragmatic_segmenter, ruby-spacy, tokenizers, wordnet, amatch, tf-idf-similarity, bm25f, etc.)
 
 # Database
 gem "sequel"
 
-# MCP
+# MCP (server side — see ../../ruby-llm/SKILL.md for the MCP *client* side, ruby_llm-mcp)
 gem "fast-mcp"
 
 # Resilience
@@ -30,12 +34,6 @@ gem "circuit_breaker"
 
 # Logging
 gem "journald-logger"
-
-# Tracing
-gem "opentelemetry-sdk"
-gem "opentelemetry-instrumentation-ruby_llm"
-# gem "opentelemetry-exporter-otlp" # add when sending traces to a real collector;
-                                     # omit in dev to use the default console/no-op exporter
 
 # Type Safety
 gem "dry-struct"

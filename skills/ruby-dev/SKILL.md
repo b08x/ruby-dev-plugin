@@ -7,7 +7,7 @@ description: "Orchestrator for Ruby development. Use for any non-trivial Ruby ta
 
 ## Overview
 
-The `ruby-dev` skill is a unified, task-driven orchestrator for Ruby development. It coordinates a team of 11 specialized virtual agents to execute scaffolding, data engineering, multi-database modeling, GenAI components, TUIs, desktop GUIs, diagnostic analysis, refactoring, documentation, and quality audits.
+The `ruby-dev` skill is a unified, task-driven orchestrator for Ruby development. It coordinates a team of 13 specialized virtual agents to execute scaffolding, data engineering, multi-database modeling, GenAI components, LLM client integration, classical NLP tasks, TUIs, desktop GUIs, diagnostic analysis, refactoring, documentation, and quality audits.
 
 This skill operates under a **Task-Driven Agent Dispatch** model. It matches incoming developer requests to specialized virtual agents in the registry, executing tasks in a structured pipeline.
 
@@ -47,37 +47,47 @@ The orchestrator dispatches tasks to the following virtual agents based on trigg
 * **Instructions**: [genai/SKILL.md](../genai/SKILL.md)
 * **Role**: Scaffolds AI/NLP components prioritizing clause-level semantic processing and RRF hybrid retrieval.
 
-### 5. The TUI Builder (`tui_builder`)
+### 5. The LLM Integrator (`ruby_llm`)
+* **Trigger**: "ruby_llm", "RubyLLM.chat", "LLM client", "tool calling", "function calling", "structured output", "acts_as_chat", "MCP client"
+* **Instructions**: [ruby-llm/SKILL.md](../ruby-llm/SKILL.md)
+* **Role**: Writes Ruby code against the `ruby_llm` gem's unified multi-provider API — chat, tool calling, streaming, embeddings, structured output, Rails persistence, MCP client integration — wrapped in circuit breakers and OpenTelemetry tracing.
+
+### 6. The Linguist (`ruby_nlp`)
+* **Trigger**: "tokenize", "sentence segmentation", "POS tagging", "dependency parsing", "WordNet", "fuzzy match", "TF-IDF", "BM25", "topic modeling", "spaCy", "transformer inference"
+* **Instructions**: [ruby-nlp/SKILL.md](../ruby-nlp/SKILL.md)
+* **Role**: Solves tokenization, segmentation, tagging, lexical-lookup, similarity-scoring, and topic-modeling tasks with the narrowest deterministic Ruby NLP gem, reserving LLM calls for generation and reasoning.
+
+### 7. The TUI Builder (`tui_builder`)
 * **Trigger**: "build CLI UI", "terminal prompt", "terminal table", "terminal progress bar"
 * **Instructions**: [tui/SKILL.md](../tui/SKILL.md)
 * **Role**: Implements rich terminal interfaces using the 21 gems in the TTY toolkit.
 
-### 6. The GUI Builder (`gui_builder`)
+### 8. The GUI Builder (`gui_builder`)
 * **Trigger**: "desktop app", "GUI", "native window", "glimmer", "libui"
 * **Instructions**: [gui/SKILL.md](../gui/SKILL.md)
 * **Role**: Builds native cross-platform desktop interfaces with glimmer-dsl-libui, using data-bound MVP architecture.
 
-### 7. The Stealth Debugger (`debugger`)
+### 9. The Stealth Debugger (`debugger`)
 * **Trigger**: Zeitwerk errors, performance bottlenecks, dead code, "debug", "fix bug"
 * **Instructions**: [analyse/SKILL.md](../analyse/SKILL.md)
 * **Role**: Diagnoses code issues using Gemba Walk, Muda Analysis, Root-Cause Tracing, and Five Whys.
 
-### 8. The Surgical Refactorer (`refactorer`)
+### 10. The Surgical Refactorer (`refactorer`)
 * **Trigger**: Code smells detected, "refactor this method", "apply pattern"
 * **Instructions**: [refactor/SKILL.md](../refactor/SKILL.md)
 * **Role**: Applies named refactoring patterns from the pattern catalog to resolve specific code issues.
 
-### 9. The Technical Writer (`writer`)
+### 11. The Technical Writer (`writer`)
 * **Trigger**: "add documentation", "write comments", "generate yardoc", "YARD"
 * **Instructions**: [yardoc/SKILL.md](../yardoc/SKILL.md)
 * **Role**: Analyzes code structure and generates precise YARD tags with type assertions and examples.
 
-### 10. The Pragmatic Auditor (`auditor`)
+### 12. The Pragmatic Auditor (`auditor`)
 * **Trigger**: Code reviews, PR audits, "is this production ready", "SIFT audit"
 * **Instructions**: [sift/SKILL.md](../sift/SKILL.md)
 * **Role**: Conducts SIFT audits (Structure, Idioms, Functionality, Testing) using Toulmin evidence.
 
-### 11. The Optimizer (`optimizer`)
+### 13. The Optimizer (`optimizer`)
 * **Trigger**: "slow", "optimize", "performance", "profile", "benchmark", GC/memory pressure
 * **Instructions**: [perf/SKILL.md](../perf/SKILL.md)
 * **Role**: Runs the Profile-Benchmark-Optimize cycle; keeps only measured wins (>= 10-20%), reverts the rest.
@@ -94,7 +104,7 @@ graph TD
     B -- Lite Mode <= 50 lines --> C[Stdlib Implementation]
     B -- Standard Mode --> D[Identify Non-Stdlib Gems]
     D -- Inline: verify APIs via Context7/DeepWiki --> F[Scaffolder: Project Structure]
-    F --> G[Dispatch Engine: GenAI / TUI / GUI / Data Engineer / Multi-DB]
+    F --> G[Dispatch Engine: GenAI / Ruby-LLM / Ruby-NLP / TUI / GUI / Data Engineer / Multi-DB]
     G --> H[Debugger & Refactorer: Resolve issues]
     H --> I[Writer: YARD Documentation]
     I --> J[Auditor: SIFT Quality Gate]
@@ -108,14 +118,16 @@ Analyze the complexity and file footprint:
 * **Standard Mode**: Multi-file, framework/gem dependent. Enforce the full pipeline.
 
 ### Step 2: Gem Verification & Dependency Check
-For Standard Mode, extract all non-stdlib gems from Gemfile or description. The consuming skill (genai, tui, data-engineer, multi-db, etc.) is responsible for verifying each gem's API via Context7 MCP / DeepWiki at the point of code generation. No central registry or dispatch step.
+For Standard Mode, extract all non-stdlib gems from Gemfile or description. The consuming skill (genai, ruby_llm, ruby_nlp, tui, data-engineer, multi-db, etc.) is responsible for verifying each gem's API via Context7 MCP / DeepWiki at the point of code generation. No central registry or dispatch step.
 
 ### Step 3: Implement & Orchestrate
 Dispatch to the domain-specific builder agents:
 * For CLI applications and TUI creation: Dispatch to `scaffolder` then `tui_builder`.
 * For desktop GUI applications: Dispatch to `scaffolder` then `gui_builder`.
 * For ETL pipelines and large files: Dispatch to `data_engineer`.
-* For AI agents, RAG, and MCP servers: Dispatch to `cognitive_architect`.
+* For RAG architecture, clause-level retrieval, MCP *servers*, or dspy workflows: Dispatch to `cognitive_architect`.
+* For the `ruby_llm` client itself — chat, tool calling, streaming, structured output, Rails persistence, or MCP *client* integration: Dispatch to `ruby_llm`.
+* For tokenization, segmentation, POS/dependency tagging, WordNet lookup, fuzzy/TF-IDF/BM25 scoring, topic modeling, or transformer inference: Dispatch to `ruby_nlp`.
 * For Ohm/Sequel model design, ORM picking/porting, or dual-database storage/retrieval: Dispatch to `multi_db`.
 
 ### Step 4: Refactor, Document & Audit (Sift Quality Gate)
@@ -179,7 +191,7 @@ end
 
 ## Subagent Dispatch (Claude Plugin)
 
-Each virtual agent in the registry is also available as a real subagent (defined in this plugin's `agents/` directory): `scaffolder`, `data-engineer`, `multi-db`, `cognitive-architect`, `tui-builder`, `gui-builder`, `debugger`, `refactorer`, `technical-writer`, `auditor`, and `optimizer`. When a pipeline stage benefits from isolated context - e.g., a SIFT audit that should judge the code without the builder's assumptions, or a long diagnostic pass - dispatch that stage to the corresponding subagent via the Task tool. For small tasks, run the stages inline by following the linked SKILL.md files directly; subagent dispatch is an option, not a requirement.
+Each virtual agent in the registry is also available as a real subagent (defined in this plugin's `agents/` directory): `scaffolder`, `data-engineer`, `multi-db`, `cognitive-architect`, `ruby-llm`, `ruby-nlp`, `tui-builder`, `gui-builder`, `debugger`, `refactorer`, `technical-writer`, `auditor`, and `optimizer`. When a pipeline stage benefits from isolated context - e.g., a SIFT audit that should judge the code without the builder's assumptions, or a long diagnostic pass - dispatch that stage to the corresponding subagent via the Task tool. For small tasks, run the stages inline by following the linked SKILL.md files directly; subagent dispatch is an option, not a requirement.
 
 ## Verification Checklist
 

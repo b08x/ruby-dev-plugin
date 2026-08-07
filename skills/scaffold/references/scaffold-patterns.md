@@ -307,7 +307,7 @@ gem "pry-byebug", "~> 3.10", groups: [:development, :test]
 
 ---
 
-#### 2. Logging Standard ([logging-patterns.md](../logging-patterns.md))
+#### 2. Logging Standard ([logging-patterns.md](../../ruby-dev/references/logging-patterns.md))
 
 **Purpose**: Structured logging with journald-logger
 
@@ -339,7 +339,7 @@ MyProject.logger.info("event_name", {
 
 ---
 
-#### 3. Environment Variables ([environment-variables.md](../environment-variables.md))
+#### 3. Environment Variables ([environment-variables.md](../../ruby-dev/references/environment-variables.md))
 
 **Purpose**: Never hardcode secrets, use .env
 
@@ -382,7 +382,7 @@ end
 
 ---
 
-#### 4. Type Safety ([dry-rb-patterns.md](../dry-rb-patterns.md))
+#### 4. Type Safety ([dry-rb-patterns.md](../../ruby-dev/references/dry-rb-patterns.md))
 
 **Purpose**: Type-safe structs, schemas, and Result monads
 
@@ -422,7 +422,7 @@ end
 
 ---
 
-#### 5. Debugging Console ([pry-console.md](../pry-console.md))
+#### 5. Debugging Console ([pry-console.md](../../ruby-dev/references/pry-console.md))
 
 **Purpose**: Interactive REPL for debugging and exploration
 
@@ -454,7 +454,7 @@ pry(main)> MyProject::Database.connect
 
 ---
 
-#### 6. Project Structure ([rubysmith-scaffolding.md](../rubysmith-scaffolding.md))
+#### 6. Project Structure ([rubysmith-scaffolding.md](../../ruby-dev/references/rubysmith-scaffolding.md))
 
 **Purpose**: Standard project layout with best practices
 

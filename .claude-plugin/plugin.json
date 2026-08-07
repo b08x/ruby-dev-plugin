@@ -1,7 +1,7 @@
 {
   "name": "ruby-dev",
-  "version": "3.1.0",
-  "description": "Task-driven Ruby development toolkit: project scaffolding, data pipelines, multi-database (Ohm/Sequel/pgvector) modeling, GenAI components, TUIs, desktop GUIs (glimmer-dsl-libui), diagnostics, refactoring, performance optimization, YARD documentation, and SIFT quality audits \u2014 coordinated by an orchestrator skill with 11 specialist skills and subagents.",
+  "version": "3.3.0",
+  "description": "Task-driven Ruby development toolkit: project scaffolding, data pipelines, multi-database (Ohm/Sequel/pgvector) modeling, GenAI components, RubyLLM client integration, classical NLP toolkit, TUIs, desktop GUIs (glimmer-dsl-libui), diagnostics, refactoring, performance optimization, YARD documentation, and SIFT quality audits \u2014 coordinated by an orchestrator skill with 13 specialist skills and subagents.",
   "author": {
     "name": "Syncopated Context"
   },
@@ -16,6 +16,14 @@
     "tty",
     "rag",
     "etl",
+    "ruby_llm",
+    "llm",
+    "mcp",
+    "nlp",
+    "tokenization",
+    "wordnet",
+    "bm25",
+    "topic-modeling",
     "ohm",
     "sequel",
     "pgvector",

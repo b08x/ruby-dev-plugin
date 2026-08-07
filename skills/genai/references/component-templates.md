@@ -52,15 +52,15 @@ end
 ```
 
 **Embedder** (`embedder.rb`):
+
+The embedder's job here is RAG-specific: turn a `Failure`/`Success`-wrapped, typed `EmbeddingResult` into something `indexer.rb` and `retriever.rb` can rely on. The actual LLM call — client construction, circuit breaker, OTel span, retry/error handling — is `ruby_llm`-specific and documented in [ruby-llm/SKILL.md](../../ruby-llm/SKILL.md) (see "Embeddings" and "Resilience: Circuit Breaker"); this template only shows the seam between that client and the RAG pipeline's own types:
+
 ```ruby
 # frozen_string_literal: true
 
-require "dotenv/load"
-require "ruby_llm"
-require "circuit_breaker"
-require "journald/logger"
 require "dry-struct"
 require "dry-types"
+require "dry/monads"
 
 module Types
   include Dry.Types()
@@ -68,106 +68,35 @@ end
 
 module MyApp
   module RAG
-    # Type-safe embedding result
+    # Type-safe embedding result — the RAG pipeline's contract, independent of which
+    # LLM client produced the vector.
     class EmbeddingResult < Dry::Struct
       attribute :embedding, Types::Array.of(Types::Float)
       attribute :model, Types::String
       attribute :tokens_used, Types::Integer
-      attribute :latency_ms, Types::Float
       attribute :timestamp, Types::Time
     end
 
     class Embedder
       include Dry::Monads[:result]
 
-      def initialize(model: "text-embedding-ada-002")
-        @llm = RubyLLM::Client.new(api_key: ENV.fetch("OPENAI_API_KEY"))
+      def initialize(llm_client:, model: "text-embedding-3-small")
+        @llm_client = llm_client # a ruby_llm-backed client per ../../ruby-llm/SKILL.md, injected — this class doesn't construct it
         @model = model
-        @circuit = CircuitBreaker.new(threshold: 5, timeout: 30, reevaluate_after: 60)
       end
 
       def embed(text)
         return Failure([:empty_text, "Text cannot be empty"]) if text.nil? || text.empty?
 
-        tracer.in_span("embedder.embed") do |span|
-          start_time = Time.now
-          request_id = SecureRandom.uuid
-
-          span.set_attribute("request_id", request_id)
-          span.set_attribute("model", @model)
-          span.set_attribute("text_length", text.length)
-
-          logger.info("embedding_started", {
-            request_id: request_id,
-            model: @model,
-            text_length: text.length
-          })
-
-          # The opentelemetry-instrumentation-ruby_llm gem auto-creates a child
-          # span around this call (model, token usage, latency) — no manual
-          # span needed for the API call itself, only for this surrounding op.
-          embedding = @circuit.call do
-            response = @llm.embed(input: text, model: @model)
-            response.embedding
-          end
-
-          elapsed_ms = ((Time.now - start_time) * 1000).round(2)
-          tokens = estimate_tokens(text)
-          span.set_attribute("latency_ms", elapsed_ms)
-          span.set_attribute("tokens_used", tokens)
-
-          logger.info("embedding_completed", {
-            request_id: request_id,
-            model: @model,
-            latency_ms: elapsed_ms,
-            tokens_used: tokens
-          })
-
-          Success(EmbeddingResult.new(
-            embedding: embedding,
-            model: @model,
-            tokens_used: tokens,
-            latency_ms: elapsed_ms,
-            timestamp: Time.now
-          ))
-        rescue CircuitBreaker::OpenError
-          span.status = OpenTelemetry::Trace::Status.error("circuit_open")
-          logger.error("embedding_circuit_open", {
-            request_id: request_id,
-            model: @model,
-            reason: "circuit_breaker_open"
-          })
-          Failure([:circuit_open, "Circuit breaker is open"])
-        rescue StandardError => e
-          elapsed_ms = ((Time.now - start_time) * 1000).round(2)
-          span.record_exception(e)
-          span.status = OpenTelemetry::Trace::Status.error(e.message)
-
-          logger.error("embedding_failed", {
-            request_id: request_id,
-            model: @model,
-            error_class: e.class.name,
-            error_message: e.message,
-            latency_ms: elapsed_ms,
-            backtrace: e.backtrace.first(5)
-          })
-          Failure([:api_error, e.message])
-        end
-      end
-
-      private
-
-      def logger
-        @logger ||= Journald::Logger.new("embedder")
-      end
-
-      def tracer
-        @tracer ||= OpenTelemetry.tracer_provider.tracer("embedder")
-      end
-
-      def estimate_tokens(text)
-        # Rough estimate: ~4 characters per token
-        (text.length / 4.0).ceil
+        result = @llm_client.embed(text, model: @model) # circuit breaker + tracing live inside llm_client, per ruby-llm/SKILL.md
+        Success(EmbeddingResult.new(
+          embedding: result.vectors,
+          model: @model,
+          tokens_used: result.tokens_used,
+          timestamp: Time.now
+        ))
+      rescue StandardError => e
+        Failure([:api_error, e.message])
       end
     end
   end
