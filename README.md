@@ -12,7 +12,8 @@
 - **Project Scaffolding** — rubysmith/gemsmith flag presets by archetype (CLI, gem, web service, OSS) with convention hardening
 - **Data Pipelines** — Stream-based CSV/JSON parsing, ETL workflows, and Sequel bulk operations
 - **Multi-Database Modeling** — Ohm (Redis) and Sequel (PostgreSQL/pgvector) design, ORM porting, dual-database retrieval patterns
-- **GenAI & RAG** — Retrieval pipeline architecture, LLM agents, MCP servers, pgvector integration, dspy.rb workflows
+- **GenAI & RAG** — Retrieval pipeline architecture, LLM agents, MCP servers, pgvector integration
+- **Typed LLM programs (dspy.rb)** — Sorbet-typed signatures, Predict/ChainOfThought/ReAct, Toolsets, `DSPy::Evals`, MIPROv2 & GEPA prompt optimization
 - **LLM Client Integration** — RubyLLM gem ecosystem: multi-provider chat, tool calling, streaming, embeddings, structured output
 - **Classical NLP** — Tokenization, POS tagging, dependency parsing, WordNet lookup, TF-IDF/BM25 ranking, topic modeling
 - **Terminal UIs** — 21 TTY toolkit gems: prompts, tables, progress bars, spinners, pagers, trees, and rich CLI output

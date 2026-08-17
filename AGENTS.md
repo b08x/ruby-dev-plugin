@@ -27,13 +27,13 @@ skills/                       — 14 skill directories (SKILL.md + references/)
 - Forward undeclared params with `...` (`def foo(...) = bar(...)`)
 - Verify non-stdlib gem APIs via Context7 MCP or DeepWiki at point of use — never assume from memory
 
-### Orchestrator Pattern
+### Gateway Pattern
 
-`ruby-dev/SKILL.md` is the entry point. It dispatches to 13 specialist skills based on task type. When a task spans multiple concerns, start with the orchestrator rather than a single specialist.
+`agents/rubyist.md` is the entry point. It is a gateway agent, not a skill: it runs in its own context, plans a dispatch route, and delegates every stage to one of the 14 specialist subagents in `agents/`. When a task spans multiple concerns, or it is unclear which specialist applies, start at `rubyist`. A single-concern task may go straight to its specialist skill.
 
 ### Skill Reference Loading
 
-Skills reference shared patterns from `skills/ruby-dev/references/`:
+Skills and agents reference shared patterns from `references/` at the plugin root:
 - `dry-rb-patterns.md` — Type safety & validation
 - `ood-principles.md` — Object-oriented design
 - `logging-patterns.md` — Structured logging
