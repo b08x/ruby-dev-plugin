@@ -1,0 +1,500 @@
+{
+  "nodes": [
+    {
+      "file": "examples/ade_optimizer_gepa/main.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/ade_optimizer_miprov2/ade_example.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/ade_optimizer_miprov2/main.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/coffee-shop-agent/coffee_shop_agent.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/coffee-shop-agent/coffee_shop_agent_concurrent.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/deep_research_cli/chat.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/github-assistant/github_assistant.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/hotpotqa_react_miprov2/main.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/html_to_markdown/hierarchical_parser.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/html_to_markdown/main.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/html_to_markdown/renderer.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/html_to_markdown/signatures.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/html_to_markdown/types.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/multimodal/bounding_box_detection.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/multimodal/image_analysis.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/react_loop/main.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "examples/sentiment-evaluation/sentiment_classifier.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/anthropic.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/callbacks.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/chain_of_thought.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/code_act.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/context.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/datasets.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/deep_research.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/deep_search.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/document.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/error_formatter.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/errors.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/evals.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/events.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/example.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/few_shot_example.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/field.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/gemini.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/gepa.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/image.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/lm.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/miprov2.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/module.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/o11y.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/observability.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/openai.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/predict.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/prediction.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/prompt.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/re_act.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/reflection_lm.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/ruby_llm.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/schema.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/schema_adapters.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/scores.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/signature.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/structured_outputs_prompt.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/tools.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/type_serializer.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/dspy/version.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/gepa/api.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/gepa/logging.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/gepa/telemetry.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/gepa/version.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "lib/sorbet/toon.rb",
+      "language": "Ruby"
+    },
+    {
+      "file": "spec/integration/examples/deep_research_cli/cli_aruba_spec.rb",
+      "language": "Ruby"
+    }
+  ],
+  "edges": [
+    {
+      "source": "examples/ade_optimizer_gepa/main.rb",
+      "target": "lib/gepa/logging.rb",
+      "import_type": "require",
+      "line_number": 12
+    },
+    {
+      "source": "examples/ade_optimizer_miprov2/main.rb",
+      "target": "examples/ade_optimizer_miprov2/ade_example.rb",
+      "import_type": "require_relative",
+      "line_number": 14
+    },
+    {
+      "source": "examples/deep_research_cli/chat.rb",
+      "target": "lib/dspy/deep_research.rb",
+      "import_type": "require",
+      "line_number": 12
+    },
+    {
+      "source": "examples/deep_research_cli/chat.rb",
+      "target": "lib/dspy/deep_search.rb",
+      "import_type": "require",
+      "line_number": 13
+    },
+    {
+      "source": "examples/deep_research_cli/chat.rb",
+      "target": "lib/dspy/observability.rb",
+      "import_type": "require",
+      "line_number": 14
+    },
+    {
+      "source": "examples/hotpotqa_react_miprov2/main.rb",
+      "target": "lib/dspy/datasets.rb",
+      "import_type": "require",
+      "line_number": 11
+    },
+    {
+      "source": "examples/html_to_markdown/hierarchical_parser.rb",
+      "target": "examples/html_to_markdown/types.rb",
+      "import_type": "require_relative",
+      "line_number": 5
+    },
+    {
+      "source": "examples/html_to_markdown/hierarchical_parser.rb",
+      "target": "examples/html_to_markdown/signatures.rb",
+      "import_type": "require_relative",
+      "line_number": 6
+    },
+    {
+      "source": "examples/html_to_markdown/main.rb",
+      "target": "examples/html_to_markdown/types.rb",
+      "import_type": "require_relative",
+      "line_number": 20
+    },
+    {
+      "source": "examples/html_to_markdown/main.rb",
+      "target": "examples/html_to_markdown/renderer.rb",
+      "import_type": "require_relative",
+      "line_number": 21
+    },
+    {
+      "source": "examples/html_to_markdown/main.rb",
+      "target": "examples/html_to_markdown/signatures.rb",
+      "import_type": "require_relative",
+      "line_number": 22
+    },
+    {
+      "source": "examples/html_to_markdown/renderer.rb",
+      "target": "examples/html_to_markdown/types.rb",
+      "import_type": "require_relative",
+      "line_number": 5
+    },
+    {
+      "source": "examples/html_to_markdown/signatures.rb",
+      "target": "examples/html_to_markdown/types.rb",
+      "import_type": "require_relative",
+      "line_number": 5
+    },
+    {
+      "source": "lib/dspy/chain_of_thought.rb",
+      "target": "lib/dspy/predict.rb",
+      "import_type": "require_relative",
+      "line_number": 5
+    },
+    {
+      "source": "lib/dspy/chain_of_thought.rb",
+      "target": "lib/dspy/signature.rb",
+      "import_type": "require_relative",
+      "line_number": 7
+    },
+    {
+      "source": "lib/dspy/code_act.rb",
+      "target": "lib/dspy/predict.rb",
+      "import_type": "require",
+      "line_number": 6
+    },
+    {
+      "source": "lib/dspy/code_act.rb",
+      "target": "lib/dspy/signature.rb",
+      "import_type": "require",
+      "line_number": 7
+    },
+    {
+      "source": "lib/dspy/code_act.rb",
+      "target": "lib/dspy/type_serializer.rb",
+      "import_type": "require",
+      "line_number": 11
+    },
+    {
+      "source": "lib/dspy/deep_research.rb",
+      "target": "lib/dspy/deep_search.rb",
+      "import_type": "require_relative",
+      "line_number": 5
+    },
+    {
+      "source": "lib/dspy/evals.rb",
+      "target": "lib/dspy/example.rb",
+      "import_type": "require_relative",
+      "line_number": 6
+    },
+    {
+      "source": "lib/dspy/evals.rb",
+      "target": "lib/dspy/callbacks.rb",
+      "import_type": "require_relative",
+      "line_number": 7
+    },
+    {
+      "source": "lib/dspy/example.rb",
+      "target": "lib/dspy/signature.rb",
+      "import_type": "require_relative",
+      "line_number": 4
+    },
+    {
+      "source": "lib/dspy/gepa.rb",
+      "target": "lib/gepa/version.rb",
+      "import_type": "require_relative",
+      "line_number": 4
+    },
+    {
+      "source": "lib/dspy/lm.rb",
+      "target": "lib/dspy/openai.rb",
+      "import_type": "require",
+      "line_number": 245
+    },
+    {
+      "source": "lib/dspy/lm.rb",
+      "target": "lib/dspy/gemini.rb",
+      "import_type": "require",
+      "line_number": 258
+    },
+    {
+      "source": "lib/dspy/lm.rb",
+      "target": "lib/dspy/anthropic.rb",
+      "import_type": "require",
+      "line_number": 271
+    },
+    {
+      "source": "lib/dspy/lm.rb",
+      "target": "lib/dspy/structured_outputs_prompt.rb",
+      "import_type": "require_relative",
+      "line_number": 23
+    },
+    {
+      "source": "lib/dspy/module.rb",
+      "target": "lib/dspy/context.rb",
+      "import_type": "require_relative",
+      "line_number": 7
+    },
+    {
+      "source": "lib/dspy/module.rb",
+      "target": "lib/dspy/callbacks.rb",
+      "import_type": "require_relative",
+      "line_number": 8
+    },
+    {
+      "source": "lib/dspy/module.rb",
+      "target": "lib/dspy/type_serializer.rb",
+      "import_type": "require_relative",
+      "line_number": 9
+    },
+    {
+      "source": "lib/dspy/observability.rb",
+      "target": "lib/dspy/o11y.rb",
+      "import_type": "require",
+      "line_number": 5
+    },
+    {
+      "source": "lib/dspy/predict.rb",
+      "target": "lib/dspy/module.rb",
+      "import_type": "require_relative",
+      "line_number": 4
+    },
+    {
+      "source": "lib/dspy/predict.rb",
+      "target": "lib/dspy/prompt.rb",
+      "import_type": "require_relative",
+      "line_number": 5
+    },
+    {
+      "source": "lib/dspy/predict.rb",
+      "target": "lib/dspy/error_formatter.rb",
+      "import_type": "require_relative",
+      "line_number": 10
+    },
+    {
+      "source": "lib/dspy/prompt.rb",
+      "target": "lib/sorbet/toon.rb",
+      "import_type": "require",
+      "line_number": 5
+    },
+    {
+      "source": "lib/dspy/prompt.rb",
+      "target": "lib/dspy/few_shot_example.rb",
+      "import_type": "require_relative",
+      "line_number": 7
+    },
+    {
+      "source": "lib/dspy/re_act.rb",
+      "target": "lib/dspy/predict.rb",
+      "import_type": "require_relative",
+      "line_number": 5
+    },
+    {
+      "source": "lib/dspy/re_act.rb",
+      "target": "lib/dspy/signature.rb",
+      "import_type": "require_relative",
+      "line_number": 6
+    },
+    {
+      "source": "lib/dspy/re_act.rb",
+      "target": "lib/dspy/chain_of_thought.rb",
+      "import_type": "require_relative",
+      "line_number": 7
+    },
+    {
+      "source": "lib/dspy/signature.rb",
+      "target": "lib/dspy/schema_adapters.rb",
+      "import_type": "require_relative",
+      "line_number": 4
+    },
+    {
+      "source": "lib/dspy/structured_outputs_prompt.rb",
+      "target": "lib/dspy/prompt.rb",
+      "import_type": "require_relative",
+      "line_number": 4
+    }
+  ]
+}

@@ -21,7 +21,7 @@ The full flag reference and decision guide lives in `references/scaffold-pattern
 **Don't use for:**
 - One-off scripts (just write a file)
 - Rails applications (use Rails generators instead)
-- Modifying existing projects (use [refactor/SKILL.md](../refactor/SKILL.md) or the [ruby-dev orchestrator](../ruby-dev/SKILL.md))
+- Modifying existing projects (use [refactor/SKILL.md](../refactor/SKILL.md) or the [`rubyist` gateway agent](../../agents/rubyist.md))
 
 ## Archetype → Flag Preset
 

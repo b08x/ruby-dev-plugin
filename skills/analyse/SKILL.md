@@ -12,10 +12,10 @@ This skill provides **structured diagnostic analysis** for Ruby codebases using 
 **Core Mandate**: Understand before acting. Never refactor without diagnosis.
 
 **References**:
-- Logging patterns: `../ruby-dev/references/logging-patterns.md`
-- Environment setup: `../ruby-dev/references/environment-variables.md`
-- Type safety: `../ruby-dev/references/dry-rb-patterns.md`
-- OO design principles (naming design smells precisely): `../ruby-dev/references/ood-principles.md`
+- Logging patterns: `../../references/logging-patterns.md`
+- Environment setup: `../../references/environment-variables.md`
+- Type safety: `../../references/dry-rb-patterns.md`
+- OO design principles (naming design smells precisely): `../../references/ood-principles.md`
 
 ---
 
@@ -73,7 +73,7 @@ Each diagnostic method produces a type-safe finding (`GembaFinding`, `MudaFindin
 **Don't use for:**
 - Quality assessment (use [sift/SKILL.md](../sift/SKILL.md) instead)
 - Making diagnosed-slow code faster (hand off to [perf/SKILL.md](../perf/SKILL.md) with the suspected hotspot)
-- Direct code generation (use the [ruby-dev orchestrator](../ruby-dev/SKILL.md))
+- Direct code generation (use the [`rubyist` gateway agent](../../agents/rubyist.md))
 - Refactoring without diagnosis (always diagnose first)
 - Convention fixes (use [refactor/SKILL.md](../refactor/SKILL.md) after diagnosis)
 
@@ -319,9 +319,9 @@ The refactor skill reads the keyed findings and applies targeted fixes.
 - `analyse` produces findings → `refactor` applies fixes
 - Never refactor without running `analyse` first
 
-### With the `ruby-dev` Orchestrator
+### With the `rubyist` Gateway
 
-The [ruby-dev orchestrator](../ruby-dev/SKILL.md) drives the full pipeline:
+The [`rubyist` gateway agent](../../agents/rubyist.md) drives the full pipeline:
 1. **Semantic Survey (L1)**: Determines Field-Tenor-Mode
 2. **Convention Detection (L2)**: Scans environment
 3. **Verification (L3)**: Queries Context7/DeepWiki inline for any non-stdlib gems encountered during analysis
@@ -389,9 +389,9 @@ Diagnose lib/my_app/ --scope=inventory
 
 | Dependency | If Unavailable | Fallback |
 |------------|---------------|----------|
-| [refactor/SKILL.md](../refactor/SKILL.md) | Not loaded or missing | Output findings as structured YAML in the response instead of dispatching to refactor. Each finding includes: `handoff_key`, `description`, `fix_strategy`, and `file_path`. The human or the ruby-dev orchestrator can apply fixes from this output. |
+| [refactor/SKILL.md](../refactor/SKILL.md) | Not loaded or missing | Output findings as structured YAML in the response instead of dispatching to refactor. Each finding includes: `handoff_key`, `description`, `fix_strategy`, and `file_path`. The human or the `rubyist` gateway can apply fixes from this output. |
 | Diagnostic workflow | Parent workflow not available | Run all 4 diagnostic methods (Gemba, Muda, Root-Cause, Five Whys) independently instead of relying on the workflow for ordering. Present results as a flat diagnostic report. |
-| [sift/SKILL.md](../sift/SKILL.md) | Holistic assessment not available | Surface the `handoff_key` findings directly. The orchestrator can pass them to sift manually. |
+| [sift/SKILL.md](../sift/SKILL.md) | Holistic assessment not available | Surface the `handoff_key` findings directly. The `rubyist` gateway can pass them to sift manually. |
 
 ## Common Pitfalls
 

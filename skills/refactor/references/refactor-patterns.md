@@ -26,7 +26,7 @@ Mechanical & convention fixes:
 - [manual_logging_to_journald](#manual_logging_to_journald)
 - [no_gemfile_to_rubysmith](#no_gemfile_to_rubysmith)
 
-OO design patterns (POODR; warrants in ../../ruby-dev/references/ood-principles.md):
+OO design patterns (POODR; warrants in ../../../references/ood-principles.md):
 - [extract_class](#extract_class)
 - [inject_dependency](#inject_dependency)
 - [isolate_class_reference](#isolate_class_reference)

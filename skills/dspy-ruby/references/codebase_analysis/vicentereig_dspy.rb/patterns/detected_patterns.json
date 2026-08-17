@@ -1,0 +1,119 @@
+[
+  {
+    "file_path": "/home/b08x/.syncopated/.skillseeker-cache/dspy-ruby/repos/0_vicentereig_dspy.rb/lib/dspy/chain_of_thought.rb",
+    "language": "Ruby",
+    "patterns": [
+      {
+        "pattern_type": "ChainOfResponsibility",
+        "category": "Behavioral",
+        "confidence": 0.6,
+        "location": "/home/b08x/.syncopated/.skillseeker-cache/dspy-ruby/repos/0_vicentereig_dspy.rb/lib/dspy/chain_of_thought.rb",
+        "class_name": "ChainOfThought",
+        "method_name": null,
+        "line_number": 13,
+        "evidence": [
+          "Class name suggests handler chain: ChainOfThought"
+        ],
+        "related_classes": []
+      }
+    ],
+    "total_classes": 1,
+    "total_functions": 13,
+    "analysis_depth": "deep",
+    "pattern_summary": {
+      "ChainOfResponsibility": 1
+    }
+  },
+  {
+    "file_path": "/home/b08x/.syncopated/.skillseeker-cache/dspy-ruby/repos/0_vicentereig_dspy.rb/lib/dspy/errors.rb",
+    "language": "Ruby",
+    "patterns": [
+      {
+        "pattern_type": "Strategy",
+        "category": "Behavioral",
+        "confidence": 0.5,
+        "location": "/home/b08x/.syncopated/.skillseeker-cache/dspy-ruby/repos/0_vicentereig_dspy.rb/lib/dspy/errors.rb",
+        "class_name": "ConfigurationError",
+        "method_name": null,
+        "line_number": 12,
+        "evidence": [
+          "Part of strategy family with: InstructionUpdateError"
+        ],
+        "related_classes": [
+          "Error"
+        ]
+      },
+      {
+        "pattern_type": "Strategy",
+        "category": "Behavioral",
+        "confidence": 0.5,
+        "location": "/home/b08x/.syncopated/.skillseeker-cache/dspy-ruby/repos/0_vicentereig_dspy.rb/lib/dspy/errors.rb",
+        "class_name": "InstructionUpdateError",
+        "method_name": null,
+        "line_number": 32,
+        "evidence": [
+          "Part of strategy family with: ConfigurationError"
+        ],
+        "related_classes": [
+          "Error"
+        ]
+      }
+    ],
+    "total_classes": 2,
+    "total_functions": 3,
+    "analysis_depth": "deep",
+    "pattern_summary": {
+      "Strategy": 2
+    }
+  },
+  {
+    "file_path": "/home/b08x/.syncopated/.skillseeker-cache/dspy-ruby/repos/0_vicentereig_dspy.rb/lib/dspy/schema_adapters.rb",
+    "language": "Ruby",
+    "patterns": [
+      {
+        "pattern_type": "Adapter",
+        "category": "Structural",
+        "confidence": 0.7,
+        "location": "/home/b08x/.syncopated/.skillseeker-cache/dspy-ruby/repos/0_vicentereig_dspy.rb/lib/dspy/schema_adapters.rb",
+        "class_name": "SorbetSchemaAdapter",
+        "method_name": null,
+        "line_number": 9,
+        "evidence": [
+          "Class name suggests Adapter: SorbetSchemaAdapter"
+        ],
+        "related_classes": []
+      }
+    ],
+    "total_classes": 1,
+    "total_functions": 3,
+    "analysis_depth": "deep",
+    "pattern_summary": {
+      "Adapter": 1
+    }
+  },
+  {
+    "file_path": "/home/b08x/.syncopated/.skillseeker-cache/dspy-ruby/repos/0_vicentereig_dspy.rb/lib/dspy/signature.rb",
+    "language": "Ruby",
+    "patterns": [
+      {
+        "pattern_type": "Builder",
+        "category": "Creational",
+        "confidence": 0.7,
+        "location": "/home/b08x/.syncopated/.skillseeker-cache/dspy-ruby/repos/0_vicentereig_dspy.rb/lib/dspy/signature.rb",
+        "class_name": "StructBuilder",
+        "method_name": null,
+        "line_number": 36,
+        "evidence": [
+          "Class name contains \"Builder\": StructBuilder"
+        ],
+        "related_classes": []
+      }
+    ],
+    "total_classes": 8,
+    "total_functions": 15,
+    "analysis_depth": "deep",
+    "pattern_summary": {
+      "Builder": 1
+    }
+  }
+]

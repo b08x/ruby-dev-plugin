@@ -18,15 +18,16 @@ This skill scaffolds **AI/NLP components** in Ruby with verified APIs and archit
 - **Embeddings**: Semantic search, similarity scoring, clustering
 - **MCP servers**: Model Context Protocol tool servers
 - **Neuro-symbolic**: Combining neural (LLMs) with symbolic (knowledge graphs)
-- **DSPy workflows**: Structured prompting and optimization
+- **DSPy workflows**: Structured prompting and optimization — *architecture only*; for the dspy.rb API itself see [dspy-ruby/SKILL.md](../dspy-ruby/SKILL.md)
 - **Hybrid retrieval**: Semantic + keyword search with RRF
 
 **Don't use for:**
-- **General Ruby code** (use the [ruby-dev orchestrator](../ruby-dev/SKILL.md))
+- **General Ruby code** (use the [`rubyist` gateway agent](../../agents/rubyist.md))
 - **Data pipelines without AI** (use [data-engineer/SKILL.md](../data-engineer/SKILL.md))
 - **Frontend AI clients** (this is for Ruby backends)
 - **Python AI code** (this is Ruby-specific)
 - **The `ruby_llm` client itself** — chat/tool-calling/streaming/embeddings API, circuit breakers and OpenTelemetry tracing around it, Rails persistence, MCP client integration — use [ruby-llm/SKILL.md](../ruby-llm/SKILL.md); this skill treats `ruby_llm` as the LLM client its pipelines call, but doesn't own that client's API surface
+- **dspy.rb signatures, predictors, Toolsets, `DSPy::Evals`, or MIPROv2/GEPA optimization** — use [dspy-ruby/SKILL.md](../dspy-ruby/SKILL.md); this skill owns retrieval and pipeline architecture, and calls dspy.rb *after* retrieval with the context as a typed input field
 - **Tokenization, sentence segmentation, POS/dependency tagging, WordNet lookup, fuzzy/TF-IDF/BM25 scoring, topic modeling, or transformer inference** — use [ruby-nlp/SKILL.md](../ruby-nlp/SKILL.md); this skill's clause-level pipeline consumes those tools but doesn't own their API surface
 
 ## Required Gems
@@ -38,7 +39,7 @@ All gems listed below MUST have their API verified via Context7 MCP (or DeepWiki
 | `pgvector` | Vector embeddings in PostgreSQL | `/pgvector/pgvector-ruby` | ✅ Verified |
 | `sequel` | Database abstraction | `/jeremyevans/sequel` | ✅ Verified |
 | `fast-mcp` | MCP server framework | `/tompng/fast-mcp` | ✅ Verified |
-| `dspy.rb` | Structured prompting (Ruby port) | `/vicentereig/dspy.rb` | ✅ Verified |
+| `dspy.rb` | Structured prompting (Ruby port) — API surface owned by [dspy-ruby/SKILL.md](../dspy-ruby/SKILL.md) | `/vicentereig/dspy.rb` | ✅ Verified |
 | `circuit_breaker` | Fault tolerance | `/wsargent/circuit_breaker` | ✅ Verified |
 | `journald-logger` | Structured logging | `/theforeman/journald-logger` | ✅ Verified |
 | `dotenv` | Environment variables | `/bkeepers/dotenv` | ✅ Verified |
@@ -48,8 +49,8 @@ All gems listed below MUST have their API verified via Context7 MCP (or DeepWiki
 
 **Prerequisites**:
 1. Verify each gem's API inline via Context7 MCP before use (no central dispatch step)
-2. Set environment variables (see `../ruby-dev/references/environment-variables.md`)
-3. Configure logging (see `../ruby-dev/references/logging-patterns.md`)
+2. Set environment variables (see `../../references/environment-variables.md`)
+3. Configure logging (see `../../references/logging-patterns.md`)
 4. For the LLM client itself (configuration, tool calling, tracing), see [ruby-llm/SKILL.md](../ruby-llm/SKILL.md)
 
 ---

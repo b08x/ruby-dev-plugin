@@ -26,8 +26,8 @@ This skill covers the **`ruby_llm`** gem ecosystem (`crmne/ruby_llm`, docs at ru
 **Don't use for:**
 - **RAG architecture, clause-level chunking, RRF hybrid retrieval, pgvector schema design** — use [genai/SKILL.md](../genai/SKILL.md); that skill treats `ruby_llm` as its LLM client but owns the retrieval/storage architecture, not this one
 - **Building an MCP *server*** (exposing tools to other clients) — that's `fast-mcp`, covered in [genai/SKILL.md](../genai/SKILL.md); this skill covers the MCP *client* side (`ruby_llm-mcp`, consuming someone else's MCP server as tools)
-- **Non-LLM Ruby code** — use the [ruby-dev orchestrator](../ruby-dev/SKILL.md)
-- **dspy.rb structured-prompting workflows** — those layer on top of an LLM client but are their own paradigm; see [genai/SKILL.md](../genai/SKILL.md)
+- **Non-LLM Ruby code** — use the [`rubyist` gateway agent](../../agents/rubyist.md)
+- **dspy.rb typed signatures, predictors, and prompt optimization** — those layer on top of an LLM client but are their own paradigm; see [dspy-ruby/SKILL.md](../dspy-ruby/SKILL.md). `dspy-ruby_llm` lets dspy.rb route through a configured `RubyLLM` client, so the two compose rather than compete
 
 ## Ecosystem Gems
 
@@ -47,8 +47,8 @@ All gems below MUST have their API verified via Context7 MCP (or DeepWiki) **at 
 
 **Prerequisites**:
 1. Verify each gem's API inline via Context7 MCP before use (no central dispatch step)
-2. Set provider API keys as environment variables (see `../ruby-dev/references/environment-variables.md`)
-3. Configure logging (see `../ruby-dev/references/logging-patterns.md`)
+2. Set provider API keys as environment variables (see `../../references/environment-variables.md`)
+3. Configure logging (see `../../references/logging-patterns.md`)
 
 **Gemfile fragment** (add only the extensions actually in use — `ruby_llm` itself is the only hard requirement):
 
