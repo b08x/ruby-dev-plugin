@@ -70,3 +70,48 @@ Match code smell → pattern name → load the exact transform. Fall back to a c
 - [ ] `ruby -c` passes on all modified files
 - [ ] Tests pass (if available)
 - [ ] Result reported back to the caller (analyse/sift/rubyist gateway)
+### Design Pattern References
+
+Named refactorings in this skill resolve to three canonical Ruby patterns. Match the diagnosed issue to the pattern's Problem statement before selecting a transformation.
+
+#### Template Method
+
+**Problem**
+We have a complex bit of code, but somewhere in the middle there is a bit that needs to vary.
+
+**Solution**
+The general idea of the Template Method pattern is to build an abstract base class with a skeletal method, which drives the bit of processing that needs to vary by making calls to abstract methods, which are then supplied by the concrete subclasses. The abstract base class controls the higher-level processing and the sub-classes simply fill in the details.
+
+**Structural constraints**
+- The skeletal method lives on the abstract base class and is the only caller of the varying steps.
+- Varying steps are abstract methods on the base class; concrete subclasses supply the details.
+- The base class owns higher-level control flow — subclasses never reorder or duplicate it.
+- Built around inheritance: each variation costs a subclass. Prefer Strategy when variations combine.
+
+#### Strategy
+
+**Problem**
+We need to vary part of an algorithm — something we previously solved using the Template Method pattern — although we want to avoid its drawbacks, introduced by the fact that it's built around inheritance.
+
+**Solution**
+To avoid problems introduced by inheritance we should use delegation. Instead of creating subclasses (like in the Template Method pattern), we tear out the varying part of the code and isolate it in its own class and create one of them for each variation. The key idea of the Strategy pattern is to define a family of objects (strategies), which all do (almost) the same thing and support the same interface. Then, the user of the strategy (context) can treat the strategies as interchangeable parts.
+
+**Structural constraints**
+- Delegation, not inheritance: the context holds a strategy, it does not subclass one.
+- Every strategy in the family supports the same interface and does (almost) the same thing.
+- The varying code is torn out into its own class — one class per variation.
+- The context must treat strategies as interchangeable; no strategy-specific branching in the context.
+
+#### Decorator
+
+**Problem**
+We need to vary the responsibilities of an object, adding some features.
+
+**Solution**
+In the **Decorator** pattern we create an object that wraps the real one, and implements the same interface and forwarding method calls. However, before delegating to the real object, it performs the additional feature. Since all decorators implement the same core interface, we can build chains of decorators and assemble a combination of features at runtime.
+
+**Structural constraints**
+- The decorator implements the same interface as the object it wraps and forwards method calls.
+- The added feature runs *before* delegation to the real object.
+- All decorators share the core interface — this is what makes chaining legal.
+- Feature combinations are assembled at runtime, not encoded as subclasses.
