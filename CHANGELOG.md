@@ -52,7 +52,7 @@ Two skill/agent extractions from the genai (Cognitive Architect) skill,
 following the same pattern as the earlier multi-db split:
 
 - ruby-llm: the RubyLLM gem ecosystem (chat, tool calling, streaming,
-  embeddings, structured output via ruby_llm-schema, Rails persistence
+  embeddings, structured output via schematist, Rails persistence
   via ruby_llm-rails, MCP client via ruby_llm-mcp), plus the circuit
   breaker and OpenTelemetry instrumentation patterns that wrap it.
   Code samples are training-knowledge, not live-verified this session,
