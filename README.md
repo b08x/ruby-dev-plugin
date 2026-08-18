@@ -1,6 +1,6 @@
 # ruby-dev
 
-**A task-driven Claude plugin routing Ruby work across 14 specialist subagents — from scaffolding to SIFT audits — through the `rubyist` multi-agent gateway.**
+**A task-driven Claude plugin routing Ruby work across 14 specialist skills and 14 subagents — from scaffolding to SIFT audits — through the `rubyist` multi-agent gateway.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Plugin Version](https://img.shields.io/badge/version-4.0.0-green.svg)](.claude-plugin/plugin.json)
@@ -13,7 +13,7 @@
 - **Data Pipelines** — Stream-based CSV/JSON parsing, ETL workflows, and Sequel bulk operations
 - **Multi-Database Modeling** — Ohm (Redis) and Sequel (PostgreSQL/pgvector) design, ORM porting, dual-database retrieval patterns
 - **GenAI & RAG** — Retrieval pipeline architecture, LLM agents, MCP servers, pgvector integration
-- **Typed LLM programs (dspy.rb)** — Sorbet-typed signatures, Predict/ChainOfThought/ReAct, Toolsets, `DSPy::Evals`, MIPROv2 & GEPA prompt optimization
+- **Typed LLM programs (dspy.rb)** — Sorbet-typed signatures, Predict/ChainOfThought/ReAct/CodeAct, Toolsets, `DSPy::Evals`, MIPROv2 & GEPA prompt optimization
 - **LLM Client Integration** — RubyLLM gem ecosystem: multi-provider chat, tool calling, streaming, embeddings, structured output
 - **Classical NLP** — Tokenization, POS tagging, dependency parsing, WordNet lookup, TF-IDF/BM25 ranking, topic modeling
 - **Terminal UIs** — 21 TTY toolkit gems: prompts, tables, progress bars, spinners, pagers, trees, and rich CLI output
@@ -140,6 +140,7 @@ Shared conventions live in `references/` at the plugin root (dry-rb, OOD, loggin
 | `genai` | RAG pipelines, LLM agents, MCP servers | 2 (component templates, project setup) |
 | `ruby-llm` | RubyLLM gem: chat, tools, streaming, embeddings | — |
 | `ruby-nlp` | Tokenization, POS tagging, TF-IDF, BM25 | 1 (gem catalog) |
+| `dspy-ruby` | Typed LLM programs: Sorbet-typed signatures, Predict/ChainOfThought/ReAct/CodeAct, Toolsets, `DSPy::Evals`, MIPROv2 & GEPA | Comprehensive API reference and codebase analysis |
 | `tui` | Terminal UIs with TTY toolkit | 21 (one per tty-* gem) |
 | `gui` | Desktop GUIs with glimmer-dsl-libui | 4 (area, controls, custom, data-binding) |
 | `analyse` | Debugging: Gemba Walk, Muda, Five Whys | 2 (types, examples) |
@@ -158,6 +159,7 @@ Each specialist agent is a thin wrapper dispatching to its corresponding skill, 
 | `data-engineer` | Data Pipeline Engineer | `data-engineer` |
 | `multi-db` | Data Modeler | `multi-db` |
 | `cognitive-architect` | Cognitive Architect | `genai` |
+| `dspy-ruby` | The Program Compiler | `dspy-ruby` |
 | `ruby-llm` | LLM Integrator | `ruby-llm` |
 | `ruby-nlp` | The Linguist | `ruby-nlp` |
 | `tui-builder` | TUI Builder | `tui` |
