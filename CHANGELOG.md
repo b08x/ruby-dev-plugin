@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.0] - 2026-08-17
+
+### Changed - BREAKING
+
+- **Replaced the `ruby-dev` orchestrator skill with the `rubyist` gateway agent.**
+  Orchestration used to run as a skill, which meant the registry, dispatch pipeline,
+  and dry-rb samples loaded into the *caller's* context — and every specialist
+  `SKILL.md` it dispatched to stacked on top of that, in the same window. A skill
+  cannot isolate context; an agent can. `rubyist` runs in its own context window,
+  emits a dispatch plan, delegates each stage to a specialist subagent, and acts as
+  the compaction boundary between stages.
+- `rubyist` writes no Ruby and never reads a specialist `SKILL.md`.
+- **`cognitive-architect` is now design-only.** It returns a component plan naming
+  which specialist builds each layer (`multi-db` store, `ruby-nlp` text, `ruby-llm`
+  client, `dspy-ruby` typed programs) instead of building the whole AI pipeline
+  itself. A named gem in the request routes straight to its owner, skipping the
+  architect.
+- Shared references moved from `skills/ruby-dev/references/` to `references/` at the
+  plugin root; all skill and agent cross-references updated.
+- All 14 specialist agents now carry the full core mandates (previously only three of
+  six) plus a structured `CHANGED` / `FINDINGS` / `UNRESOLVED` / `NEXT` return contract.
+
+### Fixed
+
+- Broken relative links in `skills/scaffold/references/scaffold-patterns.md` that had
+  never resolved.
+
+### Removed
+
+- `skills/ruby-dev/SKILL.md` (retired to `_to_delete/ruby-dev-orchestrator-SKILL.md`).
+
+
 ## [3.3.0] - 2026-08-07
 
 * Initial commit: ruby-dev plugin with multi-db skill
@@ -10,7 +42,7 @@ Task-driven Ruby development toolkit: project scaffolding, data
 pipelines, multi-database (Ohm/Sequel/pgvector) modeling, GenAI
 components, TUIs, desktop GUIs, diagnostics, refactoring, performance
 optimization, YARD documentation, and SIFT quality audits, coordinated
-by an orchestrator skill with 11 specialist skills and subagents.
+by a gateway skill with 11 specialist skills and subagents.
 
 Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>(8f61f48)
 
@@ -36,7 +68,7 @@ following the same pattern as the earlier multi-db split:
 
 genai keeps RAG/retrieval architecture (clause-level chunking, RRF,
 pgvector, dspy, MCP server) and now points to both new skills for the
-concrete gem calls inside that architecture. The orchestrator registry
+concrete gem calls inside that architecture. The gateway registry
 grew from 11 to 13 entries; also fixes a pre-existing broken-link bug
 in scaffold-patterns.md (relative links pointed one directory too
 shallow).

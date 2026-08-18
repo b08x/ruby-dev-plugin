@@ -15,7 +15,7 @@ lib/my_app/
 │   ├── indexer.rb          # Clause indexing
 │   ├── retriever.rb        # Hybrid retrieval (RRF)
 │   ├── generator.rb        # LLM response generation
-│   └── pipeline.rb         # Orchestrator
+│   └── pipeline.rb         # Gateway
 └── db/
     └── migrations/
         └── 001_create_embeddings.rb

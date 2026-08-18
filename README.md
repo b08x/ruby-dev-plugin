@@ -1,14 +1,14 @@
 # ruby-dev
 
-**A task-driven Claude plugin coordinating 13 specialist skills for Ruby development — from scaffolding to SIFT audits.**
+**A task-driven Claude plugin routing Ruby work across 14 specialist subagents — from scaffolding to SIFT audits — through the `rubyist` multi-agent gateway.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Plugin Version](https://img.shields.io/badge/version-3.3.0-green.svg)](.claude-plugin/plugin.json)
+[![Plugin Version](https://img.shields.io/badge/version-4.0.0-green.svg)](.claude-plugin/plugin.json)
 [![Claude Plugin](https://img.shields.io/badge/Claude-Plugin-purple.svg)](.claude-plugin/plugin.json)
 
 ## Features
 
-- **Orchestrator Dispatch** — One entry point routes tasks to the right specialist; no need to know which skill applies upfront
+- **Multi-Agent Gateway** — The `rubyist` agent plans a dispatch route and delegates every stage to a specialist subagent in isolated context; no need to know which specialist applies upfront
 - **Project Scaffolding** — rubysmith/gemsmith flag presets by archetype (CLI, gem, web service, OSS) with convention hardening
 - **Data Pipelines** — Stream-based CSV/JSON parsing, ETL workflows, and Sequel bulk operations
 - **Multi-Database Modeling** — Ohm (Redis) and Sequel (PostgreSQL/pgvector) design, ORM porting, dual-database retrieval patterns
@@ -26,38 +26,45 @@
 
 ## Architecture
 
-The plugin follows an **orchestrator + specialist** pattern. A single entry skill (`ruby-dev`) analyzes the task, selects the mode, and dispatches to the appropriate specialist skills. Each specialist is also exposed as a standalone subagent for isolated context.
+The plugin follows a **gateway + specialist** pattern. `rubyist` is a gateway *agent*, not a skill — it runs in its own context window, so the routing logic and the specialists' instructions never accumulate in the caller's context. It emits a dispatch plan, delegates each stage to a specialist subagent, compacts their reports, and synthesizes the result.
+
+`rubyist` writes no Ruby and never loads a specialist's `SKILL.md`. Each specialist skill also remains directly invocable when a task is single-concern and the routing is obvious.
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                  ruby-dev (Orchestrator)                 │
-│  Mode selection → Gem verification → Dispatch → Audit   │
-└────────┬────────┬────────┬────────┬────────┬────────────┘
-         │        │        │        │        │
-    ┌────▼───┐ ┌──▼──┐ ┌──▼──┐ ┌──▼──┐ ┌───▼────┐
-    │scaffold│ │ tui │ │gui  │ │perf │ │genai   │
-    └────────┘ └─────┘ └─────┘ └─────┘ └────────┘
-         │        │        │        │        │
-    ┌────▼───┐ ┌──▼──┐ ┌──▼──┐ ┌──▼──┐ ┌───▼────┐
-    │data-   │ │multi│ │ruby │ │ruby │ │refactor│
-    │engine  │ │-db  │ │-llm │ │-nlp │ └────────┘
-    └────────┘ └─────┘ └─────┘ └─────┘
-                                    ┌────────┐
-                                    │yardoc  │
-                                    └────────┘
-                                    ┌────────┐
-                                    │sift    │
-                                    └────────┘
+                    ┌──────────────────────────┐
+                    │   rubyist (gateway)      │
+                    │  survey → plan → dispatch│
+                    │  → compact → synthesize  │
+                    └────────────┬─────────────┘
+      ┌──────────────┬───────────┼───────────┬──────────────┐
+      │              │           │           │              │
+ ┌────▼─────┐  ┌─────▼────┐ ┌────▼────┐ ┌────▼────┐  ┌──────▼──────┐
+ │ scaffold │  │   data   │ │   tui   │ │   gui   │  │  cognitive  │
+ │          │  │ engineer │ │ builder │ │ builder │  │  architect  │
+ └──────────┘  └──────────┘ └─────────┘ └─────────┘  └──────┬──────┘
+                                            plans, does not build
+                              ┌──────────────┬──────┴───────┬──────────────┐
+                         ┌────▼────┐  ┌──────▼───┐  ┌───────▼──┐  ┌────────▼──┐
+                         │multi-db │  │ ruby-nlp │  │ ruby-llm │  │ dspy-ruby │
+                         │ (store) │  │  (text)  │  │ (client) │  │  (typed)  │
+                         └─────────┘  └──────────┘  └──────────┘  └───────────┘
+
+      ┌──────────┐  ┌────────────┐  ┌───────────┐  ┌──────────────────┐  ┌─────────┐
+      │ debugger │→ │ refactorer │  │ optimizer │  │ technical-writer │  │ auditor │
+      │(diagnose)│  │   (fix)    │  │ (measure) │  │      (YARD)      │  │ (SIFT)  │
+      └──────────┘  └────────────┘  └───────────┘  └──────────────────┘  └─────────┘
 ```
 
 ### Execution Pipeline
 
-1. **Mode Selection** — Lite Mode (scripts < 50 lines, stdlib only) or Standard Mode (multi-file, gem-dependent)
-2. **Gem Verification** — Non-stdlib APIs checked via Context7 MCP or DeepWiki at the point of use
-3. **Dispatch** — Task routed to the matching specialist skill
-4. **Refactor** — Issues diagnosed by `debugger`, fixed by `refactorer`
-5. **Document** — YARD documentation generated by `technical-writer`
-6. **Audit** — SIFT quality gate by `auditor` before delivery
+1. **Survey** — `rubyist` reads only enough to route. Classifies Lite Mode (scripts < 50 lines, stdlib only) or Standard Mode (multi-file, gem-dependent)
+2. **Plan** — A dispatch plan is emitted before any subagent is spawned: which specialists, in what order, what each receives and returns
+3. **Dispatch** — Each stage runs as a specialist subagent in isolated context, receiving a compact brief (`TASK` / `PATHS` / `CONSTRAINTS` / `UPSTREAM` / `RETURN`)
+4. **Report** — Every specialist returns a structured `CHANGED` / `FINDINGS` / `UNRESOLVED` / `NEXT` block. `rubyist` is the compaction boundary: briefs carry summaries, never transcripts
+5. **Audit** — SIFT quality gate by `auditor`, in a fresh context so the audit is independent of the builder's assumptions
+6. **Synthesize** — `rubyist` reports what changed, the audit verdict, and anything unresolved
+
+Non-stdlib gem APIs are verified via Context7 MCP or DeepWiki at the point of use, inside whichever specialist writes the code.
 
 ## Installation
 
@@ -93,16 +100,16 @@ cat .claude-plugin/plugin.json
 
 ## Usage
 
-### Orchestrator Entry Point
+### Gateway Entry Point
 
-The `ruby-dev` skill is the primary entry point. Invoke it for any non-trivial Ruby task — it coordinates the right specialists automatically.
-
-```
-Use the ruby-dev skill to scaffold a new CLI application with TUI prompts
-```
+The `rubyist` agent is the primary entry point. Use it for any task spanning more than one concern, or when it is unclear which specialist applies.
 
 ```
-Use the ruby-dev skill to build a RAG pipeline with pgvector and RubyLLM
+Use the rubyist agent to scaffold a new CLI application with TUI prompts
+```
+
+```
+Use the rubyist agent to build a RAG pipeline with pgvector and RubyLLM
 ```
 
 ### Direct Specialist Invocation
@@ -123,9 +130,10 @@ Use the optimizer agent to profile and reduce allocations in the hot path
 
 ### Skill Reference
 
+Shared conventions live in `references/` at the plugin root (dry-rb, OOD, logging, env, pry, scaffolding) and are loaded by skills and agents alike.
+
 | Skill | Purpose | Reference Files |
 |-------|---------|-----------------|
-| `ruby-dev` | Orchestrator — coordinates all specialists | 6 (dry-rb, OOD, logging, env, pry, scaffolding) |
 | `scaffold` | Project scaffolding with rubysmith/gemsmith | 1 (flag presets) |
 | `data-engineer` | CSV/JSON parsing, ETL pipelines | — |
 | `multi-db` | Ohm/Sequel modeling, dual-database patterns | 2 (ORM idioms, SFL case study) |
@@ -142,7 +150,7 @@ Use the optimizer agent to profile and reduce allocations in the hot path
 
 ### Agent Registry
 
-Each agent is a thin wrapper dispatching to its corresponding skill. Use agents when isolated context is beneficial (e.g., audits that should judge code independently).
+Each specialist agent is a thin wrapper dispatching to its corresponding skill, carrying the core mandates and a structured return contract. `rubyist` is the exception — it has no skill of its own and exists purely to route. Prefer agents whenever isolated context is beneficial (audits that should judge code independently, long diagnostic passes, or any multi-stage build).
 
 | Agent | Role | Dispatches To |
 |-------|------|---------------|

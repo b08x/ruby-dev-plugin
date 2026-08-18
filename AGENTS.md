@@ -6,8 +6,9 @@ Claude plugin providing 13 specialist skills + agents for Ruby development workf
 
 ```
 .claude-plugin/plugin.json   — Plugin metadata (name, version, keywords)
-agents/                       — 13 role-specific agent prompts (.md files)
-skills/                       — 14 skill directories (SKILL.md + references/)
+agents/                       — 15 agent prompts: the `rubyist` gateway + 14 specialists
+skills/                       — 14 specialist skill directories (SKILL.md + references/)
+references/                   — shared conventions loaded by skills and agents alike
 ```
 
 ## Conventions
@@ -16,7 +17,7 @@ skills/                       — 14 skill directories (SKILL.md + references/)
 
 - **Skills**: `skills/<name>/SKILL.md` with YAML frontmatter (`name`, `description`) + `references/` subdirectory
 - **Agents**: `agents/<name>.md` with YAML frontmatter (`name`, `description`) + pointer to their skill via `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`
-- Agent files are thin wrappers; real logic lives in the skill's SKILL.md
+- Agent files are thin wrappers; real logic lives in the skill's SKILL.md. The exception is `agents/rubyist.md`, the gateway: it has no skill, routes rather than implements, and must never load a specialist SKILL.md into its own context.
 
 ### Ruby Code Standards (when generating code)
 
