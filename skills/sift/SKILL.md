@@ -10,17 +10,17 @@ description: "Use when assessing Ruby code quality, performing architectural rev
 This skill provides **comprehensive quality assessment** using the SIFT Protocol V1.0. SIFT evaluates four dimensions (Structure, Idioms, Functionality, Testing) with Toulmin evidence framework and produces actionable reports in four modes. This skill embodies "The Pragmatist" persona: analytical, holistic, and evidence-driven.
 
 **SIFT Acronym**:
-- **S**tructure: Zeitwerk compliance, file organization, architecture. Ground findings in named OOD principles (TRUE, SRP, dependency direction, composition bias) from `../ruby-dev/references/ood-principles.md` — a structure finding without a named principle as its warrant is an opinion, not evidence. Include a **portability constants sweep**: grep for hardcoded dimensions (embedding sizes, column widths), absolute/user-specific paths, magic hosts/ports, and pinned model names — each is a place the code breaks when moved to another machine, model, or dataset. Cheap to check, disproportionately often missed when the audit goes deep on architecture.
+- **S**tructure: Zeitwerk compliance, file organization, architecture. Ground findings in named OOD principles (TRUE, SRP, dependency direction, composition bias) from `../../references/ood-principles.md` — a structure finding without a named principle as its warrant is an opinion, not evidence. Include a **portability constants sweep**: grep for hardcoded dimensions (embedding sizes, column widths), absolute/user-specific paths, magic hosts/ports, and pinned model names — each is a place the code breaks when moved to another machine, model, or dataset. Cheap to check, disproportionately often missed when the audit goes deep on architecture.
 - **I**dioms: Ruby best practices, convention adherence, readability
 - **F**unctionality: Logic correctness, error handling, edge cases
-- **T**esting: Coverage, test quality, maintainability. Judge against the Testing Grid (incoming: assert result; outgoing command: mock; outgoing query: ignore) in `../ruby-dev/references/ood-principles.md`.
+- **T**esting: Coverage, test quality, maintainability. Judge against the Testing Grid (incoming: assert result; outgoing command: mock; outgoing query: ignore) in `../../references/ood-principles.md`.
 
 **References**:
-- Logging patterns: `../ruby-dev/references/logging-patterns.md`
-- Environment setup: `../ruby-dev/references/environment-variables.md`
-- Type safety: `../ruby-dev/references/dry-rb-patterns.md`
-- Rubysmith scaffolding: `../ruby-dev/references/rubysmith-scaffolding.md`
-- OO design principles (Toulmin warrants for Structure/Idioms findings): `../ruby-dev/references/ood-principles.md`
+- Logging patterns: `../../references/logging-patterns.md`
+- Environment setup: `../../references/environment-variables.md`
+- Type safety: `../../references/dry-rb-patterns.md`
+- Rubysmith scaffolding: `../../references/rubysmith-scaffolding.md`
+- OO design principles (Toulmin warrants for Structure/Idioms findings): `../../references/ood-principles.md`
 - Assessment dry-struct types: [references/assessment-types.md](references/assessment-types.md)
 - Full Assessor implementation example: [references/implementation-example.md](references/implementation-example.md)
 
@@ -82,7 +82,7 @@ Assessment results use type-safe dry-struct types (`DimensionScore`, `Assessment
 
 **Don't use for:**
 - **Root cause debugging** (use [analyse/SKILL.md](../analyse/SKILL.md) instead)
-- **Direct code generation** (use the [ruby-dev orchestrator](../ruby-dev/SKILL.md))
+- **Direct code generation** (use the [`rubyist` gateway agent](../../agents/rubyist.md))
 - **Simple linting** (use `rubocop` directly)
 - **Performance profiling** (use `ruby-prof` or `stackprof`)
 
@@ -296,11 +296,11 @@ See [references/implementation-example.md](references/implementation-example.md)
 
 ## Integration with Other Skills
 
-### From the ruby-dev Orchestrator (Audit Gate)
+### From the rubyist Gateway (Audit Gate)
 
-The [ruby-dev orchestrator](../ruby-dev/SKILL.md) uses SIFT as its primary quality check within the pipeline:
+The [`rubyist` gateway agent](../../agents/rubyist.md) uses SIFT as its primary quality check within the pipeline:
 
-1. **Survey**: Codebase overview (orchestrator entry survey)
+1. **Survey**: Codebase overview (gateway entry survey)
 2. **Evaluation**: Run this skill (audit gate)
 3. **Recommendations**: Generate backlog (self-correction loop)
 
@@ -309,14 +309,14 @@ The [ruby-dev orchestrator](../ruby-dev/SKILL.md) uses SIFT as its primary quali
 SIFT evaluates whatever findings it receives, making it agnostic to the source:
 
 - **From [analyse/SKILL.md](../analyse/SKILL.md)** — analyse produces `AnalysisSession` findings. SIFT evaluates whether those findings have been resolved.
-- **From the orchestrator (Audit Gate)** — the ruby-dev orchestrator calls SIFT for the quality check within its pipeline.
-- **From the orchestrator (do-and-judge)** — rubric + code. SIFT evaluates against the rubric.
+- **From the `rubyist` gateway (Audit Gate)** — the `rubyist` gateway calls SIFT for the quality check within its pipeline.
+- **From the `rubyist` gateway (do-and-judge)** — rubric + code. SIFT evaluates against the rubric.
 
 **Pattern**: [Any source produces findings] → SIFT evaluates → Score + recommendations
 
 ### With Do-and-Judge Loop
 
-When called by the [ruby-dev orchestrator](../ruby-dev/SKILL.md) in a do-and-judge loop:
+When called by the [`rubyist` gateway agent](../../agents/rubyist.md) in a do-and-judge loop:
 
 1. **Meta-Judge** generates pre-evaluation rubric (YAML)
 2. **Builder** produces code
@@ -393,7 +393,7 @@ Assess --mode=backlog --output=github-issues.md
 | Dependency | If Unavailable | Fallback |
 |------------|---------------|----------|
 | No input findings provided | Caller didn't supply findings | Accept findings as structured input from the caller. If none arrive, run assessment using only the code surface — Structure and Idioms from direct inspection, Functionality from file-level analysis, Testing from test file presence. |
-| [ruby-dev orchestrator](../ruby-dev/SKILL.md) | Orchestrator not driving a do-and-judge loop | Run SIFT as a single-pass evaluation. Output the score with recommendations but without the iteration rubric or SADD Verification Footer. The caller can trigger a re-evaluation manually. |
+| [`rubyist` gateway agent](../../agents/rubyist.md) | Gateway not driving a do-and-judge loop | Run SIFT as a single-pass evaluation. Output the score with recommendations but without the iteration rubric or SADD Verification Footer. The caller can trigger a re-evaluation manually. |
 | Do-and-Judge loop | Builder fails mid-loop | Output partial results with [`WARNING: Partial Assessment`] marking and include which iterations completed versus failed. |
 
 ## Common Pitfalls

@@ -9,7 +9,7 @@ description: "Use when applying named refactoring patterns to Ruby code. Matches
 
 Refactoring by hand is error-prone and inconsistent. The refactor skill matches code issues to named transformation patterns, then applies surgical fixes. Each pattern has a defined before/after shape, severity rating, and affected areas.
 
-The pattern catalog lives in `references/refactor-patterns.md` — load it for the full list of available transforms. It covers three families: mechanical fixes (Zeitwerk, frozen strings, async), **OO design refactorings** (extract class, inject dependency, duck types, composition — warrants in [../ruby-dev/references/ood-principles.md](../ruby-dev/references/ood-principles.md)), and **resilience patterns** (backoff with jitter, fail-closed authorization, bang saves).
+The pattern catalog lives in `references/refactor-patterns.md` — load it for the full list of available transforms. It covers three families: mechanical fixes (Zeitwerk, frozen strings, async), **OO design refactorings** (extract class, inject dependency, duck types, composition — warrants in [../../references/ood-principles.md](../../references/ood-principles.md)), and **resilience patterns** (backoff with jitter, fail-closed authorization, bang saves).
 
 ## When to Use
 
@@ -20,7 +20,7 @@ The pattern catalog lives in `references/refactor-patterns.md` — load it for t
 
 **Don't use for:**
 - Exploratory code changes without a diagnosis (run [analyse/SKILL.md](../analyse/SKILL.md) first)
-- Large-scale redesigns that change architecture (use the [ruby-dev orchestrator](../ruby-dev/SKILL.md) instead)
+- Large-scale redesigns that change architecture (use the [`rubyist` gateway agent](../../agents/rubyist.md) instead)
 - Stylistic formatting that RuboCop handles better
 
 ## Pattern Selection
@@ -51,7 +51,7 @@ Match code smell → pattern name → load the exact transform. Fall back to a c
 | Dependency | If Unavailable | Fallback |
 |------------|---------------|----------|
 | `references/refactor-patterns.md` | Pattern file not found | Apply the fix manually based on general Ruby best practices. Note the missing pattern file in the output. |
-| [analyse/SKILL.md](../analyse/SKILL.md) | Precursor diagnosis missing | Ask the user or the orchestrator for the specific issue. If none available, inspect the code for common issues (Zeitwerk, rescue, frozen_string_literal). |
+| [analyse/SKILL.md](../analyse/SKILL.md) | Precursor diagnosis missing | Ask the user or the `rubyist` gateway for the specific issue. If none available, inspect the code for common issues (Zeitwerk, rescue, frozen_string_literal). |
 | `ruby -c` / tests | Verification tools missing | Provide the transformed code and note that syntax/tests were not verified. |
 
 ## Common Pitfalls
@@ -69,4 +69,4 @@ Match code smell → pattern name → load the exact transform. Fall back to a c
 - [ ] Surgical fix applied (not a blanket transformation)
 - [ ] `ruby -c` passes on all modified files
 - [ ] Tests pass (if available)
-- [ ] Result reported back to the caller (analyse/sift/orchestrator)
+- [ ] Result reported back to the caller (analyse/sift/rubyist gateway)

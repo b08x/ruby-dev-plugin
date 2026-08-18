@@ -43,7 +43,7 @@ Inheritance mechanics: superclass owns the algorithm (Template Method), subclass
 
 ## Interface Design
 
-Public methods are small, stable, about *what* not *how*. Default methods to `private`; promotion to public is a backward-compatibility commitment (this is also orchestrator Mandate 5). Design interfaces around the messages the *sender* needs, not what the receiver happens to have.
+Public methods are small, stable, about *what* not *how*. Default methods to `private`; promotion to public is a backward-compatibility commitment (this is also gateway Mandate 5). Design interfaces around the messages the *sender* needs, not what the receiver happens to have.
 
 ## The Testing Grid (cite when auditing tests)
 
