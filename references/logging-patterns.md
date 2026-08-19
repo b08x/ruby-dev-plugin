@@ -1,18 +1,26 @@
 ---
 title: Ruby Logging Patterns - Structured & Actionable
-version: 1.0.0
-last_updated: 2026-05-25
+version: 1.1.0
+last_updated: 2026-08-18
 maintained_by: Syncopated Context
-standard_logger: journald-logger
+standard_logger: journald-logger (optional backend — see Overview)
 ---
 
 # Ruby Logging Patterns - Structured & Actionable
 
 ## Overview
 
-**Standard Logger**: All ruby-dev skills MUST use `journald-logger` for structured logging.
+**Rule**: Logging/observability is a **required** consideration for every Standard-mode Ruby build in this plugin — not optional to think about, even when the specific backend is left to the specialist. Every external call (LLM, database, Redis, HTTP) MUST be logged with structured context, in whatever backend the build's `CROSS-CUTTING` decision names.
 
-**Rule**: Every external call (LLM, database, Redis, HTTP) MUST be logged with structured context.
+**The backend is a choice, not a mandate.** `journald-logger` is the recommended default when the target host runs systemd and log querying via `journalctl` is valuable (services, daemons, long-running agents). It is **not** required — pick whichever of the patterns below fits the project:
+
+| Backend | Good fit when | Pattern |
+|:---|:---|:---|
+| `journald-logger` | Host runs systemd; want `journalctl`-queryable structured fields, native tagging | Pattern A below |
+| stdlib `Logger` (per-class/method, file-based) | Portable/cross-platform tool, no systemd assumption, simple file rotation is enough | Pattern B below |
+| DI'd `Ports::Logger` + `Null::Logger` (hexagonal) | Library/gem code that shouldn't hardcode a concrete logger; testability via `instance_spy` matters | Either backend above, injected — see "Dependency-Injected Logging" |
+
+Whatever backend is chosen, the same principles apply:
 
 **Principles**:
 1. **Structured, not strings**: Use key-value pairs, not interpolated messages
@@ -22,9 +30,9 @@ standard_logger: journald-logger
 
 ---
 
-## Logger Setup
+## Pattern A: journald-logger
 
-**Required Gem**: `journald-logger` (`/theforeman/journald-logger`)
+**Gem**: `journald-logger` (`/theforeman/journald-logger`)
 
 ### Standard Pattern
 
@@ -81,7 +89,106 @@ end
 
 ---
 
+## Pattern B: stdlib Logger (per-class/method, file-based)
+
+No extra gem — `Logger` ships with Ruby. Good default for tools that need to run identically on any host, without assuming systemd, and where `journalctl` querying isn't a requirement. Rotates by file size/count rather than relying on journald's own retention.
+
+**Reference implementation**: `flowbots` (`~/WorkspaceV3/RubyStuff/flowbots/lib/flowbots/core/logging.rb`) — a `module_function`-based `Logging` module that memoizes one `Logger` per calling class, tags each entry's `progname` with `ClassName#method_name` (derived from `caller`), and rotates log files daily by embedding the date in the filename:
+
+```ruby
+# frozen_string_literal: true
+
+module Logging
+  module_function
+
+  require "logger"
+
+  LOG_DIR = File.expand_path(File.join(__dir__, "../../..", "log"))
+  LOG_LEVEL = Logger::INFO
+  LOG_MAX_SIZE = 2_145_728
+  LOG_MAX_FILES = 100
+
+  @loggers = {}
+
+  def logger
+    classname = self.class.name
+    methodname = caller(1..1).first[/`([^']*)'/, 1]
+
+    @logger ||= Logging.logger_for(classname, methodname)
+    @logger.progname = "#{classname}##{methodname}"
+    @logger
+  end
+
+  class << self
+    def log_level = Logger::DEBUG
+
+    def logger_for(classname, methodname)
+      @loggers[classname] ||= configure_logger_for(classname, methodname)
+    end
+
+    def configure_logger_for(_classname, _methodname)
+      current_date = Time.now.strftime("%Y-%m-%d")
+      log_file = File.join(LOG_DIR, "myapp-#{current_date}.log")
+
+      logger = Logger.new(log_file, LOG_MAX_FILES, LOG_MAX_SIZE)
+      logger.level = log_level
+      logger
+    end
+  end
+end
+
+# Usage: include Logging, then call `logger.info(...)` from any instance method —
+# progname is set automatically to "ClassName#method_name" per call site.
+```
+
+**Trade-off vs. journald-logger**: stdlib `Logger` gives you free-text/formatted lines by default, not automatically-indexed structured fields — apply the same "structured, not strings" principle from the Overview manually (pass a hash or build a formatter), since `Logger` won't enforce it for you the way `journald-logger`'s field-based API does.
+
+---
+
+## Dependency-Injected Logging (hexagonal / ports pattern)
+
+For library code, gems, or any layer that shouldn't hardcode a concrete logger (so it stays testable and backend-agnostic), inject the logger as a keyword argument defaulting to a no-op implementation, rather than calling a global `MyApp.logger` directly:
+
+```ruby
+# frozen_string_literal: true
+
+module Core
+  module Ports
+    # Duck-type contract: debug/info/warn/error, each accepting a block
+    # for lazy message evaluation.
+    module Logger
+    end
+
+    module Null
+      class Logger
+        def debug(message = nil) = nil
+        def info(message = nil) = nil
+        def warn(message = nil) = nil
+        def error(message = nil) = nil
+      end
+    end
+  end
+end
+
+class ClauseProcessor
+  def initialize(logger: Core::Ports::Null::Logger.new)
+    @logger = logger
+  end
+
+  def call(clause)
+    @logger.debug { "processing clause #{clause.id}" }
+    # ...
+  end
+end
+```
+
+Either Pattern A (`journald-logger`) or Pattern B (stdlib `Logger`) can sit behind this contract as the real implementation; tests inject the `Null::Logger` default or an `instance_spy` against the port module. This is the pattern to reach for whenever a build's `CROSS-CUTTING` decision needs to apply across multiple independently-built layers (e.g. several parallel-dispatched specialists) without each one hardcoding a different concrete logger.
+
+---
+
 ## Logging Patterns
+
+The four patterns below are written against `journald-logger`'s `logger.info("event_name", {hash})` call shape (Pattern A). The underlying principle — structured event name + key-value context, always including latency/error-class/backtrace where relevant — applies identically under Pattern B or the DI'd ports pattern; adapt the call syntax to whichever backend the build's `CROSS-CUTTING` decision named (e.g. stdlib `Logger` typically takes a single formatted string or a block, so build the structured hash yourself and pass it through a custom formatter or interpolate it deliberately, rather than relying on journald's automatic field indexing).
 
 ### Pattern 1: LLM API Calls
 

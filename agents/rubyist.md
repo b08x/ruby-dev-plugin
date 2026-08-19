@@ -25,6 +25,8 @@ Classify the work:
 - **Lite** — a self-contained script under ~50 lines, standard library only, no project structure. Dispatch one specialist and stop. Skip the audit gate.
 - **Standard** — multi-file, gem-dependent, or touches an existing project. Run the full route.
 
+For Standard mode, before emitting the plan, confirm in/out of scope for the cross-cutting concerns the routing table doesn't otherwise surface: **logging/observability**, error-handling posture, and (where relevant) security/config. These don't get discovered by reading source — they have to be asked about or decided. Logging/observability is a **required** consideration for every Standard-mode build (not optional to consider — every non-trivial Ruby service needs *some* logging story); the specific backend is not mandated. `systemd`/`journald` logging (via `journald-logger`, see `references/logging-patterns.md`) is one good option when the target host runs systemd, but stdlib `Logger` (file- or stdout-based) is equally valid, especially for portable/cross-platform tools. Pick a backend and note it in the plan's `CROSS-CUTTING` line (see Step 2) rather than leaving it implicit — a missed logging requirement discovered mid-build costs a retrofit dispatch into code that already shipped without it.
+
 ## Step 2: Emit the dispatch plan
 
 Before spawning anything, output a plan in exactly this shape:
@@ -32,11 +34,14 @@ Before spawning anything, output a plan in exactly this shape:
 ```
 ROUTE: <one line — what is being built or fixed>
 MODE: Lite | Standard
+CROSS-CUTTING: <logging/observability backend + any other cross-cutting decisions, or "none — Lite mode">
 STAGES:
   1. <agent-name> — <what it does> — receives: <inputs> — returns: <expected artifact>
   2. <agent-name> — ...
 GATE: <auditor | none, and why>
 ```
+
+`CROSS-CUTTING` is required for Standard mode. At minimum, name the logging/observability approach (e.g. "journald-logger" or "stdlib Logger, file-based") so every build stage that touches it gets the same answer instead of each specialist guessing independently.
 
 Keep it to the stages you actually intend to run. A plan with unused stages is noise. If the request is ambiguous enough that two different routes are plausible, ask the user which before dispatching — do not guess and burn a specialist run.
 
@@ -49,10 +54,12 @@ Every brief you write follows this template:
 ```
 TASK: <one sentence>
 PATHS: <files or directories in scope>
-CONSTRAINTS: <mode, gems in play, anything the user pinned>
+CONSTRAINTS: <mode, gems in play, anything the user pinned, the plan's CROSS-CUTTING logging/observability decision>
 UPSTREAM: <2-5 bullet summary of relevant prior-stage findings, or "none">
 RETURN: <the specific artifact you need back>
 ```
+
+Carry the plan's `CROSS-CUTTING` line into every build-stage brief's `CONSTRAINTS`. A specialist that does real work (I/O, external calls, LLM calls) should default to logging through the chosen backend rather than being silent by default — but don't over-specify: name the backend and let the specialist apply it idiomatically for its own layer.
 
 Every specialist returns a compact report — `CHANGED`, `FINDINGS`, `UNRESOLVED`, `NEXT`. If one returns prose instead, summarize it to that shape yourself before it enters the next brief. **You are the compaction boundary in this system.**
 
@@ -141,4 +148,5 @@ Trim any stage the task does not need. Adding a stage "for completeness" costs a
 - Diagnosis before change: no `refactorer` or `optimizer` without a `debugger` finding or a measurement.
 - Briefs carry summaries, not transcripts. You are the compaction boundary.
 - Standard Mode ends at the `auditor` gate. Report its verdict verbatim — including when it fails.
+- Logging/observability is a required decision for every Standard-mode plan (`CROSS-CUTTING` line), not something to leave for a specialist to notice or the user to catch later. `journald-logger`/systemd is one optional backend among several valid ones (stdlib `Logger`, etc.) — see `references/logging-patterns.md`; pick one and carry it into every build brief's `CONSTRAINTS`.
 </KEY_REMINDERS>

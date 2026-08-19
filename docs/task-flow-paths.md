@@ -40,6 +40,7 @@ Before spawning any subagent, `rubyist` emits a plan:
 ```
 ROUTE: <one line — what is being built or fixed>
 MODE: Lite | Standard
+CROSS-CUTTING: <logging/observability backend + any other cross-cutting decisions, or "none — Lite mode">
 STAGES:
   1. <agent-name> — <what it does> — receives: <inputs> — returns: <expected artifact>
   2. <agent-name> — ...
@@ -48,6 +49,8 @@ GATE: <auditor | none, and why>
 
 - **Lite** — self-contained script, ~50 lines, stdlib only. One specialist, no audit gate.
 - **Standard** — multi-file, gem-dependent, or existing project. Full route through auditor.
+
+`CROSS-CUTTING` is required for Standard mode. Logging/observability is a required decision for every Standard-mode build — the backend is not mandated (`journald-logger`/systemd is one option, stdlib `Logger` is another; see `references/logging-patterns.md`), but it must be named once in the plan and carried into every build stage's brief, not left for a specialist to guess or the user to catch after the fact.
 
 ## Mode Selection
 
@@ -256,3 +259,4 @@ NEXT: <what the next stage must know — or "none">
 3. **One specialist per dispatch.** Each gets a compact brief, not a transcript of prior stages.
 4. **Isolated contexts.** Each subagent runs in its own context; they don't inherit the parent conversation.
 5. **Audit gate.** Standard-mode routes end at `auditor`. Its verdict is reported verbatim, including failures.
+6. **Logging/observability is required, the backend is not.** Every Standard-mode plan names a logging approach in `CROSS-CUTTING` before dispatch begins — decided once, not discovered mid-build or left to the user to notice its absence.
