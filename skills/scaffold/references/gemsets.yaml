@@ -1,0 +1,386 @@
+# Gemsets — RubyDev approved-gem registry
+#
+# Borrowed from RVM's "gemset" terminology: a gemset here is a named cluster of
+# gems that solve the same problem, so a chosen member can be swapped for a
+# sibling without touching call sites elsewhere. This is the whitelist to stick
+# to when scaffolding or extending a project with this plugin — not exhaustive,
+# a starting point.
+#
+# Source of truth for per-gem metadata (description, dependencies, risk
+# scoring, Context7 IDs): ../../../references/Gemfile.json. This file adds the
+# layer Gemfile.json doesn't have — grouping, ownership, and "which one do I
+# reach for" — on top of it. Re-derive membership here if Gemfile.json's
+# classification changes.
+#
+# Consumers:
+#   - skills/scaffold/SKILL.md + scaffold-patterns.md Section 8, for
+#     archetype -> gemset -> Gemfile assembly during scaffolding.
+#   - Any skill wanting to check whether a gem it's about to suggest is
+#     already vetted, and which sibling skill owns deeper usage guidance.
+#   - Future hybrid-search tooling: each gemset's `summary` and `use_when`,
+#     and each gem's own Gemfile.json description, are short enough to embed
+#     directly for semantic gem lookup (e.g. via pgvector/neighbor already in
+#     this same whitelist) without any restructuring of this file.
+#
+# Field meanings:
+#   summary        — one line: what this cluster of gems is for.
+#   gems           — member gem names, matching references/Gemfile exactly.
+#   owning_skill   — skill in skills/ with deep usage guidance for this
+#                    cluster, or null if no skill currently owns it (a gap —
+#                    see the `status` field).
+#   use_when       — short trigger condition for reaching into this gemset.
+#   status         — "owned" (a skill covers it), "shared" (foundational,
+#                    referenced by many skills rather than owned by one), or
+#                    "gap" (vetted and whitelisted, but no skill has claimed
+#                    it yet — treat with extra care, verify APIs manually).
+#   decision_rules — ids into the `decision_rules` list below, for gemsets
+#                    that overlap with a sibling gemset on the same problem.
+
+version: 1
+last_reviewed: "2026-08-19"
+source:
+  gemfile: ../../../references/Gemfile
+  classified: ../../../references/Gemfile.json
+
+gemsets:
+  llm_client_rubyllm:
+    summary: Provider-agnostic LLM client — chat, tool calling, streaming, structured output, MCP client.
+    gems: [ruby_llm, ruby_llm-mcp, ruby_llm-docker, schematist, shared_tools]
+    owning_skill: ruby-llm
+    use_when: Writing the prompt/response logic yourself — direct, imperative LLM calls.
+    status: owned
+    decision_rules: [ruby_llm_vs_dspy]
+
+  llm_programs_dspy:
+    summary: Typed LLM programs — Sorbet signatures, predictors, Toolsets, evals, prompt optimization (dspy.rb).
+    gems: [dspy, dspy-openai, dspy-gemini, dspy-ruby_llm, dspy-code_act, dspy-evals, dspy-gepa, dspy-o11y-langfuse, dspy-schema]
+    owning_skill: dspy-ruby
+    use_when: The task is a typed transformation the model should be compiled/optimized against, not hand-tuned prompt strings.
+    status: owned
+    decision_rules: [ruby_llm_vs_dspy]
+
+  document_intake:
+    summary: Getting text out of arbitrary files and routing by detected type before any NLP or LLM step touches it.
+    gems: [kreuzberg, inkmark, mimemagic]
+    owning_skill: null
+    use_when: A pipeline receives files of unknown or mixed format (uploads, attachments, a documents/ directory) and needs plain text or structured extraction before anything else runs.
+    status: gap
+    decision_rules: [kreuzberg_vs_inkmark]
+
+  tokenization_segmentation:
+    summary: Sentence/word-level splitting as a preprocessing step for downstream NLP.
+    gems: [pragmatic_segmenter, pragmatic_tokenizer]
+    owning_skill: ruby-nlp
+    use_when: Text needs to become sentences or tokens before tagging, embedding, or scoring.
+    status: owned
+    decision_rules: []
+
+  linguistic_structure:
+    summary: POS tagging, dependency parsing, and general text-quality analysis.
+    gems: [lingua, ruby-spacy, pycall]
+    owning_skill: ruby-nlp
+    use_when: The pipeline needs grammatical structure (POS, dependencies, entities), not just tokens.
+    status: owned
+    decision_rules: []
+
+  fuzzy_similarity_ranking:
+    summary: In-process (non-vector) text relevance and approximate string matching.
+    gems: [amatch, bm25f, tf-idf-similarity, pg_search]
+    owning_skill: ruby-nlp
+    use_when: Keyword/lexical relevance scoring or fuzzy string matching is needed, as its own arm of a hybrid retriever or standalone.
+    status: owned
+    decision_rules: [keyword_relevance_family]
+
+  topic_modeling_and_inference:
+    summary: Topic modeling and transformer model inference, local or hosted.
+    gems: [tomoto, informers, hugging-face]
+    owning_skill: ruby-nlp
+    use_when: Clustering documents by topic (tomoto), or running a transformer model for inference (informers/hugging-face).
+    status: owned
+    decision_rules: [local_vs_hosted_inference]
+
+  vector_storage_retrieval:
+    summary: Embedding storage and nearest-neighbor / semantic similarity search.
+    gems: [pgvector, neighbor]
+    owning_skill: genai
+    use_when: The retrieval arm needs a semantic (embedding-space) match, not keyword relevance.
+    status: owned
+    decision_rules: [keyword_relevance_family]
+
+  relational_storage:
+    summary: Postgres-backed durable, queryable storage.
+    gems: [sequel, sequel_pg, pg]
+    owning_skill: multi-db
+    use_when: Data is durable, queryable, joined, or carries embeddings — the source of truth isn't a state machine.
+    status: owned
+    decision_rules: [ohm_vs_sequel]
+
+  redis_object_storage:
+    summary: Redis-backed schemaless object storage, fast writes, state-machine-shaped data.
+    gems: [ohm, ohm-contrib, ohm-sorted]
+    owning_skill: multi-db
+    use_when: Data is ephemeral or state-machine-shaped (status, retry counts, processing events) rather than durable/queryable.
+    status: owned
+    decision_rules: [ohm_vs_sequel]
+
+  async_runtime:
+    summary: Concurrency and async I/O — reactor-based, thread-pool, and process-based models.
+    gems: [async, async-cable, async-http, async-job, async-service, falcon, concurrent-ruby, parallel]
+    owning_skill: null
+    use_when: Any concurrent or non-blocking work — pick the specific gem by workload shape, see decision_rules.
+    status: gap
+    decision_rules: [concurrency_model_choice]
+
+  dry_rb_types:
+    summary: Type-safe structs, schemas, validation, monadic error handling, and a lightweight DI container.
+    gems: [dry-struct, dry-types, dry-schema, dry-monads, dry-container]
+    owning_skill: null
+    use_when: Defining data models, validating input, or handling errors as values instead of exceptions (Standard Mode default across this plugin).
+    status: shared
+    decision_rules: []
+
+  autoloading_and_boot:
+    summary: Zeitwerk-compliant constant autoloading for gems and apps.
+    gems: [zeitwerk]
+    owning_skill: scaffold
+    use_when: Any project past the bare-minimum archetype — this is part of the scaffold convention pass.
+    status: owned
+    decision_rules: []
+
+  cli_toolkit:
+    summary: The whitelisted slice of the TTY toolkit — command execution, config files, editor integration, file ops, PATH lookup.
+    gems: [tty-command, tty-config, tty-editor, tty-file, tty-which]
+    owning_skill: tui
+    use_when: Building or hardening a CLI's supporting utilities (not interactive prompts/tables — see the tui skill's fuller 21-gem TTY family for those).
+    status: owned
+    decision_rules: []
+
+  code_quality_static_analysis:
+    summary: Style linting, autocorrect, AST-based formatting, and code-analysis-for-docs tooling.
+    gems: [rubocop, rubocop-ast, rubocop-md, rubocop-rake, rubocop-sequel, syntax_tree, decode]
+    owning_skill: refactor
+    use_when: Enforcing style, catching smells, or extracting structure for documentation generation.
+    status: owned
+    decision_rules: [rubocop_vs_syntax_tree]
+
+  process_shell_utilities:
+    summary: Shelling out to and controlling external programs.
+    gems: [childprocess, open4, terrapin, daemons, os]
+    owning_skill: null
+    use_when: The task needs to invoke an external binary, daemonize a process, or branch on OS.
+    status: gap
+    decision_rules: [shelling_out_safely]
+
+  workflow_orchestration:
+    summary: DAG-shaped task orchestration across multiple processes.
+    gems: [gush, jongleur]
+    owning_skill: null
+    use_when: A pipeline has multiple dependent stages that should run as separate processes with retry/observability, not a single in-process script.
+    status: gap
+    decision_rules: [gush_vs_jongleur]
+
+  media_image_processing:
+    summary: Image transformation and inspection.
+    gems: [image_processing, ruby-vips]
+    owning_skill: null
+    use_when: Resizing, converting, or otherwise transforming images.
+    status: gap
+    decision_rules: []
+
+  media_subtitle_caption:
+    summary: Subtitle and caption file parsing.
+    gems: [srt, webvtt]
+    owning_skill: null
+    use_when: Reading or writing SRT/WebVTT subtitle tracks.
+    status: gap
+    decision_rules: []
+
+  structured_data_encoding:
+    summary: Fast JSON/JSONL encode-decode outside stdlib JSON.
+    gems: [jsonl, yajl-ruby]
+    owning_skill: null
+    use_when: Streaming JSON Lines, or JSON parsing throughput matters enough to leave stdlib.
+    status: gap
+    decision_rules: []
+
+  resilience_and_observability:
+    summary: The plugin's standing foundational triad — fault tolerance, structured logging, environment config.
+    gems: [circuit_breaker, journald-logger, dotenv]
+    owning_skill: null
+    use_when: Always, past the bare-minimum archetype — see references/logging-patterns.md and references/environment-variables.md.
+    status: shared
+    decision_rules: []
+
+  dev_ergonomics:
+    summary: Local development quality-of-life — REPL, file watching, fake data, core-object refinements, natural-language dates.
+    gems: [pry, listen, refinements, faker, chronic]
+    owning_skill: null
+    use_when: Development/test group additions, not runtime dependencies of the shipped app.
+    status: shared
+    decision_rules: []
+
+  algorithms_datastructures:
+    summary: Classic data structures not in Ruby's stdlib (heaps, priority queues, red-black/splay trees).
+    gems: [algorithms]
+    owning_skill: null
+    use_when: A problem genuinely needs one of these structures rather than Array/Hash with a different access pattern.
+    status: gap
+    decision_rules: []
+
+  security_crypto_support:
+    summary: Cryptographic primitive support, typically pulled in transitively.
+    gems: [bcrypt_pbkdf]
+    owning_skill: null
+    use_when: Usually not added directly — confirm it's not already satisfied transitively (e.g. by net-ssh) before adding.
+    status: gap
+    decision_rules: []
+
+  browser_automation_testing:
+    summary: Driving a real browser for testing or scraping.
+    gems: [selenium-webdriver]
+    owning_skill: null
+    use_when: Integration tests or automation need an actual browser, not an HTTP client.
+    status: gap
+    decision_rules: []
+
+  creative_coding_signal:
+    summary: Open Sound Control messaging for generative-art / audio-visual / music projects.
+    gems: [osc-ruby]
+    owning_skill: null
+    use_when: Talking to OSC-speaking software (DAWs, visual synths, lighting rigs).
+    status: gap
+    decision_rules: []
+
+  meta_plugin_tooling:
+    summary: Generates Claude Code SKILL.md files from a gem's README/RubyDoc/changelog.
+    gems: [gem-skill]
+    owning_skill: null
+    use_when: Bootstrapping a new skill file for a gem not yet covered by this plugin — directly relevant to maintaining this plugin itself.
+    status: gap
+    decision_rules: []
+
+decision_rules:
+  - id: kreuzberg_vs_inkmark
+    title: Document extraction (kreuzberg) vs Markdown parsing (inkmark)
+    gemsets: [document_intake]
+    rule: >
+      Use kreuzberg when the input format is unknown or non-Markdown — PDF,
+      DOCX, PPTX, XLSX, HTML, RTF, images needing OCR, email, archives (75+
+      formats via a Rust core). It also does chunking, language detection,
+      and keyword extraction, so it can be the whole intake step, not just
+      extraction. Use inkmark only when the input is already CommonMark/GFM
+      Markdown text and you need fast, correct parsing — it does not extract
+      from binary formats. Use mimemagic first when the format isn't known
+      ahead of time, to route the file to the right one of the two.
+    full_writeup: gem-whitelist.md#kreuzberg-vs-inkmark
+
+  - id: ruby_llm_vs_dspy
+    title: ruby_llm (direct calls) vs dspy.rb (typed programs)
+    gemsets: [llm_client_rubyllm, llm_programs_dspy]
+    rule: >
+      Use ruby_llm for direct, imperative LLM calls — chat, tool calling, RAG
+      glue, streaming — when you're writing and owning the prompt logic
+      yourself. Use dspy.rb when you want a typed signature that a compiler/
+      optimizer (MIPROv2, GEPA) can rewrite, rather than hand-tuning a prompt
+      string. dspy-ruby_llm bridges the two: dspy programs running on a
+      configured ruby_llm client, so they compose rather than compete. This
+      rule is already encoded at length in ruby-llm/SKILL.md and
+      dspy-ruby/SKILL.md's own "Don't use for" sections — this entry exists
+      so the gemset registry doesn't have to be read alongside both skills to
+      find it.
+    full_writeup: gem-whitelist.md#ruby_llm-vs-dspyrb
+
+  - id: ohm_vs_sequel
+    title: Ohm (Redis) vs Sequel (Postgres)
+    gemsets: [redis_object_storage, relational_storage]
+    rule: >
+      Redis (Ohm) is the source of truth for state-machine-shaped, ephemeral,
+      fast-write data. Postgres (Sequel, + pgvector for embeddings) is the
+      source of truth for durable, queryable, joined data. If both are
+      needed, join by a shared application-level id — never an ORM relation
+      across the two stores. Fully covered in multi-db/SKILL.md; this entry
+      is a pointer, not a restatement.
+    full_writeup: ../../multi-db/SKILL.md#picking-between-ohm-and-sequel
+
+  - id: keyword_relevance_family
+    title: Three ways to rank relevance — pick by where the computation should run
+    gemsets: [fuzzy_similarity_ranking, vector_storage_retrieval]
+    rule: >
+      pg_search (Postgres native full-text search) when the corpus already
+      lives in Postgres and you want the DB to do the ranking. bm25f /
+      tf-idf-similarity when ranking must happen in-process (no DB round
+      trip, or a corpus not in Postgres). pgvector + neighbor when the match
+      is semantic (embedding-space), not lexical. A hybrid retriever
+      typically runs one keyword arm (pg_search, or bm25f/tf-idf-similarity)
+      alongside one semantic arm (pgvector/neighbor) and merges with RRF —
+      see genai/SKILL.md's Reciprocal Rank Fusion pattern.
+    full_writeup: gem-whitelist.md#keyword-relevance-family
+
+  - id: local_vs_hosted_inference
+    title: Local inference (informers) vs hosted API (hugging-face) vs classical topic modeling (tomoto)
+    gemsets: [topic_modeling_and_inference]
+    rule: >
+      informers when the model should run locally via ONNX Runtime with no
+      network call once downloaded — lower latency, no per-call cost, but
+      you manage the model file and hardware. hugging-face when a hosted
+      Inference API call is acceptable — no local model management, but
+      network latency and cost per call. tomoto is a different task
+      entirely (LDA-style topic modeling, not transformer inference) — reach
+      for it when the goal is clustering documents by topic, not classifying
+      or embedding them.
+    full_writeup: gem-whitelist.md#local-vs-hosted-inference
+
+  - id: concurrency_model_choice
+    title: async/falcon vs concurrent-ruby vs parallel — pick by workload shape
+    gemsets: [async_runtime]
+    rule: >
+      async (+ falcon, async-http, async-job, async-service, async-cable)
+      for I/O-bound work — many concurrent network calls or connections
+      inside one process, reactor-style. concurrent-ruby for mixed or
+      CPU-light concurrent work using familiar primitives (thread pools,
+      futures, promises) without adopting the async reactor model wholesale.
+      parallel for CPU-bound work that needs real parallelism across
+      processes (Ruby's GIL makes threads a poor fit for CPU-bound work).
+      Don't run an async reactor and a thread pool in the same request path
+      without understanding which one owns the event loop.
+    full_writeup: gem-whitelist.md#concurrency-model-choice
+
+  - id: rubocop_vs_syntax_tree
+    title: rubocop (style linting) vs syntax_tree (AST-based formatting)
+    gemsets: [code_quality_static_analysis]
+    rule: >
+      rubocop is the default — style linting with opinionated autocorrect
+      against the community Ruby Style Guide, plus the rubocop-* cop
+      packages (rubocop-md, rubocop-rake, rubocop-sequel) for
+      format-specific and library-specific rules. syntax_tree is a
+      alternative formatter built on its own parser (via `ripper`/`prism`);
+      it can replace rubocop's formatting duties but not its full lint rule
+      set. Don't run both as competing auto-formatters on the same files —
+      pick one to own formatting and let the other (if kept) run lint-only.
+      See refactor/SKILL.md and its rubocop.md / syntax_verification.md.
+    full_writeup: gem-whitelist.md#rubocop-vs-syntax_tree
+
+  - id: shelling_out_safely
+    title: terrapin vs childprocess/open4 for external commands
+    gemsets: [process_shell_utilities]
+    rule: >
+      terrapin whenever a command line is built with any user-supplied or
+      external value — it exists specifically to escape interpolated
+      arguments safely. childprocess/open4 when raw stdin/stdout/stderr
+      handles and finer process lifecycle control are needed and every
+      argument is a trusted, static value. Prefer terrapin by default; drop
+      to childprocess/open4 only when its interface can't express what's
+      needed.
+    full_writeup: gem-whitelist.md#shelling-out-safely
+
+  - id: gush_vs_jongleur
+    title: gush vs jongleur for DAG-shaped workflows
+    gemsets: [workflow_orchestration]
+    rule: >
+      gush when the project already runs Rails + ActiveJob + Redis — it's
+      built directly on that stack. jongleur when there's no Rails/ActiveJob
+      dependency to lean on — it launches DAG tasks as plain OS processes.
+      Neither is in this Gemfile's async_runtime gemset; both are
+      process-orchestration layers above whatever concurrency primitive the
+      individual tasks use internally.
+    full_writeup: gem-whitelist.md#gush-vs-jongleur

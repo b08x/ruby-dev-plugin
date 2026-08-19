@@ -15,6 +15,7 @@ Last updated: 2026-03-22
 - [Section 6: Convention Pass Transformations](#section-6-convention-pass-transformations)
 - [Section 7: Post-Scaffold File Tree Examples](#section-7-post-scaffold-file-tree-examples)
 - [Section 8: Gem Registry Cross-Reference](#section-8-gem-registry-cross-reference)
+- [Section 9: Gemset Whitelist](#section-9-gemset-whitelist)
 
 
 ---
@@ -473,7 +474,9 @@ rubysmith build my_service --git --rake --rspec --docker --git_hub_ci
 
 # AI/NLP Project (Custom)
 rubysmith build my_ai_project --zeitwerk --rspec --simple_cov --docker --git_hub_ci
-# Then add: ruby_llm, pgvector, sequel, dry-struct, circuit_breaker, journald-logger
+# Then add gems per Section 9's gemset registry, not by memory — start from
+# llm_client_rubyllm or llm_programs_dspy, vector_storage_retrieval, dry_rb_types,
+# resilience_and_observability, and whichever NLP/document-intake gemsets the task needs.
 ```
 
 ---
@@ -497,7 +500,34 @@ After running `rubysmith build` or `gemsmith build`, verify:
 
 ---
 
-**Last Updated**: 2026-05-25  
-**Version**: 2.0.0  
-**Cross-References Added**: 6 foundational standards
+## Section 9: Gemset Whitelist
+
+The Standard Gems list in Section 8 above is a fixed starting point. For anything beyond it,
+this plugin maintains a curated whitelist of 89 vetted gems in
+[`references/gem-whitelist.md`](gem-whitelist.md), grouped into 27 **gemsets** (RVM's term for a
+named cluster of gems solving one problem) with documented decision rules for the 9 places two
+gemsets overlap on the same problem. The same registry exists as structured data in
+[`references/gemsets.yaml`](gemsets.yaml) for archetype-driven tooling.
+
+**When adding gems beyond the Standard Gems list**:
+
+1. Check `gem-whitelist.md`'s gemset table first — a whitelisted gem is one this plugin has
+   already vetted (classification, dependency footprint, risk signals) via
+   `references/Gemfile.json`.
+2. If the need matches two overlapping gemsets (e.g. document intake, LLM client vs typed
+   programs, Redis vs Postgres storage, concurrency model), apply that overlap's decision rule
+   rather than picking by habit or adding both.
+3. If the gemset is marked `status: gap` (no owning skill), the deep usage guidance,
+   failover table, and pitfalls that an owned skill would carry don't exist yet — verify the
+   gem's API inline via Context7/DeepWiki before generating code against it, same as any
+   unverified gem.
+4. A gem that fits none of the 27 gemsets isn't necessarily forbidden, but it is outside the
+   current whitelist — treat adding it as a deliberate decision worth naming in the PR/commit,
+   not a default.
+
+---
+
+**Last Updated**: 2026-08-19  
+**Version**: 2.1.0  
+**Cross-References Added**: 6 foundational standards + gemset whitelist (Section 9)
 
