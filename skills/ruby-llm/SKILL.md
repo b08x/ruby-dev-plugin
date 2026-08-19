@@ -1,6 +1,6 @@
 ---
 name: ruby-llm
-description: "Use for the RubyLLM gem ecosystem in Ruby - unified multi-provider chat/completion API, tool calling, streaming, embeddings, image generation, structured output (ruby_llm-schema), Rails persistence (ruby_llm-rails), and MCP client integration (ruby_llm-mcp). Trigger on 'ruby_llm', 'RubyLLM.chat', 'LLM client', 'tool calling', 'function calling', 'structured output', 'acts_as_chat', 'MCP client'."
+description: "Use for the RubyLLM gem ecosystem in Ruby - unified multi-provider chat/completion API, tool calling, streaming, embeddings, image generation, structured output (schematist), Rails persistence (ruby_llm-rails), and MCP client integration (ruby_llm-mcp). Trigger on 'ruby_llm', 'RubyLLM.chat', 'LLM client', 'tool calling', 'function calling', 'structured output', 'acts_as_chat', 'MCP client'."
 ---
 
 # RubyDev Ruby-LLM — RubyLLM Gem Ecosystem
@@ -37,7 +37,7 @@ All gems below MUST have their API verified via Context7 MCP (or DeepWiki) **at 
 |:----|:--------|:-------------------|:-------|
 | `ruby_llm` | Core unified multi-provider LLM client (chat, tools, streaming, embeddings, images) | `/crmne/ruby_llm` | ✅ Confirmed by user |
 | `ruby_llm-mcp` | MCP client — consume external MCP servers' tools inside a `ruby_llm` chat | — | 🔴 To verify |
-| `ruby_llm-schema` | Fluent JSON-schema builder for structured LLM output | — | 🔴 To verify |
+| `schematist` | Fluent JSON-schema builder for structured LLM output, integrates natively with `ruby_llm` | `/crmne/schematist` | ✅ Verified |
 | `ruby_llm-rails` | Rails integration — `acts_as_chat`, ActiveRecord persistence for chats/messages/tool calls, generators | — | 🔴 To verify |
 | `circuit_breaker` | Fault tolerance around external LLM calls | `/wsargent/circuit_breaker` | ✅ Verified |
 | `opentelemetry-instrumentation-ruby_llm` | Distributed tracing — auto-instruments `ruby_llm` calls (model, tokens, latency) | `/thoughtbot/opentelemetry-instrumentation-ruby_llm` | ✅ Verified |
@@ -55,7 +55,7 @@ All gems below MUST have their API verified via Context7 MCP (or DeepWiki) **at 
 ```ruby
 gem "ruby_llm"
 gem "ruby_llm-mcp"      # only if consuming external MCP servers as tools
-gem "ruby_llm-schema"   # only if requesting structured/schema-constrained output
+gem "schematist"        # only if requesting structured/schema-constrained output
 gem "ruby_llm-rails"    # only in a Rails app persisting chat history
 gem "circuit_breaker"
 gem "opentelemetry-sdk"
@@ -138,9 +138,9 @@ result.vectors # => Array of Float
 ### Structured Output
 
 ```ruby
-require "ruby_llm/schema"
+require "schematist"
 
-class ReviewSchema < RubyLLM::Schema
+class ReviewSchema < Schematist::Schema
   string :verdict, enum: %w[approve request_changes]
   array :issues do
     object do
@@ -251,7 +251,7 @@ This is the client-side counterpart to a `fast-mcp`-built server (see [genai/SKI
 4. **Not wrapping calls in a circuit breaker.** One provider outage or rate-limit spike shouldn't crash the whole request path.
 5. **Tracing the LLM call but not the pipeline around it.** The instrumentation gem auto-traces the API call itself; without an outer span around the surrounding business operation, you still can't see where time went across a multi-hop flow.
 6. **Hardcoding API keys.** Always load provider keys from `ENV`, never commit them — configure once via `RubyLLM.configure`, not inline per call.
-7. **Assuming `ruby_llm-schema` output is pre-validated against arbitrary constraints.** It shapes the *format* the model must return; it doesn't replace domain validation (range checks, business rules) on the parsed result.
+7. **Assuming `schematist` output is pre-validated against arbitrary constraints.** It shapes the *format* the model must return; it doesn't replace domain validation (range checks, business rules) on the parsed result.
 
 ## Verification Checklist
 

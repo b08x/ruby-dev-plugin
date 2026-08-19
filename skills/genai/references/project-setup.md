@@ -13,7 +13,7 @@
 source "https://rubygems.org"
 
 # LLM client — see ../../ruby-llm/SKILL.md for the gem's own Gemfile fragment
-# (ruby_llm, ruby_llm-mcp, ruby_llm-schema, ruby_llm-rails, opentelemetry-instrumentation-ruby_llm)
+# (ruby_llm, ruby_llm-mcp, schematist, ruby_llm-rails, opentelemetry-instrumentation-ruby_llm)
 gem "ruby_llm"
 
 # AI/RAG (non-LLM-client, non-NLP-toolkit)

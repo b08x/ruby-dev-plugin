@@ -108,3 +108,40 @@ Each batch commits as a unit — a failure partway through a batch rolls back th
 - [ ] Data types converted correctly (string → integer, date, etc.)
 - [ ] Output file format matches requirements
 - [ ] Edge cases handled: empty file, single row, duplicate headers, BOM
+### Design Pattern References
+
+Streaming and lazy processing modes are Iterator applications; source and format heterogeneity is an Adapter problem. Reach for these before writing per-format branching.
+
+#### Iterator
+
+**Problem**
+We have an aggregate object and we want to provide a way to access its collection of sub-objects without exposing its underlaying representation.
+
+**Solution**
+There are two proposed solutions: **external iterators** and **internal iterators**.
+
+*External Iterators* — The iterator is a separate object from the aggregate, which is passed in as an argument to initialize the iterator. The iterator keeps a reference to the current index and provides an interface to ask if there are items left, in order to get the current item and the next one.
+
+*Internal Iterators* — With internal iterators we use a code block to pass the logic down into the aggregate. A really good example of this approach is the `Array` method `each`.
+
+**Structural constraints**
+- The underlying representation of the aggregate is never exposed to the caller.
+- External: the iterator is a separate object, initialized with the aggregate, owning the current index.
+- External: must answer "are there items left", "current item", "next item".
+- Internal: the iterator method must be named `each` and the class must implement `<=>`.
+- Internal: include `Enumerable` — do not hand-roll `include?`, `all?`, `sort`.
+- Duck typing is the contract: an external iterator works on anything with `length` and integer indexing.
+
+#### Adapter
+
+**Problem**
+We want an object talk to some other object but their interfaces don't match.
+
+**Solution**
+We simply wrap the **adaptee** with our new **adapter** class. This class implements an interface that the invoker understands, although all the work is performed by the adapted object.
+
+**Structural constraints**
+- The adapter wraps the adaptee; the adaptee is unmodified and does all the real work.
+- The adapter implements the interface the *invoker* understands, not a new one.
+- Implement only the part of the target interface actually required (e.g. `getc`/`eof?` of `IO`).
+- No transformation logic beyond interface translation belongs in the adapter.

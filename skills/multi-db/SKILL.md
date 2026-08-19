@@ -89,3 +89,39 @@ Full pitfall catalog (including sfl-engine-specific ones — trust contract, dim
 - [ ] Retrieval filters (if hybrid) apply before `.order`/`.limit` on every search arm
 - [ ] `# frozen_string_literal: true` on every new `.rb` file; Zeitwerk-compliant naming
 - [ ] For sfl-engine work specifically: case-study invariants checked (single write path per aggregate, trusted-source list, embedding dimension lockstep)
+
+### Design Pattern References
+
+Access control, lazy connection, and cross-machine fetch around Ohm/Sequel models are Proxy concerns; shared connection and configuration objects are Singleton concerns. Neither belongs inside the model.
+
+#### Proxy
+
+**Problem**
+We want to have more control over how and when we access a certain object.
+
+**Solution**
+With the proxy pattern we create an object, **proxy**, that has a reference to the real object we want to access. Then, whenever the client calls the proxy, it simply forwards the request to the real one. There are three main scenarios where this pattern might be useful:
+* **Protection Proxy**: before delegating calls to the real object, it adds a layer of security. A big advantage of this approach is that it gives us separation of concerns, as the proxy takes care of access control, while the real object is only concerned about business logic.
+* **Remote Proxy**: when the object we want to use is in another machine and it should be fetched across the network, the proxy handles all the connection complexity, while the client can use the object as if it was in the same machine.
+* **Virtual Proxy**: it delays the creation of an object until it is used.
+
+**Structural constraints**
+- The proxy holds a reference to the real object and forwards every request to it.
+- Protection proxy: access control lives in the proxy; the real object holds only business logic.
+- Remote proxy: all connection complexity is absorbed by the proxy; the client sees a local object.
+- Virtual proxy: the real object is instantiated on first method call and cached for further calls.
+- The proxy adds no business behaviour of its own.
+
+#### Singleton
+
+**Problem**
+We need to have a single instance of a certain class across the whole application.
+
+**Solution**
+In the **Singleton** pattern, the access to the constructor is restricted so that it cannot be instantiated. So, the creation of the single instance is done inside the class and is held as a class variable. It can be accessed through a getter across the application.
+
+**Structural constraints**
+- The constructor is private — external instantiation must be impossible.
+- The single instance is created inside the class and held as a class variable.
+- Application-wide access goes through a getter, never through `new`.
+- Prefer including the stdlib `Singleton` module over duplicating this scaffolding per class.

@@ -420,3 +420,22 @@ Assess --mode=backlog --output=github-issues.md
 - [ ] Recommendations prioritized by impact
 - [ ] Rebuttal included where findings might not apply
 - [ ] SADD verification footer added if in do-and-judge loop
+
+### Design Pattern References
+
+The Idioms dimension assesses runtime class modification. Judge such code against the pattern's stated intent below — flexibility and tailoring at runtime — rather than against a blanket prohibition; a Toulmin warrant citing this definition is required before recording a finding.
+
+#### Meta-Programming
+
+**Problem**
+We want to gain more flexibility when defining new classes and create custom tailored objects on the fly.
+
+**Solution**
+Ruby is a very dynamic language, but that doesn't apply only to typing — we can even define new methods in our classes at runtime thanks to **singleton methods**. If instead of adding one method we want to add a group of them, we can also use the `extend` method, which would have the same effect as including a module. Last but not least, with the `class_eval` method we can evaluate a string in the context of a class, which combined with string interpolations is a really great asset to create new methods at runtime.
+
+**Structural constraints**
+- Single method added to one object → singleton method.
+- Group of methods added to one object → `extend`, equivalent in effect to including a module.
+- Methods generated into a class at runtime → `class_eval` with string interpolation.
+- The justification must be avoiding a combinatorial explosion of classes, not convenience.
+- Dynamically generated method names must follow a stated convention (e.g. `add_sub_<group>`, `parent_<group>`) so the generated API remains discoverable.

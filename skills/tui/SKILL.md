@@ -111,3 +111,21 @@ puts pastel.green.bold("✓ Success") + " " + pastel.cyan("Operation completed")
 - [ ] Progress bars complete without blocking
 - [ ] Keyboard input (arrows, enter, ctrl-c) handled gracefully
 - [ ] No raw escape codes visible in logged output
+### Design Pattern References
+
+Menu entries, wizard steps, and any action a prompt can invoke should be modeled as commands rather than as branches in the prompt handler.
+
+#### Command
+
+**Problem**
+We want to perform some specific task without knowing how the whole process works or having any information about the receiver of the request.
+
+**Solution**
+The Command pattern decouples the object that needs to perform a specific task from the one that knows how to do it. It encapsulates all the needed information to do the job into its own object including: who the receiver(s) is(are), the methods to invoke, and the parameters. That way, any object that wants to perform the task only needs to know about the command object interface.
+
+**Structural constraints**
+- The command object encapsulates receiver(s), methods to invoke, and parameters.
+- The invoker (menu item, button, wizard step) knows only the command interface — never the receiver.
+- Commands are passed in as parameters; do not subclass the invoker per action.
+- Undo support requires an `unexecute` method on the command object.
+- A list of commands composes with Composite for multi-step / installer-style workflows.

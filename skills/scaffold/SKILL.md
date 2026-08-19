@@ -74,3 +74,35 @@ After scaffolding, the skill runs a convention pass to harden the generated proj
 - [ ] `bundle install` or equivalent succeeds
 - [ ] Project directory structure matches expected archetype
 - [ ] README placeholder sections filled
+### Design Pattern References
+
+Scaffolding decisions — directory layout, naming, and archetype selection — are governed by two patterns. Convention Over Configuration justifies the convention pass; Factory governs archetype dispatch.
+
+#### Convention Over Configuration
+
+**Problem**
+We want to build an extensible system without carrying the configuration burden.
+
+**Solution**
+The **Convention Over Configuration** pattern suggests establishing some conventions based on class, method and file names, as well as a standard directory layout, instead of relying on configuration files.
+
+**Structural constraints**
+- Conventions are declared over class names, method names, file names, and directory layout — not config files.
+- A name-based convention must be mechanically resolvable (e.g. `<protocol>Adapter` via `const_get`).
+- A directory convention must permit dynamic loading of everything in the folder — no central require manifest.
+- Extension points that need per-case override get a second, method-name convention rather than a config flag.
+- Ship examples or a generator so extenders can discover the conventions.
+
+#### Factory
+
+**Problem**
+We need to create objects without having to specify the exact class of the object that will be created.
+
+**Solution**
+The **Factory** pattern is a specialization of the Template pattern. We start by creating a generic base class where we don't make the "which class" decision. Instead, whenever it needs to create a new object, it calls a method that is defined in a subclass. So, depending on the subclass we use (**factory**), we create objects of one class or another (**products**).
+
+**Structural constraints**
+- The generic base class must not name a concrete product class anywhere.
+- Object creation happens through a method defined in the subclass (the factory).
+- Subclass choice, and only subclass choice, determines which products are created.
+- Inherits Template Method's constraints — it is a specialization of that pattern.
