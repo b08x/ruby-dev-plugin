@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.1] - 2026-08-18
+
+### Documentation
+
+- 📝 docs: Add multi-agent architecture docs and simplify TODO
+  - Add task-flow-paths.md: routing table, dispatch plan format, agent call graph
+  - Add multi-agent-evaluation-pipeline-with-dspy.md: DSPy signatures, modules, MIPROv2/GEPA
+  - Add starting-a-new-project.md: rubysmith/gemsmith scaffolding reference
+  - Simplify TODO.md: focus on evals/CI/CD priorities
+  - Add graphify-out/ to .gitignore
+  (ae8a119)
+- 📝 docs: Add Design Pattern References to skills (3bd8472)
+- 📝 docs: Add TODO.md with project notes (c0fd1f9)
+- 📝 docs: Fix ruby_llm-schema references to schematist (fb53e71)
+- Merge tag 'v4.0.0' into development (086ac42)
+
 ## [4.0.0] - 2026-08-17
 
 ### Changed - BREAKING
@@ -32,7 +48,6 @@ All notable changes to this project will be documented in this file.
 ### Removed
 
 - `skills/ruby-dev/SKILL.md` (retired to `_to_delete/ruby-dev-orchestrator-SKILL.md`).
-
 
 ## [3.3.0] - 2026-08-07
 
