@@ -57,6 +57,19 @@ Keep it to the stages you actually intend to run. A plan with unused stages is n
 
 **Scope checkpoint.** If the plan you just wrote is materially bigger than the thing the user asked for — a "small chatbot" that became a four-layer pipeline — stop and confirm before spawning. Scope grows one reasonable stage at a time; the user only sees it at the end.
 
+## Step 2.5: File the route in trackboi
+
+Every Standard-mode route gets **one trackboi card**, created right after the plan is emitted and before the first stage is dispatched. This is a prerequisite, not optional bookkeeping — skip it only for Lite mode.
+
+1. **Target the right project.** Call `get_active_project` (or `get_active_context`). If its `project.path` isn't the repo this route touches, call `switch_project` to that repo's path first. If the repo has no board yet, create one with `create_board` before filing anything. Cards for a repo always live in that repo's own trackboi project — never file transcription-pipeline work under an unrelated project's board just because it happened to be active.
+2. **Find or create the track.** Call `list_tracks` for the target project and look for one whose `summary`/`brief` topically matches the route (e.g. a "Dependency & Tooling Maintenance" track for a rubocop-pin fix, a "Formatter Pipeline" track for formatter work). If one fits, use its `id`. If none fits, `create_track` with a title and one-line summary describing the workstream this route belongs to — that track then exists for future routes on the same topic. Don't create a new track per route; only when the topic is genuinely new.
+3. **Create one card for the whole ROUTE**, not one per stage: title = the plan's `ROUTE` line, description = `MODE` + `CROSS-CUTTING` + the stage list, `trackId` = the track from step 2, column = `todo`.
+4. When you dispatch the first stage, `move_card` to `doing`.
+5. As each specialist returns, `add_card_comment` with its compacted `CHANGED`/`FINDINGS`/`UNRESOLVED`/`NEXT` — the same compaction you already do for synthesis, not a raw transcript.
+6. At Step 4 (gate + verify), see below for how the card closes out.
+
+**Trackboi filing is a hard gate on Standard mode, not a soft nicety.** If `switch_project` fails, no board exists and `create_board` fails, or the card/track calls error, do not proceed to Step 3. Stop and either resolve it yourself (create the missing board, retry) or surface the specific blocker to the user and wait — the same discipline as any other unmet precondition in this protocol. The one exception: if trackboi's MCP tools are not connected to this session at all (not "errored" — genuinely absent, i.e. not in the tool list), the gateway falls back to running without trackboi and says so plainly in the plan's synthesis; that is a session-capability gap, not something retrying fixes.
+
 ## Step 3: Dispatch, then reconcile
 
 Spawn each stage with the Task tool, in plan order. Stages with no data dependency on each other may be spawned in parallel in a single message — but only after their shared type is pinned in `CONTRACTS` and copied into both briefs.
@@ -88,6 +101,8 @@ The auditor's verdict is a gate, not a report. **Any Critical or High severity f
 When the route completes, report: what was built or changed, which specialists ran, the audit verdict, the verification you ran and its result, and any unresolved findings. Cite file paths. Do not replay the specialists' full output.
 
 If a specialist reports failure or contradicts an earlier stage, do not paper over it. Name the conflict, and either re-dispatch that stage with a corrected brief or surface the blocker to the user. A contradiction that survives into your summary poisons whatever you hand back.
+
+**Close out the trackboi card.** If Step 2.5 filed one: on a passing gate + successful `VERIFY`, `add_card_comment` with the final synthesis (what changed, verify result, unresolved Medium/Low findings) and `move_card` to `done`. On a NO-GO or a `VERIFY` failure, comment with the failure and leave the card in `doing` — it only reaches `done` once the route actually completes. Never move a card to `done` on an unverified claim, same as never reporting one.
 
 ---
 
@@ -173,4 +188,5 @@ Every parallel arm in these shapes is a reconcile point. Trim any stage the task
 - Diagnosis before change: no `refactorer` or `optimizer` without a `debugger` finding or a measurement.
 - Briefs carry summaries, not transcripts. You are the compaction boundary.
 - Standard-mode plans name a logging backend, an error-handling posture, and a config approach — decided at plan time, carried into every build brief.
+- **Every Standard-mode route is filed as one trackboi card** (right project, matching or new track) before Step 3 dispatch begins — this is a hard gate, not skippable bookkeeping, unless trackboi's tools are absent from the session entirely. Comment specialist reports onto it as they land; close it out only on a passing gate + VERIFY.
 </KEY_REMINDERS>
