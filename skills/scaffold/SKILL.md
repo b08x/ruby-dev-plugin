@@ -9,7 +9,7 @@ description: "Use when scaffolding new Ruby projects or gems. Applies rubysmith/
 
 Starting a new Ruby project or gem requires dozens of decisions: test framework, CI, licensing, container setup, console, and more. The scaffold skill maps project archetypes to rubysmith/gemsmith flag presets, runs the scaffolding command, then applies a convention pass to harden the generated structure.
 
-The full flag reference and decision guide lives in `references/scaffold-patterns.md`.
+The full flag reference and decision guide lives in `references/scaffold-patterns.md`. The full approved-gem registry — which gems to reach for once the skeleton exists, and which sibling gem to pick when two overlap — lives in `references/gem-whitelist.md` (and its machine-readable form, `references/gemsets.yaml`).
 
 ## When to Use
 
@@ -49,6 +49,26 @@ After scaffolding, the skill runs a convention pass to harden the generated proj
 6. **Guardfile** — Add if using guard for auto-testing
 7. **`.gitignore` audit** — Match standard Ruby gitignore
 
+## Gemset Registry (Approved Gems)
+
+Once the skeleton exists, adding dependencies is its own decision surface — this plugin
+maintains a curated whitelist rather than letting `bundle add` decide. `references/gem-whitelist.md`
+groups the whitelisted gems into **gemsets** (RVM's term for a named cluster of gems solving one
+problem) and documents which sibling to pick when two gemsets overlap on the same problem — e.g.
+`kreuzberg` vs `inkmark` for document intake, `ohm` vs `sequel` for storage, `async`/`falcon` vs
+`concurrent-ruby` vs `parallel` for concurrency. `references/gemsets.yaml` is the same registry as
+structured data, for archetype-driven Gemfile assembly or future semantic gem lookup.
+
+Consult it after archetype selection, before finalizing the Gemfile in the convention pass:
+
+1. Identify which gemsets the project's stated purpose touches (e.g. an AI/RAG tool touches
+   `llm_client_rubyllm` or `llm_programs_dspy`, `vector_storage_retrieval`, `dry_rb_types`).
+2. For any gemset with an overlapping sibling, apply the matching decision rule rather than
+   picking arbitrarily or adding both.
+3. For gemsets marked `status: gap` in `gemsets.yaml` (no owning skill yet), verify the gem's API
+   inline via Context7/DeepWiki before generating code against it — the usual pitfalls/failover
+   tables an owned skill would carry haven't been written for these yet.
+
 ## Failover
 
 | Dependency | If Unavailable | Fallback |
@@ -56,6 +76,7 @@ After scaffolding, the skill runs a convention pass to harden the generated proj
 | `rubysmith` gem | Not installed | `gem install rubysmith` first. If install fails, scaffold manually: create directory structure, Gemfile, Rakefile, and `bin/console` by hand. |
 | `gemsmith` gem | Not installed | `gem install gemsmith` first. If install fails, scaffold a gem manually with `bundler`'s `gem` command. |
 | `references/scaffold-patterns.md` | Pattern file not found | Use defaults (`--max` for project, `--git --rake --rspec` for gem). Document that flag reference was skipped. |
+| `references/gem-whitelist.md` / `references/gemsets.yaml` | Registry file(s) not found | Fall back to the ad hoc gem suggestions in `references/scaffold-patterns.md` Section 8. Note in the output that the fuller gemset registry was skipped and any overlap decisions were made without its decision rules. |
 
 ## Common Pitfalls
 
@@ -74,6 +95,7 @@ After scaffolding, the skill runs a convention pass to harden the generated proj
 - [ ] `bundle install` or equivalent succeeds
 - [ ] Project directory structure matches expected archetype
 - [ ] README placeholder sections filled
+- [ ] Added gems checked against `references/gem-whitelist.md`; overlapping gemsets resolved via its decision rules, not picked arbitrarily
 ### Design Pattern References
 
 Scaffolding decisions — directory layout, naming, and archetype selection — are governed by two patterns. Convention Over Configuration justifies the convention pass; Factory governs archetype dispatch.

@@ -1,0 +1,2857 @@
+[
+  {
+    "name": "algorithms",
+    "classification": {
+      "primary": "algorithms_knowledge_structures",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 1.0
+    },
+    "role": {
+      "description": "Heap, Priority Queue, Deque, Stack, Queue, Red-Black Trees, Splay Trees, sorting algorithms, and more",
+      "attaches_to": "algorithms"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 2,
+      "coupling": 1,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "Heap, Priority Queue, Deque, Stack, Queue, Red-Black Trees, Splay Trees, sorting algorithms, and more",
+    "homepage": "https://github.com/kanwei/algorithms",
+    "source_code_uri": "https://github.com/kanwei/algorithms",
+    "context7_id": "/kanwei/algorithms"
+  },
+  {
+    "name": "amatch",
+    "classification": {
+      "primary": "retrieval_similarity_fuzzy",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 1.0
+    },
+    "role": {
+      "description": "Amatch is a library for approximate string matching and searching in strings.\nSeveral algorithms can be used to do this, and it's also possible to compute a\nsimilarity metric number between 0.0 and 1.0 for two given strings.\n",
+      "attaches_to": "retrieval"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "mize",
+      "tins"
+    ],
+    "description": "Amatch is a library for approximate string matching and searching in strings.\nSeveral algorithms can be used to do this, and it's also possible to compute a\nsimilarity metric number between 0.0 and 1.0 for two given strings.\n",
+    "homepage": "http://github.com/flori/amatch",
+    "source_code_uri": "https://github.com/flori/amatch",
+    "context7_id": "/flori/amatch"
+  },
+  {
+    "name": "async",
+    "classification": {
+      "primary": "async_networking_orchestration",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "A concurrency framework for Ruby.",
+      "attaches_to": "async"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 2,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": true,
+      "native_ext": false
+    },
+    "dependencies": [
+      "console",
+      "fiber-annotation",
+      "io-event",
+      "metrics",
+      "traces"
+    ],
+    "description": "A concurrency framework for Ruby.",
+    "homepage": "https://github.com/socketry/async",
+    "source_code_uri": "https://github.com/socketry/async.git",
+    "context7_id": "/socketry/async"
+  },
+  {
+    "name": "async-cable",
+    "classification": {
+      "primary": "async_networking_orchestration",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "An asynchronous adapter for ActionCable.",
+      "attaches_to": "async"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 2,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": true,
+      "native_ext": false
+    },
+    "dependencies": [
+      "actioncable-next",
+      "async",
+      "async-websocket"
+    ],
+    "description": "An asynchronous adapter for ActionCable.",
+    "homepage": null,
+    "source_code_uri": "https://github.com/socketry/async-cable",
+    "context7_id": "/socketry/async-cable"
+  },
+  {
+    "name": "async-http",
+    "classification": {
+      "primary": "async_networking_orchestration",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "A HTTP client and server library.",
+      "attaches_to": "async"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 4,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": true,
+      "native_ext": false
+    },
+    "dependencies": [
+      "async",
+      "async-pool",
+      "io-endpoint",
+      "io-stream",
+      "metrics",
+      "protocol-http",
+      "protocol-http1",
+      "protocol-http2",
+      "protocol-url",
+      "traces"
+    ],
+    "description": "A HTTP client and server library.",
+    "homepage": "https://github.com/socketry/async-http",
+    "source_code_uri": "https://github.com/socketry/async-http.git",
+    "context7_id": "/socketry/async-http"
+  },
+  {
+    "name": "async-job",
+    "classification": {
+      "primary": "async_networking_orchestration",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "An asynchronous job queue for Ruby.",
+      "attaches_to": "async"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 1,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": true,
+      "native_ext": false
+    },
+    "dependencies": [
+      "async",
+      "string-format"
+    ],
+    "description": "An asynchronous job queue for Ruby.",
+    "homepage": null,
+    "source_code_uri": "https://github.com/socketry/async-job",
+    "context7_id": "/socketry/async-job"
+  },
+  {
+    "name": "async-service",
+    "classification": {
+      "primary": "async_networking_orchestration",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "A service layer for Async.",
+      "attaches_to": "async"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 2,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": true,
+      "native_ext": false
+    },
+    "dependencies": [
+      "async",
+      "async-container",
+      "string-format"
+    ],
+    "description": "A service layer for Async.",
+    "homepage": "https://github.com/socketry/async-service",
+    "source_code_uri": "https://github.com/socketry/async-service.git",
+    "context7_id": "/socketry/async"
+  },
+  {
+    "name": "bcrypt_pbkdf",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "    This gem implements bcrypt_pbkdf (a variant of PBKDF2 with bcrypt-based PRF)\n",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "    This gem implements bcrypt_pbkdf (a variant of PBKDF2 with bcrypt-based PRF)\n",
+    "homepage": "https://github.com/net-ssh/bcrypt_pbkdf-ruby",
+    "source_code_uri": null,
+    "context7_id": "/pyca/bcrypt"
+  },
+  {
+    "name": "bm25f",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "A fast implementation of the BM25F ranking algorithm for information retrieval systems, written in Ruby.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "pragmatic_tokenizer",
+      "uea-stemmer"
+    ],
+    "description": "A fast implementation of the BM25F ranking algorithm for information retrieval systems, written in Ruby.",
+    "homepage": "https://github.com/catflip/bm25f-ruby",
+    "source_code_uri": "https://github.com/catflip/bm25f-ruby",
+    "context7_id": "/catflip/bm25f-ruby"
+  },
+  {
+    "name": "childprocess",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "This gem aims at being a simple and reliable solution for controlling external programs running in the background on any Ruby / OS combination.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "logger"
+    ],
+    "description": "This gem aims at being a simple and reliable solution for controlling external programs running in the background on any Ruby / OS combination.",
+    "homepage": "https://github.com/enkessler/childprocess",
+    "source_code_uri": null,
+    "context7_id": "/enkessler/childprocess"
+  },
+  {
+    "name": "chronic",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 1.0
+    },
+    "role": {
+      "description": "Chronic is a natural language date/time parser written in pure Ruby.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "Chronic is a natural language date/time parser written in pure Ruby.",
+    "homepage": "http://github.com/mojombo/chronic",
+    "source_code_uri": "https://github.com/mojombo/chronic",
+    "context7_id": "/mojombo/chronic"
+  },
+  {
+    "name": "circuit_breaker",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "CircuitBreaker is a relatively simple Ruby mixin that will wrap\n a call to a given service in a circuit breaker pattern.\n\n The circuit starts off \"closed\" meaning that all calls will go through.\n However, consecutive failures are recorded and after a threshold is reached,\n the circuit will \"trip\", setting the circuit into an \"open\" state.\n\n In an \"open\" state, every call to the service will fail by raising\n CircuitBrokenException.\n\n The circuit will remain in an \"open\" state until the failure timeout has\n elapsed.\n\n After the failure_timeout has elapsed, the circuit will go into\n a \"half open\" state and the call will go through.  A failure will\n immediately pop the circuit open again, and a success will close the\n circuit and reset the failure count.\n\n     require 'circuit_breaker'\n     class TestService\n\n       include CircuitBreaker\n\n       def call_remote_service() ...\n\n       circuit_method :call_remote_service\n\n       # Optional\n       circuit_handler do |handler|\n         handler.logger = Logger.new(STDOUT)\n         handler.failure_threshold = 5\n         handler.failure_timeout = 5\n       end\n\n       # Optional\n       circuit_handler_class MyCustomCircuitHandler\n     end",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "aasm"
+    ],
+    "description": "CircuitBreaker is a relatively simple Ruby mixin that will wrap\n a call to a given service in a circuit breaker pattern.\n\n The circuit starts off \"closed\" meaning that all calls will go through.\n However, consecutive failures are recorded and after a threshold is reached,\n the circuit will \"trip\", setting the circuit into an \"open\" state.\n\n In an \"open\" state, every call to the service will fail by raising\n CircuitBrokenException.\n\n The circuit will remain in an \"open\" state until the failure timeout has\n elapsed.\n\n After the failure_timeout has elapsed, the circuit will go into\n a \"half open\" state and the call will go through.  A failure will\n immediately pop the circuit open again, and a success will close the\n circuit and reset the failure count.\n\n     require 'circuit_breaker'\n     class TestService\n\n       include CircuitBreaker\n\n       def call_remote_service() ...\n\n       circuit_method :call_remote_service\n\n       # Optional\n       circuit_handler do |handler|\n         handler.logger = Logger.new(STDOUT)\n         handler.failure_threshold = 5\n         handler.failure_timeout = 5\n       end\n\n       # Optional\n       circuit_handler_class MyCustomCircuitHandler\n     end",
+    "homepage": "http://github.com/wsargent/circuit_breaker",
+    "source_code_uri": null,
+    "context7_id": "/wsargent/circuit_breaker"
+  },
+  {
+    "name": "concurrent-ruby",
+    "classification": {
+      "primary": "async_networking_orchestration",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Modern concurrency tools including agents, futures, promises, thread pools, actors, supervisors, and more.\nInspired by Erlang, Clojure, Go, JavaScript, actors, and classic concurrency patterns.\n",
+      "attaches_to": "async"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 1,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": true,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "Modern concurrency tools including agents, futures, promises, thread pools, actors, supervisors, and more.\nInspired by Erlang, Clojure, Go, JavaScript, actors, and classic concurrency patterns.\n",
+    "homepage": "http://www.concurrent-ruby.com",
+    "source_code_uri": "https://github.com/ruby-concurrency/concurrent-ruby",
+    "context7_id": "/ruby-concurrency/concurrent-ruby"
+  },
+  {
+    "name": "daemons",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "    Daemons provides an easy way to wrap existing ruby scripts (for example a\n    self-written server)  to be run as a daemon and to be controlled by simple\n    start/stop/restart commands.\n\n    You can also call blocks as daemons and control them from the parent or just\n    daemonize the current process.\n\n    Besides this basic functionality, daemons offers many advanced features like\n    exception backtracing and logging (in case your ruby script crashes) and\n    monitoring and automatic restarting of your processes if they crash.\n",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "    Daemons provides an easy way to wrap existing ruby scripts (for example a\n    self-written server)  to be run as a daemon and to be controlled by simple\n    start/stop/restart commands.\n\n    You can also call blocks as daemons and control them from the parent or just\n    daemonize the current process.\n\n    Besides this basic functionality, daemons offers many advanced features like\n    exception backtracing and logging (in case your ruby script crashes) and\n    monitoring and automatic restarting of your processes if they crash.\n",
+    "homepage": "https://github.com/thuehlinger/daemons",
+    "source_code_uri": null,
+    "context7_id": "/thuehlinger/daemons"
+  },
+  {
+    "name": "decode",
+    "classification": {
+      "primary": "parsing_encoding",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Code analysis for documentation generation.",
+      "attaches_to": "parsing"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 2,
+      "coupling": 1,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "prism",
+      "rbs"
+    ],
+    "description": "Code analysis for documentation generation.",
+    "homepage": "https://github.com/socketry/decode",
+    "source_code_uri": "https://github.com/socketry/decode.git",
+    "context7_id": "/socketry/decode"
+  },
+  {
+    "name": "dotenv",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Loads environment variables from `.env`.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "Loads environment variables from `.env`.",
+    "homepage": "https://github.com/bkeepers/dotenv",
+    "source_code_uri": null,
+    "context7_id": "/motdotla/dotenv"
+  },
+  {
+    "name": "dry-container",
+    "classification": {
+      "primary": "runtime_spine",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "A simple, configurable object container implemented in Ruby",
+      "attaches_to": "runtime"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 5,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": true,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "concurrent-ruby"
+    ],
+    "description": "A simple, configurable object container implemented in Ruby",
+    "homepage": "https://dry-rb.org/gems/dry-container",
+    "source_code_uri": "https://github.com/dry-rb/dry-container",
+    "context7_id": "/dry-rb/dry-container"
+  },
+  {
+    "name": "dry-monads",
+    "classification": {
+      "primary": "runtime_spine",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Common monads for Ruby",
+      "attaches_to": "runtime"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 5,
+      "coupling": 2,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": true,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "concurrent-ruby",
+      "dry-core",
+      "zeitwerk"
+    ],
+    "description": "Common monads for Ruby",
+    "homepage": "https://dry-rb.org/gems/dry-monads",
+    "source_code_uri": "https://github.com/dry-rb/dry-monads",
+    "context7_id": "/websites/dry-rb_gems_dry-monads_1_6"
+  },
+  {
+    "name": "dry-schema",
+    "classification": {
+      "primary": "validation_types",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "dry-schema provides a DSL for defining schemas with keys and rules that should be applied to\nvalues. It supports coercion, input sanitization, custom types and localized error messages\n(with or without I18n gem). It's also used as the schema engine in dry-validation.\n",
+      "attaches_to": "validation"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 2,
+      "coupling": 3,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "concurrent-ruby",
+      "dry-configurable",
+      "dry-core",
+      "dry-initializer",
+      "dry-logic",
+      "dry-types",
+      "zeitwerk"
+    ],
+    "description": "dry-schema provides a DSL for defining schemas with keys and rules that should be applied to\nvalues. It supports coercion, input sanitization, custom types and localized error messages\n(with or without I18n gem). It's also used as the schema engine in dry-validation.\n",
+    "homepage": "https://dry-rb.org/gems/dry-schema",
+    "source_code_uri": "https://github.com/dry-rb/dry-schema",
+    "context7_id": "/dry-rb/dry-schema"
+  },
+  {
+    "name": "dry-struct",
+    "classification": {
+      "primary": "validation_types",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Typed structs and value objects",
+      "attaches_to": "validation"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 2,
+      "coupling": 2,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "dry-core",
+      "dry-types",
+      "ice_nine",
+      "zeitwerk"
+    ],
+    "description": "Typed structs and value objects",
+    "homepage": "https://dry-rb.org/gems/dry-struct",
+    "source_code_uri": "https://github.com/dry-rb/dry-struct",
+    "context7_id": "/dry-rb/dry-struct"
+  },
+  {
+    "name": "dry-types",
+    "classification": {
+      "primary": "validation_types",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Type system for Ruby supporting coercions, constraints and complex types like structs, value objects, enums etc",
+      "attaches_to": "validation"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 2,
+      "coupling": 3,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "bigdecimal",
+      "concurrent-ruby",
+      "dry-core",
+      "dry-inflector",
+      "dry-logic",
+      "zeitwerk"
+    ],
+    "description": "Type system for Ruby supporting coercions, constraints and complex types like structs, value objects, enums etc",
+    "homepage": "https://dry-rb.org/gems/dry-types",
+    "source_code_uri": "https://github.com/dry-rb/dry-types",
+    "context7_id": "/dry-rb/dry-types"
+  },
+  {
+    "name": "dspy",
+    "classification": {
+      "primary": "async_networking_orchestration",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.7
+    },
+    "role": {
+      "description": "The Ruby framework for programming with large language models. DSPy.rb brings structured LLM programming to Ruby developers. Instead of wrestling with prompt strings and parsing responses, you define typed signatures using idiomatic Ruby to compose and decompose AI Worklows and AI Agents.",
+      "attaches_to": "async"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 4,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "async",
+      "concurrent-ruby",
+      "dry-configurable",
+      "dry-logger",
+      "dspy-schema",
+      "sorbet-baml",
+      "sorbet-runtime",
+      "sorbet-schema",
+      "sorbet-toon"
+    ],
+    "description": "The Ruby framework for programming with large language models. DSPy.rb brings structured LLM programming to Ruby developers. Instead of wrestling with prompt strings and parsing responses, you define typed signatures using idiomatic Ruby to compose and decompose AI Worklows and AI Agents.",
+    "homepage": "https://github.com/vicentereig/dspy.rb",
+    "source_code_uri": null,
+    "context7_id": "/vicentereig/dspy.rb"
+  },
+  {
+    "name": "dspy-code_act",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "CodeAct provides Think-Code-Observe agents that synthesize and execute Ruby code dynamically. Ship DSPy.rb workflows that write custom Ruby code while tracking execution history, observations, and safety signals.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "dspy"
+    ],
+    "description": "CodeAct provides Think-Code-Observe agents that synthesize and execute Ruby code dynamically. Ship DSPy.rb workflows that write custom Ruby code while tracking execution history, observations, and safety signals.",
+    "homepage": "https://github.com/vicentereig/dspy.rb",
+    "source_code_uri": null,
+    "context7_id": "/vicentereig/dspy.rb"
+  },
+  {
+    "name": "dspy-evals",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Provides the DSPy::Evals runtime, concurrency, callbacks, and export helpers for benchmarking Ruby DSPy programs.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 2,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "concurrent-ruby",
+      "dspy",
+      "polars-df"
+    ],
+    "description": "Provides the DSPy::Evals runtime, concurrency, callbacks, and export helpers for benchmarking Ruby DSPy programs.",
+    "homepage": "https://github.com/vicentereig/dspy.rb",
+    "source_code_uri": null,
+    "context7_id": "/vicentereig/dspy.rb"
+  },
+  {
+    "name": "dspy-gemini",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Provides the GeminiAdapter so Gemini-compatible providers can be added to DSPy.rb projects independently of the core gem.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "dspy",
+      "gemini-ai"
+    ],
+    "description": "Provides the GeminiAdapter so Gemini-compatible providers can be added to DSPy.rb projects independently of the core gem.",
+    "homepage": "https://github.com/vicentereig/dspy.rb",
+    "source_code_uri": null,
+    "context7_id": "/vicentereig/dspy.rb"
+  },
+  {
+    "name": "dspy-gepa",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Ships DSPy::Teleprompt::GEPA plus reflective adapters, experiment tracking, and telemetry hooks built on top of the GEPA optimizer core gem.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "dspy",
+      "gepa"
+    ],
+    "description": "Ships DSPy::Teleprompt::GEPA plus reflective adapters, experiment tracking, and telemetry hooks built on top of the GEPA optimizer core gem.",
+    "homepage": "https://github.com/vicentereig/dspy.rb",
+    "source_code_uri": null,
+    "context7_id": "/vicentereig/dspy.rb"
+  },
+  {
+    "name": "dspy-o11y-langfuse",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Registers the Langfuse OpenTelemetry exporter with DSPy::Observability so spans flow to Langfuse when the required environment variables are present.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 2,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "dspy-o11y",
+      "opentelemetry-exporter-otlp",
+      "opentelemetry-sdk"
+    ],
+    "description": "Registers the Langfuse OpenTelemetry exporter with DSPy::Observability so spans flow to Langfuse when the required environment variables are present.",
+    "homepage": "https://github.com/vicentereig/dspy.rb",
+    "source_code_uri": null,
+    "context7_id": "/vicentereig/dspy.rb"
+  },
+  {
+    "name": "dspy-openai",
+    "classification": {
+      "primary": "ai_nlp",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Provides the OpenAI plus the Ollama and OpenRouter adapters so OpenAI-compatible providers can be added to DSPy.rb projects independently of the core gem.",
+      "attaches_to": "ai"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "dspy",
+      "openai"
+    ],
+    "description": "Provides the OpenAI plus the Ollama and OpenRouter adapters so OpenAI-compatible providers can be added to DSPy.rb projects independently of the core gem.",
+    "homepage": "https://github.com/vicentereig/dspy.rb",
+    "source_code_uri": null,
+    "context7_id": "/vicentereig/dspy.rb"
+  },
+  {
+    "name": "dspy-ruby_llm",
+    "classification": {
+      "primary": "ai_nlp",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Provides a unified adapter using RubyLLM to access OpenAI, Anthropic, Gemini, Bedrock, Ollama, and more through a single interface in DSPy.rb projects.",
+      "attaches_to": "ai"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "dspy",
+      "ruby_llm"
+    ],
+    "description": "Provides a unified adapter using RubyLLM to access OpenAI, Anthropic, Gemini, Bedrock, Ollama, and more through a single interface in DSPy.rb projects.",
+    "homepage": "https://github.com/vicentereig/dspy.rb",
+    "source_code_uri": null,
+    "context7_id": "/vicentereig/dspy.rb"
+  },
+  {
+    "name": "dspy-schema",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Provides DSPy::TypeSystem::SorbetJsonSchema without requiring the full DSPy stack, enabling reuse in sibling gems and downstream projects.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "sorbet-runtime"
+    ],
+    "description": "Provides DSPy::TypeSystem::SorbetJsonSchema without requiring the full DSPy stack, enabling reuse in sibling gems and downstream projects.",
+    "homepage": "https://github.com/vicentereig/dspy.rb",
+    "source_code_uri": null,
+    "context7_id": "/vicentereig/dspy.rb"
+  },
+  {
+    "name": "faker",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Faker, a port of Data::Faker from Perl, is used to easily generate fake data: names, addresses, phone numbers, etc.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "i18n"
+    ],
+    "description": "Faker, a port of Data::Faker from Perl, is used to easily generate fake data: names, addresses, phone numbers, etc.",
+    "homepage": "https://github.com/faker-ruby/faker",
+    "source_code_uri": "https://github.com/faker-ruby/faker",
+    "context7_id": "/faker-ruby/faker"
+  },
+  {
+    "name": "falcon",
+    "classification": {
+      "primary": "async_networking_orchestration",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "A fast, asynchronous, rack-compatible web server.",
+      "attaches_to": "async"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 4,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": true,
+      "native_ext": false
+    },
+    "dependencies": [
+      "async",
+      "async-container",
+      "async-http",
+      "async-http-cache",
+      "async-service",
+      "async-utilization",
+      "bundler",
+      "localhost",
+      "openssl",
+      "protocol-http",
+      "protocol-rack",
+      "samovar"
+    ],
+    "description": "A fast, asynchronous, rack-compatible web server.",
+    "homepage": "https://github.com/socketry/falcon",
+    "source_code_uri": "https://github.com/socketry/falcon.git",
+    "context7_id": "/socketry/falcon"
+  },
+  {
+    "name": "gush",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [
+        "serialization",
+        "activejob",
+        "redis"
+      ],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Gush is a parallel workflow runner using Redis as storage and ActiveJob for executing jobs.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 4,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "activejob",
+      "concurrent-ruby",
+      "graphviz",
+      "hiredis",
+      "launchy",
+      "multi_json",
+      "paint",
+      "redis",
+      "redis-mutex",
+      "terminal-table",
+      "thor"
+    ],
+    "description": "Gush is a parallel workflow runner using Redis as storage and ActiveJob for executing jobs.",
+    "homepage": "https://github.com/chaps-io/gush",
+    "source_code_uri": null,
+    "context7_id": "/chaps-io/gush"
+  },
+  {
+    "name": "hugging-face",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Ruby client for Hugging Face API",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "faraday"
+    ],
+    "description": "Ruby client for Hugging Face API",
+    "homepage": "https://rubygems.org/gems/hugging-face",
+    "source_code_uri": "https://github.com/alchaplinsky/hugging-face",
+    "context7_id": "/alchaplinsky/hugging-face"
+  },
+  {
+    "name": "image_processing",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 1.0
+    },
+    "role": {
+      "description": "High-level wrapper for processing images for the web with ImageMagick or libvips.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "mini_magick",
+      "ruby-vips"
+    ],
+    "description": "High-level wrapper for processing images for the web with ImageMagick or libvips.",
+    "homepage": "https://github.com/janko/image_processing",
+    "source_code_uri": "https://github.com/janko/image_processing",
+    "context7_id": "/janko/image_processing"
+  },
+  {
+    "name": "informers",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Fast transformer inference for Ruby",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "onnxruntime",
+      "tokenizers"
+    ],
+    "description": "Fast transformer inference for Ruby",
+    "homepage": "https://github.com/ankane/informers",
+    "source_code_uri": null,
+    "context7_id": "/ankane/informers"
+  },
+  {
+    "name": "jongleur",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Launches, schedules and manages tasks represented in a DAG, as multiple processes",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 2,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "graphviz",
+      "hollerback",
+      "os"
+    ],
+    "description": "Launches, schedules and manages tasks represented in a DAG, as multiple processes",
+    "homepage": "https://gitlab.com/RedFred7/Jongleur",
+    "source_code_uri": null,
+    "context7_id": "/gitlab_redfred7/jongleur"
+  },
+  {
+    "name": "journald-logger",
+    "classification": {
+      "primary": "debugging_introspection",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "systemd-journal native logger",
+      "attaches_to": "debugging"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 1,
+      "coupling": 1,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": true,
+      "native_ext": false
+    },
+    "dependencies": [
+      "journald-native"
+    ],
+    "description": "systemd-journal native logger",
+    "homepage": "https://github.com/theforeman/journald-logger",
+    "source_code_uri": null,
+    "context7_id": "/theforeman/journald-logger"
+  },
+  {
+    "name": "jsonl",
+    "classification": {
+      "primary": "parsing_encoding",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Module for handling JSONL (JSON Lines).",
+      "attaches_to": "parsing"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 2,
+      "coupling": 1,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "Module for handling JSONL (JSON Lines).",
+    "homepage": "https://github.com/kami-zh/jsonl",
+    "source_code_uri": null,
+    "context7_id": "/zenizh/jsonl"
+  },
+  {
+    "name": "kreuzberg",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Kreuzberg is a high-performance document intelligence library with a Rust core and native\nRuby bindings via Magnus. Extract text, metadata, and structured data from 75+ file formats\nincluding PDF, DOCX, PPTX, XLSX, HTML, RTF, images (with OCR), email, archives, and more.\nFeatures async/sync APIs, text chunking, language detection, and keyword extraction.\n",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "rb_sys",
+      "sorbet-runtime"
+    ],
+    "description": "Kreuzberg is a high-performance document intelligence library with a Rust core and native\nRuby bindings via Magnus. Extract text, metadata, and structured data from 75+ file formats\nincluding PDF, DOCX, PPTX, XLSX, HTML, RTF, images (with OCR), email, archives, and more.\nFeatures async/sync APIs, text chunking, language detection, and keyword extraction.\n",
+    "homepage": "https://github.com/kreuzberg-dev/kreuzberg",
+    "source_code_uri": "https://github.com/kreuzberg-dev/kreuzberg",
+    "context7_id": "/kreuzberg-dev/kreuzberg"
+  },
+  {
+    "name": "lingua",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Provides sentence splitting, syllable, and text-quality algorithms.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "Provides sentence splitting, syllable, and text-quality algorithms.",
+    "homepage": "http://github.com/dbalatero/lingua",
+    "source_code_uri": null,
+    "context7_id": "/dbalatero/lingua"
+  },
+  {
+    "name": "listen",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "The Listen gem listens to file modifications and notifies you about the changes. Works everywhere!",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 2,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "logger",
+      "rb-fsevent",
+      "rb-inotify"
+    ],
+    "description": "The Listen gem listens to file modifications and notifies you about the changes. Works everywhere!",
+    "homepage": "https://github.com/guard/listen",
+    "source_code_uri": "https://github.com/guard/listen/tree/v3.10.0",
+    "context7_id": "/guard/listen"
+  },
+  {
+    "name": "mimemagic",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.7
+    },
+    "role": {
+      "description": "Fast mime detection by extension or content (Uses freedesktop.org.xml shared-mime-info database)",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "nokogiri",
+      "rake"
+    ],
+    "description": "Fast mime detection by extension or content (Uses freedesktop.org.xml shared-mime-info database)",
+    "homepage": "https://github.com/mimemagicrb/mimemagic",
+    "source_code_uri": "https://github.com/mimemagicrb/mimemagic",
+    "context7_id": "/mimemagicrb/mimemagic"
+  },
+  {
+    "name": "neighbor",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Nearest neighbor search for Rails",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "activerecord"
+    ],
+    "description": "Nearest neighbor search for Rails",
+    "homepage": "https://github.com/ankane/neighbor",
+    "source_code_uri": null,
+    "context7_id": "/ankane/neighbor"
+  },
+  {
+    "name": "ohm",
+    "classification": {
+      "primary": "storage_persistence",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Ohm is a library that allows to store an object in Redis, a persistent key-value database. It has very good performance.",
+      "attaches_to": "storage"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 2,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "nest",
+      "redic",
+      "stal"
+    ],
+    "description": "Ohm is a library that allows to store an object in Redis, a persistent key-value database. It has very good performance.",
+    "homepage": "http://soveran.github.io/ohm/",
+    "source_code_uri": "http://github.com/soveran/ohm",
+    "context7_id": "/soveran/ohm"
+  },
+  {
+    "name": "ohm-contrib",
+    "classification": {
+      "primary": "storage_persistence",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Includes a couple of core functions such as callbacks, timestamping, typecasting and lots of generic validation routines.",
+      "attaches_to": "storage"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 1,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "ohm"
+    ],
+    "description": "Includes a couple of core functions such as callbacks, timestamping, typecasting and lots of generic validation routines.",
+    "homepage": "http://github.com/cyx/ohm-contrib",
+    "source_code_uri": null,
+    "context7_id": "/cyx/ohm-contrib"
+  },
+  {
+    "name": "ohm-sorted",
+    "classification": {
+      "primary": "storage_persistence",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "An plugin for Ohm that lets you create sorted indices.",
+      "attaches_to": "storage"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 1,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "An plugin for Ohm that lets you create sorted indices.",
+    "homepage": "https://github.com/educabilia/ohm-sorted",
+    "source_code_uri": null,
+    "context7_id": "/soveran/ohm"
+  },
+  {
+    "name": "open4",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "open child process with handles on pid, stdin, stdout, and stderr: manage child processes and their io handles easily.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "open child process with handles on pid, stdin, stdout, and stderr: manage child processes and their io handles easily.",
+    "homepage": "https://github.com/ahoward/open4",
+    "source_code_uri": null,
+    "context7_id": "/ahoward/open4"
+  },
+  {
+    "name": "os",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "The OS gem allows for some useful and easy functions, like OS.windows? (=> true or false) OS.bits ( => 32 or 64) etc\"",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "The OS gem allows for some useful and easy functions, like OS.windows? (=> true or false) OS.bits ( => 32 or 64) etc\"",
+    "homepage": "http://github.com/rdp/os",
+    "source_code_uri": null,
+    "context7_id": "/ambeteco/faster-os"
+  },
+  {
+    "name": "osc-ruby",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "This OSC gem originally created by Tadayoshi Funaba has been updated",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "This OSC gem originally created by Tadayoshi Funaba has been updated",
+    "homepage": "http://github.com/aberant/osc-ruby",
+    "source_code_uri": null,
+    "context7_id": "/aberant/osc-ruby"
+  },
+  {
+    "name": "parallel",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Run any kind of code in parallel processes",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "Run any kind of code in parallel processes",
+    "homepage": "https://github.com/grosser/parallel",
+    "source_code_uri": "https://github.com/grosser/parallel/tree/v2.0.0",
+    "context7_id": "/grosser/parallel"
+  },
+  {
+    "name": "pg",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Pg is the Ruby interface to the PostgreSQL RDBMS. It works with PostgreSQL 10 and later.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "Pg is the Ruby interface to the PostgreSQL RDBMS. It works with PostgreSQL 10 and later.",
+    "homepage": "https://github.com/ged/ruby-pg",
+    "source_code_uri": "https://github.com/ged/ruby-pg",
+    "context7_id": "/ged/ruby-pg"
+  },
+  {
+    "name": "pg_search",
+    "classification": {
+      "primary": "retrieval_similarity_fuzzy",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "PgSearch builds Active Record named scopes that take advantage of PostgreSQL's full text search",
+      "attaches_to": "retrieval"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "activerecord",
+      "activesupport"
+    ],
+    "description": "PgSearch builds Active Record named scopes that take advantage of PostgreSQL's full text search",
+    "homepage": "https://github.com/Casecommons/pg_search",
+    "source_code_uri": "https://github.com/Casecommons/pg_search",
+    "context7_id": "/timescale/pg_textsearch"
+  },
+  {
+    "name": "pgvector",
+    "classification": {
+      "primary": "ai_nlp",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "pgvector support for Ruby",
+      "attaches_to": "ai"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "pgvector support for Ruby",
+    "homepage": "https://github.com/pgvector/pgvector-ruby",
+    "source_code_uri": null,
+    "context7_id": "/pgvector/pgvector-ruby"
+  },
+  {
+    "name": "pragmatic_segmenter",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Pragmatic Segmenter is a sentence segmentation tool for Ruby. It allows you to split a text into an array of sentences. This gem provides 2 main benefits over other segmentation gems - 1) It works well even with ill-formatted text 2) It works for multiple languages ",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "Pragmatic Segmenter is a sentence segmentation tool for Ruby. It allows you to split a text into an array of sentences. This gem provides 2 main benefits over other segmentation gems - 1) It works well even with ill-formatted text 2) It works for multiple languages ",
+    "homepage": "https://github.com/diasks2/pragmatic_segmenter",
+    "source_code_uri": null,
+    "context7_id": "/diasks2/pragmatic_segmenter"
+  },
+  {
+    "name": "pragmatic_tokenizer",
+    "classification": {
+      "primary": "ai_nlp",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "A multilingual tokenizer to split a string into tokens.",
+      "attaches_to": "ai"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "A multilingual tokenizer to split a string into tokens.",
+    "homepage": "https://github.com/diasks2/pragmatic_tokenizer",
+    "source_code_uri": null,
+    "context7_id": "/diasks2/pragmatic_segmenter"
+  },
+  {
+    "name": "pry",
+    "classification": {
+      "primary": "debugging_introspection",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Pry is a runtime developer console and IRB alternative with powerful\nintrospection capabilities. Pry aims to be more than an IRB replacement. It is\nan attempt to bring REPL driven programming to the Ruby language.\n",
+      "attaches_to": "debugging"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 1,
+      "coupling": 2,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": true,
+      "native_ext": false
+    },
+    "dependencies": [
+      "coderay",
+      "method_source",
+      "reline"
+    ],
+    "description": "Pry is a runtime developer console and IRB alternative with powerful\nintrospection capabilities. Pry aims to be more than an IRB replacement. It is\nan attempt to bring REPL driven programming to the Ruby language.\n",
+    "homepage": "http://pry.github.io",
+    "source_code_uri": "https://github.com/pry/pry",
+    "context7_id": "/websites/rdoc_info_github_pry_pry_master"
+  },
+  {
+    "name": "pycall",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "pycall",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "pycall",
+    "homepage": "https://github.com/mrkn/pycall",
+    "source_code_uri": null,
+    "context7_id": "/red-data-tools/pycall.rb"
+  },
+  {
+    "name": "refinements",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 1.0
+    },
+    "role": {
+      "description": "A collection of core object refinements.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "A collection of core object refinements.",
+    "homepage": "https://alchemists.io/projects/refinements",
+    "source_code_uri": "https://github.com/bkuhlmann/refinements",
+    "context7_id": "/bkuhlmann/refinements"
+  },
+  {
+    "name": "rubocop",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [
+        "serialization"
+      ],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "RuboCop is a Ruby code style checking and code formatting tool.\nIt aims to enforce the community-driven Ruby Style Guide.\n",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 4,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "json",
+      "language_server-protocol",
+      "lint_roller",
+      "parallel",
+      "parser",
+      "rainbow",
+      "regexp_parser",
+      "rubocop-ast",
+      "ruby-progressbar",
+      "unicode-display_width"
+    ],
+    "description": "RuboCop is a Ruby code style checking and code formatting tool.\nIt aims to enforce the community-driven Ruby Style Guide.\n",
+    "homepage": "https://rubocop.org/",
+    "source_code_uri": "https://github.com/rubocop/rubocop/",
+    "context7_id": "/rubocop/rubocop"
+  },
+  {
+    "name": "rubocop-ast",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "    RuboCop's Node and NodePattern classes.\n",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "parser",
+      "prism"
+    ],
+    "description": "    RuboCop's Node and NodePattern classes.\n",
+    "homepage": "https://www.rubocop.org/",
+    "source_code_uri": "https://github.com/rubocop/rubocop-ast/",
+    "context7_id": "/rubocop/rubocop"
+  },
+  {
+    "name": "rubocop-md",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Run RuboCop against your Markdown files to make sure that code examples follow style guidelines.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "lint_roller",
+      "rubocop"
+    ],
+    "description": "Run RuboCop against your Markdown files to make sure that code examples follow style guidelines.",
+    "homepage": "https://github.com/rubocop/rubocop-md",
+    "source_code_uri": "http://github.com/rubocop/rubocop-md",
+    "context7_id": "/rubocop/rubocop"
+  },
+  {
+    "name": "rubocop-rake",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "A RuboCop plugin for Rake",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "lint_roller",
+      "rubocop"
+    ],
+    "description": "A RuboCop plugin for Rake",
+    "homepage": "https://github.com/rubocop/rubocop-rake",
+    "source_code_uri": "https://github.com/rubocop/rubocop-rake",
+    "context7_id": "/ruby/rake"
+  },
+  {
+    "name": "rubocop-sequel",
+    "classification": {
+      "primary": "storage_persistence",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Code style checking for Sequel",
+      "attaches_to": "storage"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 1,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "lint_roller",
+      "rubocop"
+    ],
+    "description": "Code style checking for Sequel",
+    "homepage": "https://github.com/rubocop/rubocop-sequel",
+    "source_code_uri": null,
+    "context7_id": "/rubocop/rubocop"
+  },
+  {
+    "name": "ruby-spacy",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "ruby-spacy is a wrapper module for using spaCy from the Ruby programming language via PyCall. This module aims to make it easy and natural for Ruby programmers to use spaCy. This module covers the areas of spaCy functionality for using many varieties of its language models, not for building ones.\n",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 2,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "base64",
+      "fiddle",
+      "numpy",
+      "pycall",
+      "terminal-table"
+    ],
+    "description": "ruby-spacy is a wrapper module for using spaCy from the Ruby programming language via PyCall. This module aims to make it easy and natural for Ruby programmers to use spaCy. This module covers the areas of spaCy functionality for using many varieties of its language models, not for building ones.\n",
+    "homepage": "https://github.com/yohasebe/ruby-spacy",
+    "source_code_uri": null,
+    "context7_id": "/yohasebe/ruby-spacy"
+  },
+  {
+    "name": "ruby-vips",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "ruby-vips is a binding for the libvips image processing library. It is fast \n    and it can process large images without loading the whole image in memory.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "ffi",
+      "logger"
+    ],
+    "description": "ruby-vips is a binding for the libvips image processing library. It is fast \n    and it can process large images without loading the whole image in memory.",
+    "homepage": "http://github.com/libvips/ruby-vips",
+    "source_code_uri": "https://github.com/libvips/ruby-vips",
+    "context7_id": "/libvips/ruby-vips"
+  },
+  {
+    "name": "ruby_llm",
+    "classification": {
+      "primary": "ai_nlp",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 1.0
+    },
+    "role": {
+      "description": "One beautiful Ruby API for GPT, Claude, Gemini, and more. Easily build chatbots, AI agents, RAG applications, and content generators. Features chat (text, images, audio, PDFs), image generation, embeddings, tools (function calling), structured output, Rails integration, and streaming. Works with OpenAI, Anthropic, Google Gemini, AWS Bedrock, DeepSeek, Mistral, Ollama (local models), OpenRouter, Perplexity, GPUStack, and any OpenAI-compatible API. Minimal dependencies - just Faraday, Zeitwerk, and Marcel.",
+      "attaches_to": "ai"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 4,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "base64",
+      "event_stream_parser",
+      "faraday",
+      "faraday-multipart",
+      "faraday-net_http",
+      "faraday-retry",
+      "marcel",
+      "ruby_llm-schema",
+      "zeitwerk"
+    ],
+    "description": "One beautiful Ruby API for GPT, Claude, Gemini, and more. Easily build chatbots, AI agents, RAG applications, and content generators. Features chat (text, images, audio, PDFs), image generation, embeddings, tools (function calling), structured output, Rails integration, and streaming. Works with OpenAI, Anthropic, Google Gemini, AWS Bedrock, DeepSeek, Mistral, Ollama (local models), OpenRouter, Perplexity, GPUStack, and any OpenAI-compatible API. Minimal dependencies - just Faraday, Zeitwerk, and Marcel.",
+    "homepage": "https://rubyllm.com",
+    "source_code_uri": "https://github.com/crmne/ruby_llm",
+    "context7_id": "/crmne/ruby_llm"
+  },
+  {
+    "name": "ruby_llm-mcp",
+    "classification": {
+      "primary": "ai_nlp",
+      "secondary": null,
+      "sub_categories": [
+        "serialization"
+      ],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "A Ruby client for the Model Context Protocol (MCP) that seamlessly integrates with RubyLLM.\nSupports both native full-featured implementation and the official mcp-sdk gem.\nConnect to MCP servers via SSE, stdio, or HTTP transports, automatically convert MCP tools into\nRubyLLM-compatible tools, and enable AI models to interact with external data sources and\nservices. Makes using MCP with RubyLLM as easy as possible.\n",
+      "attaches_to": "ai"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 2,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "httpx",
+      "json-schema",
+      "json_schemer",
+      "ruby_llm",
+      "zeitwerk"
+    ],
+    "description": "A Ruby client for the Model Context Protocol (MCP) that seamlessly integrates with RubyLLM.\nSupports both native full-featured implementation and the official mcp-sdk gem.\nConnect to MCP servers via SSE, stdio, or HTTP transports, automatically convert MCP tools into\nRubyLLM-compatible tools, and enable AI models to interact with external data sources and\nservices. Makes using MCP with RubyLLM as easy as possible.\n",
+    "homepage": "https://www.rubyllm-mcp.com",
+    "source_code_uri": "https://github.com/patvice/ruby_llm-mcp",
+    "context7_id": "/patvice/ruby_llm-mcp"
+  },
+  {
+    "name": "selenium-webdriver",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [
+        "serialization"
+      ],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "    Selenium implements the W3C WebDriver protocol to automate popular browsers.\n    It aims to mimic the behaviour of a real user as it interacts with the application's HTML.\n    It's primarily intended for web application testing, but any web-based task can automated.\n",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 2,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "base64",
+      "logger",
+      "rexml",
+      "rubyzip",
+      "websocket"
+    ],
+    "description": "    Selenium implements the W3C WebDriver protocol to automate popular browsers.\n    It aims to mimic the behaviour of a real user as it interacts with the application's HTML.\n    It's primarily intended for web application testing, but any web-based task can automated.\n",
+    "homepage": "https://selenium.dev",
+    "source_code_uri": "https://github.com/SeleniumHQ/selenium/tree/trunk/rb",
+    "context7_id": "/websites/rs_thirtyfour"
+  },
+  {
+    "name": "sequel",
+    "classification": {
+      "primary": "storage_persistence",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "The Database Toolkit for Ruby",
+      "attaches_to": "storage"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 1,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "bigdecimal"
+    ],
+    "description": "The Database Toolkit for Ruby",
+    "homepage": "https://sequel.jeremyevans.net",
+    "source_code_uri": "https://github.com/jeremyevans/sequel",
+    "context7_id": "/jeremyevans/sequel"
+  },
+  {
+    "name": "sequel_pg",
+    "classification": {
+      "primary": "storage_persistence",
+      "secondary": null,
+      "sub_categories": [
+        "database"
+      ],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "sequel_pg overwrites the inner loop of the Sequel postgres\nadapter row fetching code with a C version.  The C version\nis significantly faster than the pure ruby version\nthat Sequel uses by default.\n\nsequel_pg also offers optimized versions of some dataset\nmethods, as well as adds support for using PostgreSQL\nstreaming.\n",
+      "attaches_to": "storage"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 1,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "pg",
+      "sequel"
+    ],
+    "description": "sequel_pg overwrites the inner loop of the Sequel postgres\nadapter row fetching code with a C version.  The C version\nis significantly faster than the pure ruby version\nthat Sequel uses by default.\n\nsequel_pg also offers optimized versions of some dataset\nmethods, as well as adds support for using PostgreSQL\nstreaming.\n",
+    "homepage": "http://github.com/jeremyevans/sequel_pg",
+    "source_code_uri": "https://github.com/jeremyevans/sequel_pg",
+    "context7_id": "/jeremyevans/sequel_pg"
+  },
+  {
+    "name": "shared_tools",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.7
+    },
+    "role": {
+      "description": "SharedTools provides a collection of reusable common tools\nfor Ruby applications using ruby_llm gem.\n",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 3,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "dentaku",
+      "nokogiri",
+      "openweathermap",
+      "ruby_llm",
+      "ruby_llm-mcp",
+      "sequel",
+      "zeitwerk"
+    ],
+    "description": "SharedTools provides a collection of reusable common tools\nfor Ruby applications using ruby_llm gem.\n",
+    "homepage": "https://github.com/madbomber/shared_tools",
+    "source_code_uri": "https://github.com/madbomber/shared_tools",
+    "context7_id": "/madbomber/shared_tools"
+  },
+  {
+    "name": "srt",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "Ruby gem for parsing srt (subtitle) files. SRT stands for SubRip text file format, which is a file for storing subtitles.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "Ruby gem for parsing srt (subtitle) files. SRT stands for SubRip text file format, which is a file for storing subtitles.",
+    "homepage": "https://github.com/cpetersen/srt",
+    "source_code_uri": null,
+    "context7_id": null
+  },
+  {
+    "name": "terrapin",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 1.0
+    },
+    "role": {
+      "description": "Run shell commands safely, even with user-supplied values",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "climate_control"
+    ],
+    "description": "Run shell commands safely, even with user-supplied values",
+    "homepage": "https://github.com/thoughtbot/terrapin",
+    "source_code_uri": "https://github.com/thoughtbot/terrapin",
+    "context7_id": "/thoughtbot/terrapin"
+  },
+  {
+    "name": "tf-idf-similarity",
+    "classification": {
+      "primary": "retrieval_similarity_fuzzy",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Calculates the similarity between texts using tf*idf",
+      "attaches_to": "retrieval"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "unicode_utils"
+    ],
+    "description": "Calculates the similarity between texts using tf*idf",
+    "homepage": "https://github.com/jpmckinney/tf-idf-similarity",
+    "source_code_uri": null,
+    "context7_id": "/jpmckinney/tf-idf-similarity"
+  },
+  {
+    "name": "tomoto",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "High performance topic modeling for Ruby",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "rice"
+    ],
+    "description": "High performance topic modeling for Ruby",
+    "homepage": "https://github.com/ankane/tomoto-ruby",
+    "source_code_uri": null,
+    "context7_id": "/ankane/tomoto-ruby"
+  },
+  {
+    "name": "tty-command",
+    "classification": {
+      "primary": "cli_terminal_ui",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Execute shell commands with pretty output logging and capture their stdout, stderr and exit status. Redirect stdin, stdout and stderr of each command to a file or a string.",
+      "attaches_to": "cli"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 1,
+      "coupling": 1,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "pastel"
+    ],
+    "description": "Execute shell commands with pretty output logging and capture their stdout, stderr and exit status. Redirect stdin, stdout and stderr of each command to a file or a string.",
+    "homepage": "https://ttytoolkit.org",
+    "source_code_uri": "https://github.com/piotrmurach/tty-command",
+    "context7_id": "/piotrmurach/tty-command"
+  },
+  {
+    "name": "tty-config",
+    "classification": {
+      "primary": "cli_terminal_ui",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "A highly customisable application configuration interface for building terminal tools. It supports many file formats such as YAML, JSON, TOML, INI, HCL and Java Properties.",
+      "attaches_to": "cli"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 1,
+      "coupling": 1,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "A highly customisable application configuration interface for building terminal tools. It supports many file formats such as YAML, JSON, TOML, INI, HCL and Java Properties.",
+    "homepage": "https://ttytoolkit.org",
+    "source_code_uri": "https://github.com/piotrmurach/tty-config",
+    "context7_id": "/piotrmurach/tty-config"
+  },
+  {
+    "name": "tty-editor",
+    "classification": {
+      "primary": "cli_terminal_ui",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Open a file or text in a preferred terminal text editor.",
+      "attaches_to": "cli"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 1,
+      "coupling": 1,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "tty-prompt"
+    ],
+    "description": "Open a file or text in a preferred terminal text editor.",
+    "homepage": "https://ttytoolkit.org",
+    "source_code_uri": "https://github.com/piotrmurach/tty-editor",
+    "context7_id": "/piotrmurach/tty-editor"
+  },
+  {
+    "name": "tty-file",
+    "classification": {
+      "primary": "cli_terminal_ui",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "File manipulation utility methods.",
+      "attaches_to": "cli"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 1,
+      "coupling": 2,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "diff-lcs",
+      "pastel",
+      "tty-prompt"
+    ],
+    "description": "File manipulation utility methods.",
+    "homepage": "https://ttytoolkit.org",
+    "source_code_uri": "https://github.com/piotrmurach/tty-file",
+    "context7_id": "/piotrmurach/tty-file"
+  },
+  {
+    "name": "tty-which",
+    "classification": {
+      "primary": "cli_terminal_ui",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Platform independent implementation of Unix which command.",
+      "attaches_to": "cli"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 1,
+      "coupling": 1,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "Platform independent implementation of Unix which command.",
+    "homepage": "https://ttytoolkit.org",
+    "source_code_uri": "https://github.com/piotrmurach/tty-which",
+    "context7_id": "/piotrmurach/tty-which"
+  },
+  {
+    "name": "webvtt",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "WEBVTT file parser in Ruby",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "WEBVTT file parser in Ruby",
+    "homepage": "https://github.com/jronallo/webvtt",
+    "source_code_uri": null,
+    "context7_id": null
+  },
+  {
+    "name": "yajl-ruby",
+    "classification": {
+      "primary": "parsing_encoding",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.8
+    },
+    "role": {
+      "description": "Ruby C bindings to the excellent Yajl JSON stream-based parser library.",
+      "attaches_to": "parsing"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 2,
+      "coupling": 1,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "Ruby C bindings to the excellent Yajl JSON stream-based parser library.",
+    "homepage": "https://github.com/brianmario/yajl-ruby",
+    "source_code_uri": "http://github.com/brianmario/yajl-ruby",
+    "context7_id": "/brianmario/yajl-ruby"
+  },
+  {
+    "name": "zeitwerk",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 0.5
+    },
+    "role": {
+      "description": "    Zeitwerk implements constant autoloading with Ruby semantics. Each gem\n    and application may have their own independent autoloader, with its own\n    configuration, inflector, and logger. Supports autoloading,\n    reloading, and eager loading.\n",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "    Zeitwerk implements constant autoloading with Ruby semantics. Each gem\n    and application may have their own independent autoloader, with its own\n    configuration, inflector, and logger. Supports autoloading,\n    reloading, and eager loading.\n",
+    "homepage": "https://github.com/fxn/zeitwerk",
+    "source_code_uri": "https://github.com/fxn/zeitwerk",
+    "context7_id": "/fxn/zeitwerk"
+  },
+  {
+    "name": "inkmark",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 1.0
+    },
+    "role": {
+      "description": "A very fast, feature-packed, AI-first Markdown (CommonMark/GFM) gem for Ruby, based on pulldown-cmark (Rust).",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "rb_sys"
+    ],
+    "description": "A very fast, feature-packed, AI-first Markdown (CommonMark/GFM) gem for Ruby, based on pulldown-cmark (Rust).",
+    "homepage": null,
+    "source_code_uri": "https://github.com/yaroslav/inkmark",
+    "context7_id": "/yaroslav/inkmark"
+  },
+  {
+    "name": "syntax_tree",
+    "classification": {
+      "primary": "algorithms_knowledge_structures",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 1.0
+    },
+    "role": {
+      "description": "A parser based on ripper",
+      "attaches_to": "algorithms"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 2,
+      "coupling": 1,
+      "abstraction_leak": "low"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "prettier_print"
+    ],
+    "description": "A parser based on ripper",
+    "homepage": null,
+    "source_code_uri": "https://github.com/ruby-syntax-tree/syntax_tree",
+    "context7_id": "/ruby-syntax-tree/syntax_tree"
+  },
+  {
+    "name": "ruby_llm-docker",
+    "classification": {
+      "primary": "ai_nlp",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 1.0
+    },
+    "role": {
+      "description": "A comprehensive Ruby gem that provides Docker management capabilities through RubyLLM tools. Enables AI assistants to interact with Docker containers, images, networks, and volumes using natural language. Ported from DockerMCP to work directly with RubyLLM without requiring an external MCP server.",
+      "attaches_to": "ai"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 2,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "base64",
+      "docker-api",
+      "ruby_llm",
+      "tool_forge",
+      "zeitwerk"
+    ],
+    "description": "A comprehensive Ruby gem that provides Docker management capabilities through RubyLLM tools. Enables AI assistants to interact with Docker containers, images, networks, and volumes using natural language. Ported from DockerMCP to work directly with RubyLLM without requiring an external MCP server.",
+    "homepage": null,
+    "source_code_uri": "https://github.com/afstanton/ruby_llm-docker",
+    "context7_id": "/afstanton/ruby_llm-docker"
+  },
+  {
+    "name": "gem-skill",
+    "classification": {
+      "primary": "async_networking_orchestration",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 1.0
+    },
+    "role": {
+      "description": "Automatically generates Claude Code SKILL.md files from a gem's README,\nRubyDoc, and changelog. Skills are cached in ~/.gem/skills and symlinked\ninto projects driven by Gemfile.lock. Provides both 'gem skill' and\n'bundle skill' subcommands.\n",
+      "attaches_to": "async"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 4,
+      "coupling": 2,
+      "abstraction_leak": "high"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [
+      "async",
+      "ruby_llm",
+      "tty-spinner"
+    ],
+    "description": "Automatically generates Claude Code SKILL.md files from a gem's README,\nRubyDoc, and changelog. Skills are cached in ~/.gem/skills and symlinked\ninto projects driven by Gemfile.lock. Provides both 'gem skill' and\n'bundle skill' subcommands.\n",
+    "homepage": null,
+    "source_code_uri": "https://github.com/madbomber/gem-skill",
+    "context7_id": "/madbomber/gem-skill"
+  },
+  {
+    "name": "schematist",
+    "classification": {
+      "primary": "data_processing",
+      "secondary": null,
+      "sub_categories": [],
+      "confidence": 1.0
+    },
+    "role": {
+      "description": "A compact Ruby DSL for building standards-oriented JSON Schema documents from Ruby.",
+      "attaches_to": "data"
+    },
+    "capabilities": [],
+    "risks": {
+      "invasiveness": 3,
+      "coupling": 1,
+      "abstraction_leak": "medium"
+    },
+    "signals": {
+      "rails": false,
+      "external_io": false,
+      "native_ext": false
+    },
+    "dependencies": [],
+    "description": "A compact Ruby DSL for building standards-oriented JSON Schema documents from Ruby.",
+    "homepage": null,
+    "source_code_uri": "https://github.com/crmne/schematist",
+    "context7_id": "/crmne/schematist"
+  }
+]
