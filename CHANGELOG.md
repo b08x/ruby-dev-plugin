@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.0.1] - 2026-10-16
+
+### Fixed
+
+* `rubyist` fails fast with a clear message when it has no dispatchable agents, and its description states the main-thread requirement.
+* `rubyist` `Agent(...)` allowlist now uses namespaced names (`ruby-dev:specifier`, `ruby-dev:implementer`, `ruby-dev:cleaner-hardener`, `ruby-dev:verifier`).
+
 ## [5.0.0] - 2026-10-16
 
 ### BREAKING

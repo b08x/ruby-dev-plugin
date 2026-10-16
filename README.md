@@ -3,7 +3,7 @@
 **A task-driven Claude plugin routing Ruby work through 1 orchestrator (`rubyist`) and 4 phase subagents — specifier, implementer, cleaner-hardener, verifier — that load domain skills on demand.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Plugin Version](https://img.shields.io/badge/version-5.0.0-green.svg)](.claude-plugin/plugin.json)
+[![Plugin Version](https://img.shields.io/badge/version-5.0.1-green.svg)](.claude-plugin/plugin.json)
 [![Claude Plugin](https://img.shields.io/badge/Claude-Plugin-purple.svg)](.claude-plugin/plugin.json)
 
 ## Features
