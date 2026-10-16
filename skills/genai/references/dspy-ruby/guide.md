@@ -1,9 +1,6 @@
----
-name: dspy-ruby
-description: "Use for the dspy.rb gem ecosystem in Ruby - Sorbet-typed signatures, predictors (Predict, ChainOfThought, ReAct, CodeAct), composable DSPy::Module programs, Toolsets, DSPy::Evals metrics, and prompt optimization with MIPROv2 and GEPA. Trigger on 'dspy', 'dspy.rb', 'DSPy::Signature', 'DSPy::Predict', 'ChainOfThought', 'ReAct agent', 'typed LLM output', 'prompt optimization', 'GEPA', 'MIPROv2', or any request to make an LLM return a validated Ruby type rather than a string. Also use when a Ruby project is hand-rolling prompt templates and JSON parsing that dspy.rb would replace."
----
-
 # RubyDev DSPy-Ruby — Typed LLM Programs with dspy.rb
+
+> Part of the merged `genai` skill. Scope and triggers: Use for the dspy.rb gem ecosystem in Ruby - Sorbet-typed signatures, predictors (Predict, ChainOfThought, ReAct, CodeAct), composable DSPy::Module programs, Toolsets, DSPy::Evals metrics, and prompt optimization with MIPROv2 and GEPA. Trigger on 'dspy', 'dspy.rb', 'DSPy::Signature', 'DSPy::Predict', 'ChainOfThought', 'ReAct agent', 'typed LLM output', 'prompt optimization', 'GEPA', 'MIPROv2', or any request to make an LLM return a validated Ruby type rather than a string. Also use when a Ruby project is hand-rolling prompt templates and JSON parsing that dspy.rb would replace.
 
 ## Overview
 
@@ -13,7 +10,7 @@ This skill covers **`dspy`** (`vicentereig/dspy.rb`, docs at oss.vicente.service
 
 **What the typed boundary does and does not buy you.** Type coercion proves the response *fit the declared shape*. It does not prove the answer was *right*. Those are separate claims established by separate machinery: signatures for shape, `DSPy::Evals` with examples and a metric for correctness. Conflating them is the single most common failure mode in DSPy.rb code — a program that always returns a valid `Sentiment` enum and is wrong 40% of the time will look healthy right up until someone measures it.
 
-**⚠️ Verification notice**: API shapes below are drawn from the bundled reference docs in `references/`, which snapshot dspy.rb around **v1.0.2**. The gem's package split and optimizer APIs move quickly. Before writing production code, verify the exact API via Context7 MCP (library ID `/vicentereig/dspy.rb`) or against `references/api/merged_api.md`, per this plugin's standing verification mandate.
+**⚠️ Verification notice**: API shapes below are drawn from the bundled reference docs in this directory, which snapshot dspy.rb around **v1.0.2**. The gem's package split and optimizer APIs move quickly. Before writing production code, verify the exact API via Context7 MCP (library ID `/vicentereig/dspy.rb`) or against `api/merged_api.md`, per this plugin's standing verification mandate.
 
 ## When to Use
 
@@ -27,11 +24,11 @@ This skill covers **`dspy`** (`vicentereig/dspy.rb`, docs at oss.vicente.service
 
 **Don't use for:**
 
-- **Plain chat, streaming, or a one-shot completion with no typed contract** — that's `ruby_llm`; see [ruby-llm/SKILL.md](../ruby-llm/SKILL.md). dspy.rb can sit on top of RubyLLM as an adapter, but if there's no schema to enforce, the DSPy layer is overhead.
-- **RAG architecture, chunking strategy, pgvector schema, RRF hybrid retrieval** — see [genai/SKILL.md](../genai/SKILL.md). That skill owns retrieval and storage; dspy.rb is what you call *after* retrieval, with the retrieved context as a typed input field.
-- **Building an MCP server** — that's `fast-mcp`, in [genai/SKILL.md](../genai/SKILL.md).
-- **Tokenization, POS tagging, lexical resources** — see [ruby-nlp/SKILL.md](../ruby-nlp/SKILL.md).
-- **Non-LLM Ruby work** — use the [`rubyist` gateway agent](../../agents/rubyist.md).
+- **Plain chat, streaming, or a one-shot completion with no typed contract** — that's `ruby_llm`; see [ruby-llm/guide.md](../ruby-llm/guide.md). dspy.rb can sit on top of RubyLLM as an adapter, but if there's no schema to enforce, the DSPy layer is overhead.
+- **RAG architecture, chunking strategy, pgvector schema, RRF hybrid retrieval** — see [genai/SKILL.md](../../SKILL.md). That skill owns retrieval and storage; dspy.rb is what you call *after* retrieval, with the retrieved context as a typed input field.
+- **Building an MCP server** — that's `fast-mcp`, in [genai/SKILL.md](../../SKILL.md).
+- **Tokenization, POS tagging, lexical resources** — see [ruby-nlp/SKILL.md](../../../ruby-nlp/SKILL.md).
+- **Non-LLM Ruby work** — use the [`rubyist` orchestrator agent](../../../../agents/rubyist.md).
 
 ## Package Map
 
@@ -43,7 +40,7 @@ dspy.rb is deliberately split: core ships signatures, modules, `Predict`/`ChainO
 | `dspy-openai` | Adapter for `openai/*`, `openrouter/*`, `ollama/*` model identifiers | Using OpenAI, OpenRouter, or Ollama |
 | `dspy-anthropic` | Adapter for `anthropic/*`; also the only adapter supporting `DSPy::Reasoning` | Using Claude models |
 | `dspy-gemini` | Adapter for `gemini/*` | Using Gemini |
-| `dspy-ruby_llm` | Adapter routing through a configured `RubyLLM` client | Already standardized on `ruby_llm` (see [ruby-llm/SKILL.md](../ruby-llm/SKILL.md)) |
+| `dspy-ruby_llm` | Adapter routing through a configured `RubyLLM` client | Already standardized on `ruby_llm` (see [ruby-llm/guide.md](../ruby-llm/guide.md)) |
 | `dspy-miprov2` | MIPROv2 optimizer — Bayesian search over instructions and demonstrations | Optimizing with MIPROv2 |
 | `dspy-gepa` | GEPA optimizer — reflective evolution driven by textual metric feedback | Optimizing with GEPA |
 | `dspy-code_act` | `DSPy::CodeAct` Think-Code-Observe agent that synthesizes and executes Ruby | Agent needs computation, not just tool selection |
@@ -337,7 +334,7 @@ For a migration baseline, `lm.raw_chat` emits the same `lm.tokens` events as a t
 
 | Dependency | If unavailable | Fallback |
 |:-----------|:---------------|:---------|
-| Context7 / DeepWiki | Both unreachable | Fall back to `references/api/merged_api.md` in this skill. If that is also missing, annotate every non-core API call `[WARNING: API unverified]` and summarize the unverified surface at the end of the response. |
+| Context7 / DeepWiki | Both unreachable | Fall back to `api/merged_api.md` in this skill. If that is also missing, annotate every non-core API call `[WARNING: API unverified]` and summarize the unverified surface at the end of the response. |
 | `dspy-miprov2` / `dspy-gepa` | Not in Gemfile | Optimize by hand: `with_instruction` / `with_examples` variants scored through `DSPy::Evals` against a held-out set. Slower, but the measurement discipline is the valuable half anyway. |
 | `dspy-o11y*` | Not in Gemfile | Subscribe to core `DSPy.events` in-process and emit through the app's existing logger. Cross-process latency must be reconstructed from timestamps. |
 | Provider adapter for the target model | Missing (`MissingAdapterError`) | Name the exact gem for the model prefix and stop. Do not silently switch providers — model choice is an evaluation variable, not an implementation detail. |
@@ -363,7 +360,7 @@ For a migration baseline, `lm.raw_chat` emits the same `lm.tokens` events as a t
 
 ## Verification Checklist
 
-- [ ] Core API shapes verified via Context7 (`/vicentereig/dspy.rb`) or `references/api/merged_api.md` before relying on this skill's examples
+- [ ] Core API shapes verified via Context7 (`/vicentereig/dspy.rb`) or `api/merged_api.md` before relying on this skill's examples
 - [ ] Gemfile carries `dspy` **plus** the adapter matching every model prefix in use
 - [ ] API keys loaded via `ENV.fetch` inside `DSPy.configure`, with `.env` loaded explicitly
 - [ ] Every output field that may legitimately be omitted has a `default:`, not just `T.nilable`
@@ -379,12 +376,12 @@ For a migration baseline, `lm.raw_chat` emits the same `lm.tokens` events as a t
 
 ## Reference Map
 
-Bundled under `references/`. Grep these rather than reading them whole — several are large.
+Bundled alongside this guide. Grep these rather than reading them whole — several are large.
 
-- **[references/api/merged_api.md](references/api/merged_api.md)** — merged API surface from docs and code analysis, one entry per class/method (~10k lines, no table of contents). Grep it: `grep -A5 'Predict' references/api/merged_api.md`. Entries marked "⚠️ Conflict" exist in the codebase but lack formal documentation.
-- **Per-file API docs** — [references/codebase_analysis/vicentereig_dspy.rb/api_reference/](references/codebase_analysis/vicentereig_dspy.rb/api_reference/), one file per source file (`predict.md`, `re_act.md`, `signature.md`, `module.md`, `evals.md`, `lm.md`, `tools.md`, `code_act.md`, `observability.md`, …).
-- **Official docs snapshot** — [references/documentation/dspy-ruby_docs/](references/documentation/dspy-ruby_docs/): [signatures](references/documentation/dspy-ruby_docs/signatures.md), [predictors](references/documentation/dspy-ruby_docs/predictors.md), [modules](references/documentation/dspy-ruby_docs/modules.md), [tools](references/documentation/dspy-ruby_docs/tools.md), [building](references/documentation/dspy-ruby_docs/building.md) (pipelines, RAG, multimodal, stateful agents), [evaluation](references/documentation/dspy-ruby_docs/evaluation.md), [optimization](references/documentation/dspy-ruby_docs/optimization.md), [production](references/documentation/dspy-ruby_docs/production.md) (events, Rails, storage, registry, observability, troubleshooting), [getting_started](references/documentation/dspy-ruby_docs/getting_started.md).
-- **Repository** — [README](references/github/vicentereig_dspy.rb/README.md), [open issues](references/github/vicentereig_dspy.rb/issues.md), [releases](references/github/vicentereig_dspy.rb/releases.md), [architecture notes](references/codebase_analysis/vicentereig_dspy.rb/ARCHITECTURE.md).
-- **[references/conflicts.md](references/conflicts.md)** — automated docs-vs-code diff. Mostly private methods from the repo's own `examples/` scripts; low signal, useful only when hunting for an undocumented internal.
+- **[api/merged_api.md](api/merged_api.md)** — merged API surface from docs and code analysis, one entry per class/method (~10k lines, no table of contents). Grep it: `grep -A5 'Predict' api/merged_api.md`. Entries marked "⚠️ Conflict" exist in the codebase but lack formal documentation.
+- **Per-file API docs** — [codebase_analysis/vicentereig_dspy.rb/api_reference/](codebase_analysis/vicentereig_dspy.rb/api_reference/), one file per source file (`predict.md`, `re_act.md`, `signature.md`, `module.md`, `evals.md`, `lm.md`, `tools.md`, `code_act.md`, `observability.md`, …).
+- **Official docs snapshot** — [documentation/dspy-ruby_docs/](documentation/dspy-ruby_docs/): [signatures](documentation/dspy-ruby_docs/signatures.md), [predictors](documentation/dspy-ruby_docs/predictors.md), [modules](documentation/dspy-ruby_docs/modules.md), [tools](documentation/dspy-ruby_docs/tools.md), [building](documentation/dspy-ruby_docs/building.md) (pipelines, RAG, multimodal, stateful agents), [evaluation](documentation/dspy-ruby_docs/evaluation.md), [optimization](documentation/dspy-ruby_docs/optimization.md), [production](documentation/dspy-ruby_docs/production.md) (events, Rails, storage, registry, observability, troubleshooting), [getting_started](documentation/dspy-ruby_docs/getting_started.md).
+- **Repository** — [README](github/vicentereig_dspy.rb/README.md), [open issues](github/vicentereig_dspy.rb/issues.md), [releases](github/vicentereig_dspy.rb/releases.md), [architecture notes](codebase_analysis/vicentereig_dspy.rb/ARCHITECTURE.md).
+- **[conflicts.md](conflicts.md)** — automated docs-vs-code diff. Mostly private methods from the repo's own `examples/` scripts; low signal, useful only when hunting for an undocumented internal.
 
-Known issues worth knowing about as of this snapshot: **#251** (`ReAct` types `final_answer` from only the first output field, breaking multi-field signature outputs) and **#247** (no per-LM reasoning-effort control outside the Anthropic adapter). Check [issues.md](references/github/vicentereig_dspy.rb/issues.md) for current state.
+Known issues worth knowing about as of this snapshot: **#251** (`ReAct` types `final_answer` from only the first output field, breaking multi-field signature outputs) and **#247** (no per-LM reasoning-effort control outside the Anthropic adapter). Check [issues.md](github/vicentereig_dspy.rb/issues.md) for current state.

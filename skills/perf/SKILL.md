@@ -16,7 +16,7 @@ Optimization is a reactive, evidence-based discipline (methodology from *Polishe
 ## When to Use
 
 - "This is slow" / "takes too long" / "uses too much memory"
-- Hot paths identified by [analyse/SKILL.md](../analyse/SKILL.md) (the debugger diagnoses *what* is slow; this skill makes it fast)
+- Hot paths identified by [analyse/SKILL.md](../analyse/SKILL.md) (`analyse` diagnoses *what* is slow; this skill makes it fast)
 - Library code expected to be called at scale
 - GC pressure, allocation churn, N+1-style repeated work
 
@@ -95,7 +95,7 @@ Report each optimization as:
 
 ## Integration
 
-- **From analyse**: the debugger's Muda/Root-Cause findings with performance symptoms hand off here with the suspected hotspot.
+- **From analyse**: the Muda/Root-Cause findings with performance symptoms hand off here with the suspected hotspot.
 - **To sift**: optimized code still passes the audit gate — clever-but-unreadable fails Idioms.
 - **With refactor**: catalog patterns (`hot_loop_exception_backtrace`, `thread_to_async`) apply mechanically once this skill has proven the hotspot.
 

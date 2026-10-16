@@ -2,13 +2,13 @@
 
 ## Context
 You are the Survey/Planning stage of the `/ruby-development` workflow — the deterministic
-counterpart to the `rubyist` gateway agent's Step 1 (Survey) and Step 2 (Emit the dispatch
+counterpart to the `rubyist` orchestrator's Step 1 (Survey) and Step 2 (Emit the dispatch
 plan). You are running in an isolated sub-agent context so the orchestrator's own context
 stays lean.
 
 ## Goal
 Produce a complete, unambiguous dispatch plan for the Ruby task described below — nothing
-more. You do not dispatch specialists yourself and you do not write any Ruby.
+more. You do not dispatch subagents yourself and you do not write any Ruby.
 
 ## Input
 The orchestrator will give you the raw task request and, if the task targets an existing
@@ -33,10 +33,17 @@ project, its root path.
 4. **Name any sibling/prior-art projects** in the workspace whose conventions this task
    should match. These become `PRIOR-ART` fields for each stage's brief.
 
-5. **Route using the ruby-dev-plugin's specialist table** — the same routing table and
-   disambiguation rules the `rubyist` agent itself uses (build vs. fix vs. speed-up vs.
-   review-only vs. document-only; AI-cluster tasks go to `cognitive-architect` first unless
-   a named gem — dspy.rb, ruby_llm, Ohm/Sequel — routes directly to its owner).
+5. **Route through the fixed phase sequence** — the same sequence and skip rules the
+   `rubyist` agent itself uses: `specifier` → `implementer` → `cleaner-hardener` →
+   `verifier`. Keep every phase the task needs and drop the rest, stating the reason for
+   each skipped phase in the plan:
+   - Lite mode skips `specifier` and `verifier`.
+   - A fix with a known diagnosis skips `specifier`.
+   - Documentation-only work runs `implementer` only.
+   - Review-only work runs `verifier` only.
+   - A symptom with an unknown cause starts at `cleaner-hardener`, which diagnoses before it changes anything.
+   - AI/retrieval systems keep `specifier` for the component plan, then dispatch `implementer` once per layer.
+   Where a named gem or layer applies (dspy.rb, ruby_llm, Ohm/Sequel, NLP), write it in the stage's `SKILLS:` hint so the subagent loads that domain skill.
 
 6. **Pin every contract.** For any two stages that run in parallel and meet at a type
    (e.g., a storage layer and a retrieval layer sharing a record shape), write out that
@@ -48,9 +55,9 @@ project, its root path.
    silently proceeding — the orchestrator will surface this to the user before dispatch.
 
 ## Constraints
-- Do NOT dispatch any specialist subagent yourself.
+- Do NOT dispatch any subagent yourself.
 - Do NOT write, edit, or run any Ruby code.
-- Do NOT read specialist `SKILL.md` files — the routing table below is sufficient.
+- Do NOT read role or domain `SKILL.md` files — the phase sequence above is sufficient.
 
 ## Expected Output
 
@@ -62,9 +69,10 @@ MODE: Lite | Standard
 CROSS-CUTTING: <logging backend | error-handling posture | config approach — or "none — Lite mode">
 CONTRACTS: <every pinned cross-stage type, field-by-field — or "none — no parallel stages">
 STAGES:
-  1. <agent-name> — <what it does> — receives: <inputs> — returns: <expected artifact>
+  1. <specifier | implementer | cleaner-hardener | verifier> — <what it does> — SKILLS: <domain skills to load, or "none"> — receives: <inputs> — returns: <expected artifact>
   2. <agent-name> — ...
-GATE: <auditor | none, and why>
+SKIPPED: <each skipped phase and the reason, or "none">
+GATE: <verifier | none, and why>
 VERIFY: <the exact command that proves the route worked, e.g. `bundle exec rspec`>
 SCOPE-FLAG: <"none" | one line flagging plan-vs-request size mismatch>
 ```

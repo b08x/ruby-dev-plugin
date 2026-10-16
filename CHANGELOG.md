@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.0.0] - 2026-10-16
+
+### BREAKING
+
+* **Agents: 14 specialists replaced by 4 phase subagents.** `rubyist` remains the orchestrator and now dispatches only `specifier`, `implementer`, `cleaner-hardener`, and `verifier`, in that fixed order, skipping stages that do not apply. Removed agent identifiers and their replacements:
+  * `ruby-dev:cognitive-architect` → `ruby-dev:specifier`
+  * `ruby-dev:scaffolder`, `ruby-dev:data-engineer`, `ruby-dev:multi-db`, `ruby-dev:ruby-llm`, `ruby-dev:dspy-ruby`, `ruby-dev:ruby-nlp`, `ruby-dev:tui-builder`, `ruby-dev:gui-builder`, `ruby-dev:technical-writer` → `ruby-dev:implementer`
+  * `ruby-dev:debugger`, `ruby-dev:refactorer`, `ruby-dev:optimizer` → `ruby-dev:cleaner-hardener`
+  * `ruby-dev:auditor` → `ruby-dev:verifier`
+* **Skills: `ruby-llm` and `dspy-ruby` merged into `genai`.** The former `ruby-llm` skill is now `skills/genai/references/ruby-llm/guide.md`; the former `dspy-ruby` skill is now `skills/genai/references/dspy-ruby/guide.md` with its references alongside. The identifiers `ruby-dev:ruby-llm` and `ruby-dev:dspy-ruby` no longer exist as skills.
+* **trackboi removed.** All trackboi content is removed: the orchestrator's trackboi filing step (Step 2.5), `tasks/step-2-trackboi-gate.md`, the trackboi tools in the `/ruby-development` command, and the `CLAUDE.md` trackboi section. The command's task files are renumbered to `step-1-survey-plan.md`, `step-2-dispatch-reconcile.md`, and `step-3-gate-synthesize.md`.
+
+### Added
+
+* Four role skills: `role-specifier`, `role-implementer`, `role-cleaner-hardener`, `role-verifier`. Each holds a task-to-skill loading table and the deterministic checks its phase owns: `cucumber` (Gherkin), `rspec`/`minitest` (unit tests), `simplecov` + `rubocop` complexity (CRAP score, default threshold 30), `mutant` (mutation testing), `packwerk` (dependency rules).
+* `references/subagent-mandates.md`: core mandates and the report format shared by the four subagents.
+* `specifier` and `verifier` write no production code; `verifier` has no Edit/Write tools.
+
 ## [4.0.2] - 2026-08-21
 
 * Merge tag 'v4.0.1' into development

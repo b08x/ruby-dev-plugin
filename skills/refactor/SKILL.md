@@ -20,7 +20,7 @@ The pattern catalog lives in `references/refactor-patterns.md` — load it for t
 
 **Don't use for:**
 - Exploratory code changes without a diagnosis (run [analyse/SKILL.md](../analyse/SKILL.md) first)
-- Large-scale redesigns that change architecture (use the [`rubyist` gateway agent](../../agents/rubyist.md) instead)
+- Large-scale redesigns that change architecture (use the [`rubyist` orchestrator agent](../../agents/rubyist.md) instead)
 - Stylistic formatting that RuboCop handles better
 
 ## Pattern Selection
@@ -51,7 +51,7 @@ Match code smell → pattern name → load the exact transform. Fall back to a c
 | Dependency | If Unavailable | Fallback |
 |------------|---------------|----------|
 | `references/refactor-patterns.md` | Pattern file not found | Apply the fix manually based on general Ruby best practices. Note the missing pattern file in the output. |
-| [analyse/SKILL.md](../analyse/SKILL.md) | Precursor diagnosis missing | Ask the user or the `rubyist` gateway for the specific issue. If none available, inspect the code for common issues (Zeitwerk, rescue, frozen_string_literal). |
+| [analyse/SKILL.md](../analyse/SKILL.md) | Precursor diagnosis missing | Ask the user or the `rubyist` orchestrator for the specific issue. If none available, inspect the code for common issues (Zeitwerk, rescue, frozen_string_literal). |
 | `ruby -c` / tests | Verification tools missing | Provide the transformed code and note that syntax/tests were not verified. |
 
 ## Common Pitfalls
@@ -69,7 +69,7 @@ Match code smell → pattern name → load the exact transform. Fall back to a c
 - [ ] Surgical fix applied (not a blanket transformation)
 - [ ] `ruby -c` passes on all modified files
 - [ ] Tests pass (if available)
-- [ ] Result reported back to the caller (analyse/sift/rubyist gateway)
+- [ ] Result reported back to the caller (analyse/sift/rubyist orchestrator)
 ### Design Pattern References
 
 Named refactorings in this skill resolve to three canonical Ruby patterns. Match the diagnosed issue to the pattern's Problem statement before selecting a transformation.

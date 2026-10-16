@@ -62,7 +62,7 @@ Use `ReAct` when the model needs to choose among typed Ruby tools inside an iter
 ## Explore
 
 - [Documentation](https://oss.vicente.services/dspy.rb/) — task-oriented guides and reference
-- [Examples](examples/) — repository demos indexed by capability and prerequisites
+- [Examples](https://github.com/vicentereig/dspy.rb/tree/main/examples) — repository demos indexed by capability and prerequisites
 - [llms.txt](https://oss.vicente.services/dspy.rb/llms.txt) — generated reference for AI assistants
 
 Provider adapters, optimizers, observability exporters, datasets, and code-executing agents are separate packages when they add dependencies. Check the package matrix before selecting one; package availability does not guarantee uniform provider or model behavior.

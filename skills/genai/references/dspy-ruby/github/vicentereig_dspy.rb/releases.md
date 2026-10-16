@@ -2198,7 +2198,7 @@ export LANGFUSE_SECRET_KEY=sk-lf-your-key
 
 ### Documentation
 
-- Complete [Langfuse integration guide](/docs/production/observability/)
+- Complete [Langfuse integration guide](../../documentation/dspy-ruby_docs/production.md)
 - Updated all examples to reflect new observability system
 - Removed outdated instrumentation references
 

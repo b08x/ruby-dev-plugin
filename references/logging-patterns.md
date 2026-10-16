@@ -10,7 +10,7 @@ standard_logger: journald-logger (optional backend — see Overview)
 
 ## Overview
 
-**Rule**: Logging/observability is a **required** consideration for every Standard-mode Ruby build in this plugin — not optional to think about, even when the specific backend is left to the specialist. Every external call (LLM, database, Redis, HTTP) MUST be logged with structured context, in whatever backend the build's `CROSS-CUTTING` decision names.
+**Rule**: Logging/observability is a **required** consideration for every Standard-mode Ruby build in this plugin — not optional to think about, even when the specific backend is left to the subagent. Every external call (LLM, database, Redis, HTTP) MUST be logged with structured context, in whatever backend the build's `CROSS-CUTTING` decision names.
 
 **The backend is a choice, not a mandate.** `journald-logger` is the recommended default when the target host runs systemd and log querying via `journalctl` is valuable (services, daemons, long-running agents). It is **not** required — pick whichever of the patterns below fits the project:
 

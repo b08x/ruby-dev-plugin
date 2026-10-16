@@ -25,16 +25,16 @@ owns it yet; verify APIs manually via Context7/DeepWiki per the plugin's standin
 
 | Gemset | Gems | Owning skill | Status |
 |---|---|---|---|
-| `llm_client_rubyllm` | ruby_llm, ruby_llm-mcp, ruby_llm-docker, schematist, shared_tools | [ruby-llm](../ruby-llm/SKILL.md) | owned |
-| `llm_programs_dspy` | dspy, dspy-openai, dspy-gemini, dspy-ruby_llm, dspy-code_act, dspy-evals, dspy-gepa, dspy-o11y-langfuse, dspy-schema | [dspy-ruby](../dspy-ruby/SKILL.md) | owned |
+| `llm_client_rubyllm` | ruby_llm, ruby_llm-mcp, ruby_llm-docker, schematist, shared_tools | [genai → ruby-llm](../../genai/references/ruby-llm/guide.md) | owned |
+| `llm_programs_dspy` | dspy, dspy-openai, dspy-gemini, dspy-ruby_llm, dspy-code_act, dspy-evals, dspy-gepa, dspy-o11y-langfuse, dspy-schema | [genai → dspy-ruby](../../genai/references/dspy-ruby/guide.md) | owned |
 | `document_intake` | kreuzberg, inkmark, mimemagic | — | **gap** |
-| `tokenization_segmentation` | pragmatic_segmenter, pragmatic_tokenizer | [ruby-nlp](../ruby-nlp/SKILL.md) | owned |
-| `linguistic_structure` | lingua, ruby-spacy, pycall | [ruby-nlp](../ruby-nlp/SKILL.md) | owned |
-| `fuzzy_similarity_ranking` | amatch, bm25f, tf-idf-similarity, pg_search | [ruby-nlp](../ruby-nlp/SKILL.md) | owned |
-| `topic_modeling_and_inference` | tomoto, informers, hugging-face | [ruby-nlp](../ruby-nlp/SKILL.md) | owned |
-| `vector_storage_retrieval` | pgvector, neighbor | [genai](../genai/SKILL.md) | owned |
-| `relational_storage` | sequel, sequel_pg, pg | [multi-db](../multi-db/SKILL.md) | owned |
-| `redis_object_storage` | ohm, ohm-contrib, ohm-sorted | [multi-db](../multi-db/SKILL.md) | owned |
+| `tokenization_segmentation` | pragmatic_segmenter, pragmatic_tokenizer | [ruby-nlp](../../ruby-nlp/SKILL.md) | owned |
+| `linguistic_structure` | lingua, ruby-spacy, pycall | [ruby-nlp](../../ruby-nlp/SKILL.md) | owned |
+| `fuzzy_similarity_ranking` | amatch, bm25f, tf-idf-similarity, pg_search | [ruby-nlp](../../ruby-nlp/SKILL.md) | owned |
+| `topic_modeling_and_inference` | tomoto, informers, hugging-face | [ruby-nlp](../../ruby-nlp/SKILL.md) | owned |
+| `vector_storage_retrieval` | pgvector, neighbor | [genai](../../genai/SKILL.md) | owned |
+| `relational_storage` | sequel, sequel_pg, pg | [multi-db](../../multi-db/SKILL.md) | owned |
+| `redis_object_storage` | ohm, ohm-contrib, ohm-sorted | [multi-db](../../multi-db/SKILL.md) | owned |
 | `async_runtime` | async, async-cable, async-http, async-job, async-service, falcon, concurrent-ruby, parallel | — | **gap** |
 | `dry_rb_types` | dry-struct, dry-types, dry-schema, dry-monads, dry-container | [references/dry-rb-patterns.md](../../../references/dry-rb-patterns.md) | shared |
 | `autoloading_and_boot` | zeitwerk | [scaffold](../SKILL.md) | owned |
@@ -96,8 +96,8 @@ the task should be a typed signature that a compiler/optimizer (MIPROv2, GEPA) c
 rather than a prompt string tuned by hand. `dspy-ruby_llm` bridges the two: dspy programs running
 on a configured `ruby_llm` client, so they compose rather than compete.
 
-Full detail lives in [ruby-llm/SKILL.md](../ruby-llm/SKILL.md)'s and
-[dspy-ruby/SKILL.md](../dspy-ruby/SKILL.md)'s own "Don't use for" sections — read this rule as a
+Full detail lives in [ruby-llm/guide.md](../../genai/references/ruby-llm/guide.md)'s and
+[dspy-ruby/guide.md](../../genai/references/dspy-ruby/guide.md)'s own "Don't use for" sections — read this rule as a
 pointer, not a replacement.
 
 ### ohm vs sequel (+ pg)

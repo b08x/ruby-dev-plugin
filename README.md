@@ -1,20 +1,18 @@
 # ruby-dev
 
-**A task-driven Claude plugin routing Ruby work across 14 specialist skills and 14 subagents — from scaffolding to SIFT audits — through the `rubyist` multi-agent gateway.**
+**A task-driven Claude plugin routing Ruby work through 1 orchestrator (`rubyist`) and 4 phase subagents — specifier, implementer, cleaner-hardener, verifier — that load domain skills on demand.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Plugin Version](https://img.shields.io/badge/version-4.0.0-green.svg)](.claude-plugin/plugin.json)
+[![Plugin Version](https://img.shields.io/badge/version-5.0.0-green.svg)](.claude-plugin/plugin.json)
 [![Claude Plugin](https://img.shields.io/badge/Claude-Plugin-purple.svg)](.claude-plugin/plugin.json)
 
 ## Features
 
-- **Multi-Agent Gateway** — The `rubyist` agent plans a dispatch route and delegates every stage to a specialist subagent in isolated context; no need to know which specialist applies upfront
+- **Phase Orchestration** — The `rubyist` agent plans a dispatch route and delegates each phase (specify, implement, clean/harden, verify) to a subagent in isolated context, with deterministic checks (cucumber, rspec/minitest, CRAP score, mutant, packwerk) at each phase
 - **Project Scaffolding** — rubysmith/gemsmith flag presets by archetype (CLI, gem, web service, OSS) with convention hardening
 - **Data Pipelines** — Stream-based CSV/JSON parsing, ETL workflows, and Sequel bulk operations
 - **Multi-Database Modeling** — Ohm (Redis) and Sequel (PostgreSQL/pgvector) design, ORM porting, dual-database retrieval patterns
-- **GenAI & RAG** — Retrieval pipeline architecture, LLM agents, MCP servers, pgvector integration
-- **Typed LLM programs (dspy.rb)** — Sorbet-typed signatures, Predict/ChainOfThought/ReAct/CodeAct, Toolsets, `DSPy::Evals`, MIPROv2 & GEPA prompt optimization
-- **LLM Client Integration** — RubyLLM gem ecosystem: multi-provider chat, tool calling, streaming, embeddings, structured output
+- **GenAI, RAG, and LLM clients (`genai`)** — Retrieval pipeline architecture, LLM agents, MCP servers, pgvector integration; the RubyLLM client (multi-provider chat, tool calling, streaming, embeddings, structured output); typed dspy.rb programs (Sorbet-typed signatures, Predict/ChainOfThought/ReAct/CodeAct, Toolsets, `DSPy::Evals`, MIPROv2 & GEPA)
 - **Classical NLP** — Tokenization, POS tagging, dependency parsing, WordNet lookup, TF-IDF/BM25 ranking, topic modeling
 - **Terminal UIs** — 21 TTY toolkit gems: prompts, tables, progress bars, spinners, pagers, trees, and rich CLI output
 - **Desktop GUIs** — Native cross-platform windows with glimmer-dsl-libui and data-bound MVP architecture
@@ -26,45 +24,42 @@
 
 ## Architecture
 
-The plugin follows a **gateway + specialist** pattern. `rubyist` is a gateway *agent*, not a skill — it runs in its own context window, so the routing logic and the specialists' instructions never accumulate in the caller's context. It emits a dispatch plan, delegates each stage to a specialist subagent, compacts their reports, and synthesizes the result.
-
-`rubyist` writes no Ruby and never loads a specialist's `SKILL.md`. Each specialist skill also remains directly invocable when a task is single-concern and the routing is obvious.
+The plugin follows an **orchestrator + phase subagent** pattern. `rubyist` is an orchestrator *agent*, not a skill — it runs in its own context window, so the routing logic and the subagents' instructions never accumulate in one place. It writes no Ruby and never loads a role or domain `SKILL.md`. Each phase subagent loads its own role skill, which names the domain skill to load for each kind of task. Each domain skill also remains directly invocable when a task is single-concern.
 
 ```
-                    ┌──────────────────────────┐
-                    │   rubyist (gateway)      │
-                    │  survey → plan → dispatch│
-                    │  → compact → synthesize  │
-                    └────────────┬─────────────┘
-      ┌──────────────┬───────────┼───────────┬──────────────┐
-      │              │           │           │              │
- ┌────▼─────┐  ┌─────▼────┐ ┌────▼────┐ ┌────▼────┐  ┌──────▼──────┐
- │ scaffold │  │   data   │ │   tui   │ │   gui   │  │  cognitive  │
- │          │  │ engineer │ │ builder │ │ builder │  │  architect  │
- └──────────┘  └──────────┘ └─────────┘ └─────────┘  └──────┬──────┘
-                                            plans, does not build
-                              ┌──────────────┬──────┴───────┬──────────────┐
-                         ┌────▼────┐  ┌──────▼───┐  ┌───────▼──┐  ┌────────▼──┐
-                         │multi-db │  │ ruby-nlp │  │ ruby-llm │  │ dspy-ruby │
-                         │ (store) │  │  (text)  │  │ (client) │  │  (typed)  │
-                         └─────────┘  └──────────┘  └──────────┘  └───────────┘
-
-      ┌──────────┐  ┌────────────┐  ┌───────────┐  ┌──────────────────┐  ┌─────────┐
-      │ debugger │→ │ refactorer │  │ optimizer │  │ technical-writer │  │ auditor │
-      │(diagnose)│  │   (fix)    │  │ (measure) │  │      (YARD)      │  │ (SIFT)  │
-      └──────────┘  └────────────┘  └───────────┘  └──────────────────┘  └─────────┘
+                 ┌──────────────────────────┐
+                 │   rubyist (orchestrator) │
+                 │  survey → plan → dispatch│
+                 │  → compact → synthesize  │
+                 └────────────┬─────────────┘
+     ┌────────────┬───────────┴──┬───────────────────┬────────────┐
+┌────▼─────┐  ┌───▼───────┐  ┌───▼──────────────┐  ┌─▼────────┐
+│specifier │→ │implementer│→ │ cleaner-hardener │→ │ verifier │
+│ Gherkin, │  │ tests +   │  │ CRAP score,      │  │ packwerk,│
+│ QA proc. │  │ code      │  │ mutant           │  │ SIFT,    │
+│ (no code)│  │           │  │                  │  │ cucumber │
+└──────────┘  └─────┬─────┘  └──────────────────┘  └──────────┘
+                    │ loads on demand
+   scaffold · data-engineer · multi-db · tui · gui · ruby-nlp · genai · yardoc
 ```
+
+| Phase subagent | Role skill | Deterministic check | Writes code |
+|---|---|---|---|
+| `specifier` | `role-specifier` | `bundle exec cucumber --dry-run` | no |
+| `implementer` | `role-implementer` | `bundle exec rspec` or `rake test`, `bundle exec cucumber` | yes |
+| `cleaner-hardener` | `role-cleaner-hardener` | CRAP score (simplecov + rubocop complexity), `bundle exec mutant run` | yes |
+| `verifier` | `role-verifier` | `bundle exec packwerk check` (Rails projects with `package.yml`; otherwise reported not applicable), `bundle exec cucumber`, `bundle exec rubocop`, SIFT audit | no |
 
 ### Execution Pipeline
 
 1. **Survey** — `rubyist` reads only enough to route. Classifies Lite Mode (scripts < 50 lines, stdlib only) or Standard Mode (multi-file, gem-dependent)
-2. **Plan** — A dispatch plan is emitted before any subagent is spawned: which specialists, in what order, what each receives and returns
-3. **Dispatch** — Each stage runs as a specialist subagent in isolated context, receiving a compact brief (`TASK` / `PATHS` / `CONSTRAINTS` / `UPSTREAM` / `RETURN`)
-4. **Report** — Every specialist returns a structured `CHANGED` / `FINDINGS` / `UNRESOLVED` / `NEXT` block. `rubyist` is the compaction boundary: briefs carry summaries, never transcripts
-5. **Audit** — SIFT quality gate by `auditor`, in a fresh context so the audit is independent of the builder's assumptions
-6. **Synthesize** — `rubyist` reports what changed, the audit verdict, and anything unresolved
+2. **Plan** — A dispatch plan is emitted before any subagent is spawned: which subagents, in what order, what each receives and returns
+3. **Dispatch** — Each stage runs as a phase subagent in isolated context, receiving a compact brief (`TASK` / `PATHS` / `CONSTRAINTS` / `UPSTREAM` / `RETURN`)
+4. **Report** — Every subagent returns a structured `CHANGED` / `FINDINGS` / `UNRESOLVED` / `NEXT` block. `rubyist` is the compaction boundary: briefs carry summaries, never transcripts
+5. **Verify** — SIFT quality gate by `verifier`, in a fresh context so the audit is independent of the builder's assumptions
+6. **Synthesize** — `rubyist` reports what changed, the verifier verdict, and anything unresolved
 
-Non-stdlib gem APIs are verified via Context7 MCP or DeepWiki at the point of use, inside whichever specialist writes the code.
+Non-stdlib gem APIs are verified via Context7 MCP or DeepWiki at the point of use, inside whichever subagent writes the code.
 
 ## Installation
 
@@ -100,9 +95,9 @@ cat .claude-plugin/plugin.json
 
 ## Usage
 
-### Gateway Entry Point
+### Orchestrator Entry Point
 
-The `rubyist` agent is the primary entry point. Use it for any task spanning more than one concern, or when it is unclear which specialist applies.
+The `rubyist` agent is the primary entry point. Run it as the session agent (`claude --agent ruby-dev:rubyist`) or use the `/ruby-development` command; a subagent cannot spawn subagents. Use it for any task spanning more than one concern, or when it is unclear which phase applies.
 
 ```
 Use the rubyist agent to scaffold a new CLI application with TUI prompts
@@ -112,20 +107,20 @@ Use the rubyist agent to scaffold a new CLI application with TUI prompts
 Use the rubyist agent to build a RAG pipeline with pgvector and RubyLLM
 ```
 
-### Direct Specialist Invocation
+### Direct Subagent Invocation
 
-Each specialist can be invoked directly when the task is well-scoped:
-
-```
-Use the tui-builder agent to create an interactive table with tty-table
-```
+Each phase subagent can be invoked directly when the task is well-scoped:
 
 ```
-Use the auditor agent to run a SIFT quality audit on lib/my_app.rb
+Use the implementer agent to create an interactive table with tty-table
 ```
 
 ```
-Use the optimizer agent to profile and reduce allocations in the hot path
+Use the verifier agent to run a SIFT quality audit on lib/my_app.rb
+```
+
+```
+Use the cleaner-hardener agent to profile and reduce allocations in the hot path
 ```
 
 ### Skill Reference
@@ -137,38 +132,28 @@ Shared conventions live in `references/` at the plugin root (dry-rb, OOD, loggin
 | `scaffold` | Project scaffolding with rubysmith/gemsmith | 1 (flag presets) |
 | `data-engineer` | CSV/JSON parsing, ETL pipelines | — |
 | `multi-db` | Ohm/Sequel modeling, dual-database patterns | 2 (ORM idioms, SFL case study) |
-| `genai` | RAG pipelines, LLM agents, MCP servers | 2 (component templates, project setup) |
-| `ruby-llm` | RubyLLM gem: chat, tools, streaming, embeddings | — |
+| `genai` | RAG pipelines, LLM agents, MCP servers; RubyLLM client; typed dspy.rb programs | 2 + RubyLLM guide + DSPy guide with API snapshots |
 | `ruby-nlp` | Tokenization, POS tagging, TF-IDF, BM25 | 1 (gem catalog) |
-| `dspy-ruby` | Typed LLM programs: Sorbet-typed signatures, Predict/ChainOfThought/ReAct/CodeAct, Toolsets, `DSPy::Evals`, MIPROv2 & GEPA | Comprehensive API reference and codebase analysis |
 | `tui` | Terminal UIs with TTY toolkit | 21 (one per tty-* gem) |
 | `gui` | Desktop GUIs with glimmer-dsl-libui | 4 (area, controls, custom, data-binding) |
 | `analyse` | Debugging: Gemba Walk, Muda, Five Whys | 2 (types, examples) |
 | `refactor` | Named refactoring pattern catalog | 1 (pattern definitions) |
 | `perf` | Profiling, benchmarking, allocation reduction | 1 (optimization catalog) |
 | `yardoc` | YARD documentation generation | 6 (patterns, types, errors, logging, dry-struct, Context7) |
+| `evals` | Evaluation harness for the plugin itself | 6 (challenge design, fixtures, protocol checks, harness, scoring, reporting) |
 | `sift` | SIFT quality audits with Toulmin evidence | 2 (assessment types, examples) |
 
 ### Agent Registry
 
-Each specialist agent is a thin wrapper dispatching to its corresponding skill, carrying the core mandates and a structured return contract. `rubyist` is the exception — it has no skill of its own and exists purely to route. Prefer agents whenever isolated context is beneficial (audits that should judge code independently, long diagnostic passes, or any multi-stage build).
+`rubyist` has no skill of its own and exists purely to route. Each phase subagent is a thin wrapper that loads its role skill and the shared mandates in `references/subagent-mandates.md`. Prefer agents whenever isolated context is beneficial (audits that should judge code independently, long diagnostic passes, or any multi-stage build).
 
-| Agent | Role | Dispatches To |
-|-------|------|---------------|
-| `scaffolder` | Project Scaffolder | `scaffold` |
-| `data-engineer` | Data Pipeline Engineer | `data-engineer` |
-| `multi-db` | Data Modeler | `multi-db` |
-| `cognitive-architect` | Cognitive Architect | `genai` |
-| `dspy-ruby` | The Program Compiler | `dspy-ruby` |
-| `ruby-llm` | LLM Integrator | `ruby-llm` |
-| `ruby-nlp` | The Linguist | `ruby-nlp` |
-| `tui-builder` | TUI Builder | `tui` |
-| `gui-builder` | GUI Builder | `gui` |
-| `debugger` | Stealth Debugger | `analyse` |
-| `refactorer` | Surgical Refactorer | `refactor` |
-| `technical-writer` | Technical Writer | `yardoc` |
-| `auditor` | Pragmatic Auditor | `sift` |
-| `optimizer` | The Optimizer | `perf` |
+| Agent | Role | Loads |
+|-------|------|-------|
+| `rubyist` | Orchestrator | none (dispatches only the four below) |
+| `specifier` | Gherkin acceptance scenarios, QA procedures, component plans | `role-specifier` → `genai` (architecture), `multi-db`, `analyse` |
+| `implementer` | Unit tests and production code | `role-implementer` → `scaffold`, `data-engineer`, `multi-db`, `tui`, `gui`, `ruby-nlp`, `genai`, `yardoc` |
+| `cleaner-hardener` | Diagnose, refactor to a CRAP threshold, mutation-test | `role-cleaner-hardener` → `analyse`, `refactor`, `perf`, `evals` |
+| `verifier` | Dependency rules, SIFT audit, acceptance tests; no code | `role-verifier` → `sift`, `analyse` |
 
 ## Code Conventions
 

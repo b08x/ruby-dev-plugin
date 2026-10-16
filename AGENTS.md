@@ -1,13 +1,13 @@
 # ruby-dev-plugin
 
-Claude plugin providing 13 specialist skills + agents for Ruby development workflows. Pure Markdown — no executable code, no build step.
+Claude plugin providing 1 orchestrator agent, 4 phase subagents, and 13 domain skills for Ruby development workflows. Pure Markdown — no executable code, no build step.
 
 ## Project Structure
 
 ```
 .claude-plugin/plugin.json   — Plugin metadata (name, version, keywords)
-agents/                       — 15 agent prompts: the `rubyist` gateway + 14 specialists
-skills/                       — 14 specialist skill directories (SKILL.md + references/)
+agents/                       — 5 agent prompts: the `rubyist` orchestrator + specifier, implementer, cleaner-hardener, verifier
+skills/                       — 13 domain skill directories + 4 role skills (`role-*`), each SKILL.md + references/
 references/                   — shared conventions loaded by skills and agents alike
 ```
 
@@ -16,8 +16,9 @@ references/                   — shared conventions loaded by skills and agents
 ### File Format
 
 - **Skills**: `skills/<name>/SKILL.md` with YAML frontmatter (`name`, `description`) + `references/` subdirectory
-- **Agents**: `agents/<name>.md` with YAML frontmatter (`name`, `description`) + pointer to their skill via `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`
-- Agent files are thin wrappers; real logic lives in the skill's SKILL.md. The exception is `agents/rubyist.md`, the gateway: it has no skill, routes rather than implements, and must never load a specialist SKILL.md into its own context.
+- **Agents**: `agents/<name>.md` with YAML frontmatter (`name`, `description`) + pointer to their role skill via `${CLAUDE_PLUGIN_ROOT}/skills/role-<name>/SKILL.md`
+- **Role skills**: `skills/role-<name>/SKILL.md` — one per phase subagent; each holds a task-to-skill loading table and the deterministic checks that phase owns. Shared mandates live in `references/subagent-mandates.md`.
+- Subagent files are thin wrappers; real logic lives in the role skill and the domain skills it loads. The exception is `agents/rubyist.md`, the orchestrator: it has no skill, routes rather than implements, and must never load a role or domain SKILL.md into its own context.
 
 ### Ruby Code Standards (when generating code)
 
@@ -28,9 +29,9 @@ references/                   — shared conventions loaded by skills and agents
 - Forward undeclared params with `...` (`def foo(...) = bar(...)`)
 - Verify non-stdlib gem APIs via Context7 MCP or DeepWiki at point of use — never assume from memory
 
-### Gateway Pattern
+### Orchestrator Pattern
 
-`agents/rubyist.md` is the entry point. It is a gateway agent, not a skill: it runs in its own context, plans a dispatch route, and delegates every stage to one of the 14 specialist subagents in `agents/`. When a task spans multiple concerns, or it is unclear which specialist applies, start at `rubyist`. A single-concern task may go straight to its specialist skill.
+`agents/rubyist.md` is the entry point. It is an orchestrator agent, not a skill: it runs in its own context, plans a dispatch route, and delegates every stage to one of 4 phase subagents in `agents/`, in the fixed order specifier → implementer → cleaner-hardener → verifier, skipping stages that do not apply. When a task spans multiple concerns, start at `rubyist`. A single-concern task may go straight to its domain skill.
 
 ### Skill Reference Loading
 

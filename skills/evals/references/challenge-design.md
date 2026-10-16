@@ -55,7 +55,7 @@ GROUND TRUTH: PHI spans planted by the fixture generator, recorded as exact
            offsets in *.truth.json; recall/precision computed by string span
            comparison, plus a leakage grep across artifacts, logs and stderr.
 SEAM: parser ↔ scrubber ↔ serializer — they meet at the document record type.
-SKILLS EXERCISED: data-engineer, ruby-llm, scaffold, refactor, sift
+SKILLS EXERCISED: data-engineer, genai, scaffold, refactor, sift
 CASE LADDER:
   p1-single-note    one plain-text clinical note
   p2-mixed-formats  .txt / .md / .csv in one directory

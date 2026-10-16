@@ -24,9 +24,9 @@ Full gem catalog with Context7 IDs and per-gem notes: [references/nlp-gem-catalo
 - Running transformer models locally (no API call) or via the Hugging Face Hub API
 
 **Don't use for:**
-- **The actual LLM chat/completion/embedding client** — use [ruby-llm/SKILL.md](../ruby-llm/SKILL.md)
+- **The actual LLM chat/completion/embedding client** — use [genai/references/ruby-llm/guide.md](../genai/references/ruby-llm/guide.md)
 - **RAG architecture, clause-level chunking pipeline design, pgvector schema, RRF orchestration** — use [genai/SKILL.md](../genai/SKILL.md); this skill supplies the tokenizer/tagger/scorer *inside* that pipeline, it doesn't design the pipeline
-- **General Ruby code** — use the [`rubyist` gateway agent](../../agents/rubyist.md)
+- **General Ruby code** — use the [`rubyist` orchestrator agent](../../agents/rubyist.md)
 - **Document extraction from PDF/DOCX/images** (OCR, format conversion) — that's document intelligence, not language processing; use [data-engineer/SKILL.md](../data-engineer/SKILL.md) or a dedicated extraction tool, then hand the extracted text to this skill
 
 ## Gem Categories

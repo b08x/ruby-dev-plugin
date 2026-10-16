@@ -53,7 +53,7 @@ end
 
 **Embedder** (`embedder.rb`):
 
-The embedder's job here is RAG-specific: turn a `Failure`/`Success`-wrapped, typed `EmbeddingResult` into something `indexer.rb` and `retriever.rb` can rely on. The actual LLM call — client construction, circuit breaker, OTel span, retry/error handling — is `ruby_llm`-specific and documented in [ruby-llm/SKILL.md](../../ruby-llm/SKILL.md) (see "Embeddings" and "Resilience: Circuit Breaker"); this template only shows the seam between that client and the RAG pipeline's own types:
+The embedder's job here is RAG-specific: turn a `Failure`/`Success`-wrapped, typed `EmbeddingResult` into something `indexer.rb` and `retriever.rb` can rely on. The actual LLM call — client construction, circuit breaker, OTel span, retry/error handling — is `ruby_llm`-specific and documented in [ruby-llm/guide.md](ruby-llm/guide.md) (see "Embeddings" and "Resilience: Circuit Breaker"); this template only shows the seam between that client and the RAG pipeline's own types:
 
 ```ruby
 # frozen_string_literal: true
@@ -81,14 +81,14 @@ module MyApp
       include Dry::Monads[:result]
 
       def initialize(llm_client:, model: "text-embedding-3-small")
-        @llm_client = llm_client # a ruby_llm-backed client per ../../ruby-llm/SKILL.md, injected — this class doesn't construct it
+        @llm_client = llm_client # a ruby_llm-backed client per ruby-llm/guide.md, injected — this class doesn't construct it
         @model = model
       end
 
       def embed(text)
         return Failure([:empty_text, "Text cannot be empty"]) if text.nil? || text.empty?
 
-        result = @llm_client.embed(text, model: @model) # circuit breaker + tracing live inside llm_client, per ruby-llm/SKILL.md
+        result = @llm_client.embed(text, model: @model) # circuit breaker + tracing live inside llm_client, per ruby-llm/guide.md
         Success(EmbeddingResult.new(
           embedding: result.vectors,
           model: @model,

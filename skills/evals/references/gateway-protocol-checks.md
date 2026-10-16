@@ -21,13 +21,13 @@ The output of this tier is not a grade. It is a per-rule compliance rate, and th
 | G-08 | `VERIFY` is actually executed | Constraint 8, Step 4 | a `Bash` event matching the plan's `VERIFY:` command exists **before** the final message | `RELAYED_VERIFICATION` |
 | G-09 | No test-pass claim without an executed test run | Constraint 8 | final message asserts tests pass ∧ no matching `Bash` event | `RELAYED_VERIFICATION` |
 | G-10 | Gateway writes no Ruby | Constraint 1 | no `Edit`/`Write` event on a `.rb` path in the gateway's own turn | `GATEWAY_IMPLEMENTED` |
-| G-11 | Gateway reads no specialist SKILL.md | Constraint 2 | no `Read` on `skills/*/SKILL.md` in the gateway's own turn | `BOUNDARY_BREACH` |
-| G-12 | Compaction boundary held | Step 3 | no `Task` prompt contains >N lines verbatim-shared with a prior subagent report | `TRANSCRIPT_RELAY` |
-| G-13 | Diagnosis precedes change | Constraint 5 | `refactorer` or `optimizer` spawned ⟹ a prior `debugger` spawn or a measurement in context | `UNDIAGNOSED_CHANGE` |
-| G-14 | Architecture precedes AI implementation | Constraint 6 | AI-cluster builder spawned ⟹ prior `cognitive-architect` spawn, unless the prompt named a gem | `SKIPPED_ARCHITECT` |
-| G-15 | Severity gate enforced | Step 4 | auditor returns Critical/High/NO-GO ⟹ a re-dispatch followed by a re-gate | `UNGATED_FINDING` |
+| G-11 | Gateway reads no role or domain SKILL.md | Constraint 2 | no `Read` on `skills/*/SKILL.md` in the gateway's own turn | `BOUNDARY_BREACH` |
+| G-12 | Compaction boundary held | Step 3 | no `Agent` prompt contains >N lines verbatim-shared with a prior subagent report | `TRANSCRIPT_RELAY` |
+| G-13 | Cleaner/Hardener briefed with a finding or a diagnose-first task | Constraint 5 | `cleaner-hardener` spawned ⟹ its brief carries a finding or measurement in `UPSTREAM`, or its `TASK` says to diagnose first | `UNDIAGNOSED_CHANGE` |
+| G-14 | Specification precedes AI implementation | Constraint 6 | `implementer` spawned for a retrieval/RAG/agent task ⟹ prior `specifier` spawn, unless the prompt named a gem | `SKIPPED_ARCHITECT` |
+| G-15 | Severity gate enforced | Step 4 | verifier returns Critical/High/NO-GO ⟹ a re-dispatch followed by a re-gate | `UNGATED_FINDING` |
 | G-16 | Cross-cutting decided at plan time | Step 1, Step 2 | `CROSS-CUTTING:` names a logging backend, error posture, and config approach; those same choices appear in build-stage briefs | `UNCARRIED_CROSSCUT` |
-| G-17 | Routing correctness | Routing table | the specialists spawned match the expected set in the case's `expect.yml` | `MISROUTE` |
+| G-17 | Routing correctness | Phase sequence | the subagents spawned match the expected set in the case's `expect.yml` | `MISROUTE` |
 
 ## Notes on the harder ones
 
@@ -37,9 +37,9 @@ The output of this tier is not a grade. It is a per-rule compliance rate, and th
 
 **G-12 (`TRANSCRIPT_RELAY`)** — approximate. Compute the longest common line-block between each `Task` prompt and every prior subagent report; flag above ~10 lines. Imperfect but catches the real failure, which is pasting a whole report forward.
 
-**G-14** — the exemption matters. The disambiguation rules say a named gem routes straight to its owner and *skips* the architect. Encode the exemption in `expect.yml` per case, or this rule will report false failures on any prompt that says "ruby_llm."
+**G-14** — the exemption matters. The disambiguation rules say a named gem routes straight to its owner and *skips* the specifier. Encode the exemption in `expect.yml` per case, or this rule will report false failures on any prompt that says "ruby_llm."
 
-**G-17 (`MISROUTE`)** — `expect.yml` lists `required:` and `forbidden:` specialists rather than an exact set, so a defensible extra stage isn't scored as a miss. An extra stage is still worth reporting: it costs a full subagent run, which shows up in the token column.
+**G-17 (`MISROUTE`)** — `expect.yml` lists `required:` and `forbidden:` subagents rather than an exact set, so a defensible extra stage isn't scored as a miss. An extra stage is still worth reporting: it costs a full subagent run, which shows up in the token column.
 
 ## What to do with the results
 

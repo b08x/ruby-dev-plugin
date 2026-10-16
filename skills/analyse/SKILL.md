@@ -73,7 +73,7 @@ Each diagnostic method produces a type-safe finding (`GembaFinding`, `MudaFindin
 **Don't use for:**
 - Quality assessment (use [sift/SKILL.md](../sift/SKILL.md) instead)
 - Making diagnosed-slow code faster (hand off to [perf/SKILL.md](../perf/SKILL.md) with the suspected hotspot)
-- Direct code generation (use the [`rubyist` gateway agent](../../agents/rubyist.md))
+- Direct code generation (use the [`rubyist` orchestrator agent](../../agents/rubyist.md))
 - Refactoring without diagnosis (always diagnose first)
 - Convention fixes (use [refactor/SKILL.md](../refactor/SKILL.md) after diagnosis)
 
@@ -319,9 +319,9 @@ The refactor skill reads the keyed findings and applies targeted fixes.
 - `analyse` produces findings → `refactor` applies fixes
 - Never refactor without running `analyse` first
 
-### With the `rubyist` Gateway
+### With the `rubyist` Orchestrator
 
-The [`rubyist` gateway agent](../../agents/rubyist.md) drives the full pipeline:
+The [`rubyist` orchestrator agent](../../agents/rubyist.md) drives the full pipeline:
 1. **Semantic Survey (L1)**: Determines Field-Tenor-Mode
 2. **Convention Detection (L2)**: Scans environment
 3. **Verification (L3)**: Queries Context7/DeepWiki inline for any non-stdlib gems encountered during analysis
@@ -389,9 +389,9 @@ Diagnose lib/my_app/ --scope=inventory
 
 | Dependency | If Unavailable | Fallback |
 |------------|---------------|----------|
-| [refactor/SKILL.md](../refactor/SKILL.md) | Not loaded or missing | Output findings as structured YAML in the response instead of dispatching to refactor. Each finding includes: `handoff_key`, `description`, `fix_strategy`, and `file_path`. The human or the `rubyist` gateway can apply fixes from this output. |
+| [refactor/SKILL.md](../refactor/SKILL.md) | Not loaded or missing | Output findings as structured YAML in the response instead of dispatching to refactor. Each finding includes: `handoff_key`, `description`, `fix_strategy`, and `file_path`. The human or the `rubyist` orchestrator can apply fixes from this output. |
 | Diagnostic workflow | Parent workflow not available | Run all 4 diagnostic methods (Gemba, Muda, Root-Cause, Five Whys) independently instead of relying on the workflow for ordering. Present results as a flat diagnostic report. |
-| [sift/SKILL.md](../sift/SKILL.md) | Holistic assessment not available | Surface the `handoff_key` findings directly. The `rubyist` gateway can pass them to sift manually. |
+| [sift/SKILL.md](../sift/SKILL.md) | Holistic assessment not available | Surface the `handoff_key` findings directly. The `rubyist` orchestrator can pass them to sift manually. |
 
 ## Common Pitfalls
 

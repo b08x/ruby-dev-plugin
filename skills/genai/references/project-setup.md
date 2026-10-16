@@ -12,7 +12,7 @@
 
 source "https://rubygems.org"
 
-# LLM client — see ../../ruby-llm/SKILL.md for the gem's own Gemfile fragment
+# LLM client — see ruby-llm/guide.md for the gem's own Gemfile fragment
 # (ruby_llm, ruby_llm-mcp, schematist, ruby_llm-rails, opentelemetry-instrumentation-ruby_llm)
 gem "ruby_llm"
 
@@ -26,7 +26,7 @@ gem "dspy"
 # Database
 gem "sequel"
 
-# MCP (server side — see ../../ruby-llm/SKILL.md for the MCP *client* side, ruby_llm-mcp)
+# MCP (server side — see ruby-llm/guide.md for the MCP *client* side, ruby_llm-mcp)
 gem "fast-mcp"
 
 # Resilience

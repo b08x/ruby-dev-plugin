@@ -82,7 +82,7 @@ Assessment results use type-safe dry-struct types (`DimensionScore`, `Assessment
 
 **Don't use for:**
 - **Root cause debugging** (use [analyse/SKILL.md](../analyse/SKILL.md) instead)
-- **Direct code generation** (use the [`rubyist` gateway agent](../../agents/rubyist.md))
+- **Direct code generation** (use the [`rubyist` orchestrator agent](../../agents/rubyist.md))
 - **Simple linting** (use `rubocop` directly)
 - **Performance profiling** (use `ruby-prof` or `stackprof`)
 
@@ -296,9 +296,9 @@ See [references/implementation-example.md](references/implementation-example.md)
 
 ## Integration with Other Skills
 
-### From the rubyist Gateway (Audit Gate)
+### From the rubyist Orchestrator (Verifier Gate)
 
-The [`rubyist` gateway agent](../../agents/rubyist.md) uses SIFT as its primary quality check within the pipeline:
+The [`rubyist` orchestrator agent](../../agents/rubyist.md) uses SIFT as its primary quality check within the pipeline:
 
 1. **Survey**: Codebase overview (gateway entry survey)
 2. **Evaluation**: Run this skill (audit gate)
@@ -309,14 +309,14 @@ The [`rubyist` gateway agent](../../agents/rubyist.md) uses SIFT as its primary 
 SIFT evaluates whatever findings it receives, making it agnostic to the source:
 
 - **From [analyse/SKILL.md](../analyse/SKILL.md)** — analyse produces `AnalysisSession` findings. SIFT evaluates whether those findings have been resolved.
-- **From the `rubyist` gateway (Audit Gate)** — the `rubyist` gateway calls SIFT for the quality check within its pipeline.
-- **From the `rubyist` gateway (do-and-judge)** — rubric + code. SIFT evaluates against the rubric.
+- **From the `rubyist` orchestrator (Audit Gate)** — the `rubyist` orchestrator calls SIFT for the quality check within its pipeline.
+- **From the `rubyist` orchestrator (do-and-judge)** — rubric + code. SIFT evaluates against the rubric.
 
 **Pattern**: [Any source produces findings] → SIFT evaluates → Score + recommendations
 
 ### With Do-and-Judge Loop
 
-When called by the [`rubyist` gateway agent](../../agents/rubyist.md) in a do-and-judge loop:
+When called by the [`rubyist` orchestrator agent](../../agents/rubyist.md) in a do-and-judge loop:
 
 1. **Meta-Judge** generates pre-evaluation rubric (YAML)
 2. **Builder** produces code
@@ -393,7 +393,7 @@ Assess --mode=backlog --output=github-issues.md
 | Dependency | If Unavailable | Fallback |
 |------------|---------------|----------|
 | No input findings provided | Caller didn't supply findings | Accept findings as structured input from the caller. If none arrive, run assessment using only the code surface — Structure and Idioms from direct inspection, Functionality from file-level analysis, Testing from test file presence. |
-| [`rubyist` gateway agent](../../agents/rubyist.md) | Gateway not driving a do-and-judge loop | Run SIFT as a single-pass evaluation. Output the score with recommendations but without the iteration rubric or SADD Verification Footer. The caller can trigger a re-evaluation manually. |
+| [`rubyist` orchestrator agent](../../agents/rubyist.md) | Orchestrator not driving a do-and-judge loop | Run SIFT as a single-pass evaluation. Output the score with recommendations but without the iteration rubric or SADD Verification Footer. The caller can trigger a re-evaluation manually. |
 | Do-and-Judge loop | Builder fails mid-loop | Output partial results with [`WARNING: Partial Assessment`] marking and include which iterations completed versus failed. |
 
 ## Common Pitfalls

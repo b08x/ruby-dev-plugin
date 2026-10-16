@@ -9,7 +9,7 @@ description: "Use when evaluating the ruby-dev plugin itself — establishing or
 
 Every other skill in this plugin evaluates Ruby. This one evaluates *the plugin*.
 
-`ruby-dev` is prompt-only: 15 agent files (`rubyist` gateway + 14 specialists) and 14 skill directories, no library code, no test suite. Its `AGENTS.md` says so outright — "validate changes by reading the Markdown for coherence." Reading for coherence is how a prompt acquires ten rules that nobody has ever exercised. This skill replaces that with measurement.
+`ruby-dev` is prompt-only: 5 agent files (the `rubyist` orchestrator + 4 phase subagents) and 17 skill directories, no library code, no test suite. Its `AGENTS.md` says so outright — "validate changes by reading the Markdown for coherence." Reading for coherence is how a prompt acquires ten rules that nobody has ever exercised. This skill replaces that with measurement.
 
 What gets measured is not the Markdown. It is whether the prompts **change what Claude Code produces** — on three separable axes:
 
@@ -29,7 +29,7 @@ The harness lives in a sibling repo, `~/WorkspaceV3/ruby-dev-evals`, as a standa
 
 **Don't use for:**
 - Evaluating Ruby code a user wrote — that is `sift`
-- Evaluating an LLM application's outputs — that is `genai` / `dspy-ruby` (`DSPy::Evals`)
+- Evaluating an LLM application's outputs — that is `genai` (DSPy guide, `DSPy::Evals`)
 - Editing plugin prompts. Findings go in a report; prompt edits are a separate session, with the baseline already in hand.
 
 ## Non-Negotiables

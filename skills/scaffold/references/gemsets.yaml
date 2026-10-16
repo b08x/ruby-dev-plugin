@@ -46,7 +46,7 @@ gemsets:
   llm_client_rubyllm:
     summary: Provider-agnostic LLM client — chat, tool calling, streaming, structured output, MCP client.
     gems: [ruby_llm, ruby_llm-mcp, ruby_llm-docker, schematist, shared_tools]
-    owning_skill: ruby-llm
+    owning_skill: genai
     use_when: Writing the prompt/response logic yourself — direct, imperative LLM calls.
     status: owned
     decision_rules: [ruby_llm_vs_dspy]
@@ -54,7 +54,7 @@ gemsets:
   llm_programs_dspy:
     summary: Typed LLM programs — Sorbet signatures, predictors, Toolsets, evals, prompt optimization (dspy.rb).
     gems: [dspy, dspy-openai, dspy-gemini, dspy-ruby_llm, dspy-code_act, dspy-evals, dspy-gepa, dspy-o11y-langfuse, dspy-schema]
-    owning_skill: dspy-ruby
+    owning_skill: genai
     use_when: The task is a typed transformation the model should be compiled/optimized against, not hand-tuned prompt strings.
     status: owned
     decision_rules: [ruby_llm_vs_dspy]
@@ -284,8 +284,8 @@ decision_rules:
       optimizer (MIPROv2, GEPA) can rewrite, rather than hand-tuning a prompt
       string. dspy-ruby_llm bridges the two: dspy programs running on a
       configured ruby_llm client, so they compose rather than compete. This
-      rule is already encoded at length in ruby-llm/SKILL.md and
-      dspy-ruby/SKILL.md's own "Don't use for" sections — this entry exists
+      rule is already encoded at length in genai/references/ruby-llm/guide.md and
+      genai/references/dspy-ruby/guide.md's own "Don't use for" sections — this entry exists
       so the gemset registry doesn't have to be read alongside both skills to
       find it.
     full_writeup: gem-whitelist.md#ruby_llm-vs-dspyrb

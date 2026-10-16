@@ -1,13 +1,13 @@
 ---
 name: genai
-description: "Use when scaffolding AI/RAG components in Ruby - retrieval pipeline architecture, LLM agents, neuro-symbolic processors, MCP servers, pgvector integration. Prioritizes clause-level granularity (SFL), RRF hybrid retrieval, and verified gem APIs (dspy.rb, fast-mcp). For the LLM client itself see ruby-llm; for tokenization/tagging/lexical tools see ruby-nlp."
+description: "Use for Ruby AI/LLM work - retrieval pipeline architecture (RAG, RRF hybrid retrieval, clause-level SFL chunking, pgvector), LLM agents, MCP servers, the RubyLLM client (multi-provider chat, tool calling, streaming, embeddings, structured output, acts_as_chat, MCP client), and typed dspy.rb programs (Sorbet signatures, Predict/ChainOfThought/ReAct/CodeAct, DSPy::Module, Toolsets, DSPy::Evals, MIPROv2/GEPA). Trigger on 'RAG', 'LLM agent', 'semantic search', 'ruby_llm', 'RubyLLM.chat', 'tool calling', 'structured output', 'acts_as_chat', 'MCP client', 'dspy', 'DSPy::Signature', 'typed LLM output', 'prompt optimization', 'GEPA', 'MIPROv2'. For tokenization/tagging/lexical tools see ruby-nlp."
 ---
 
 # RubyDev GenAI — AI/NLP Component Scaffolding
 
 ## Overview
 
-This skill scaffolds **AI/NLP components** in Ruby with verified APIs and architectural best practices. It embodies "The Cognitive Architect" persona: structured, modern, and evidence-based. This skill implements **Systemic Functional Linguistics (SFL)** principles for clause-level semantic processing and **Reciprocal Rank Fusion (RRF)** for hybrid retrieval.
+This skill scaffolds **AI/NLP components** in Ruby with verified APIs and architectural best practices. It is the architecture layer of the `genai` skill: structured, modern, and evidence-based. This skill implements **Systemic Functional Linguistics (SFL)** principles for clause-level semantic processing and **Reciprocal Rank Fusion (RRF)** for hybrid retrieval.
 
 **Core Mandate**: Treat the clause, not the document, as the primary unit of meaning.
 
@@ -18,28 +18,42 @@ This skill scaffolds **AI/NLP components** in Ruby with verified APIs and archit
 - **Embeddings**: Semantic search, similarity scoring, clustering
 - **MCP servers**: Model Context Protocol tool servers
 - **Neuro-symbolic**: Combining neural (LLMs) with symbolic (knowledge graphs)
-- **DSPy workflows**: Structured prompting and optimization — *architecture only*; for the dspy.rb API itself see [dspy-ruby/SKILL.md](../dspy-ruby/SKILL.md)
+- **DSPy workflows**: Structured prompting and optimization — *architecture only*; for the dspy.rb API itself see [DSPy guide](references/dspy-ruby/guide.md)
 - **Hybrid retrieval**: Semantic + keyword search with RRF
 
 **Don't use for:**
-- **General Ruby code** (use the [`rubyist` gateway agent](../../agents/rubyist.md))
+- **General Ruby code** (use the [`rubyist` orchestrator agent](../../agents/rubyist.md))
 - **Data pipelines without AI** (use [data-engineer/SKILL.md](../data-engineer/SKILL.md))
 - **Frontend AI clients** (this is for Ruby backends)
 - **Python AI code** (this is Ruby-specific)
-- **The `ruby_llm` client itself** — chat/tool-calling/streaming/embeddings API, circuit breakers and OpenTelemetry tracing around it, Rails persistence, MCP client integration — use [ruby-llm/SKILL.md](../ruby-llm/SKILL.md); this skill treats `ruby_llm` as the LLM client its pipelines call, but doesn't own that client's API surface
-- **dspy.rb signatures, predictors, Toolsets, `DSPy::Evals`, or MIPROv2/GEPA optimization** — use [dspy-ruby/SKILL.md](../dspy-ruby/SKILL.md); this skill owns retrieval and pipeline architecture, and calls dspy.rb *after* retrieval with the context as a typed input field
+- **The `ruby_llm` client itself** — chat/tool-calling/streaming/embeddings API, circuit breakers and OpenTelemetry tracing around it, Rails persistence, MCP client integration — use [RubyLLM guide](references/ruby-llm/guide.md); this skill treats `ruby_llm` as the LLM client its pipelines call, but doesn't own that client's API surface
+- **dspy.rb signatures, predictors, Toolsets, `DSPy::Evals`, or MIPROv2/GEPA optimization** — use [DSPy guide](references/dspy-ruby/guide.md); this skill owns retrieval and pipeline architecture, and calls dspy.rb *after* retrieval with the context as a typed input field
 - **Tokenization, sentence segmentation, POS/dependency tagging, WordNet lookup, fuzzy/TF-IDF/BM25 scoring, topic modeling, or transformer inference** — use [ruby-nlp/SKILL.md](../ruby-nlp/SKILL.md); this skill's clause-level pipeline consumes those tools but doesn't own their API surface
+
+## Sections of this skill
+
+This skill covers three layers. Load only the one the task needs; the guides are long and are meant to be read on demand.
+
+| Layer | Use when | Read |
+|---|---|---|
+| Architecture (this file) | RAG, agents, retrieval, MCP server design, deciding which store/client/program layer builds what | the rest of this file |
+| RubyLLM client | `ruby_llm` chat, tool calling, streaming, embeddings, structured output, Rails persistence (`acts_as_chat`), MCP client (`ruby_llm-mcp`) | [references/ruby-llm/guide.md](references/ruby-llm/guide.md) |
+| DSPy programs | Sorbet-typed signatures, Predict/ChainOfThought/ReAct/CodeAct, `DSPy::Module`, Toolsets, `DSPy::Evals`, MIPROv2/GEPA | [references/dspy-ruby/guide.md](references/dspy-ruby/guide.md); API snapshots under `references/dspy-ruby/api/`, `references/dspy-ruby/documentation/`, `references/dspy-ruby/codebase_analysis/` |
+
+A named gem selects its layer directly and skips the architecture pass: "dspy" or `DSPy::` goes to the DSPy guide; "ruby_llm" or `RubyLLM.chat` goes to the RubyLLM guide. A system-level request ("RAG pipeline", "LLM agent", "semantic search") starts here, in the architecture layer, and produces a component plan before any builder layer is used. DSPy runs after retrieval and takes the retrieved context as a typed input field.
+
+---
 
 ## Required Gems
 
-All gems listed below MUST have their API verified via Context7 MCP (or DeepWiki for the gem's GitHub repo) **at the point of use** — there is no central registry or verification skill to dispatch to. Query inline before writing code against any of these. For the `ruby_llm` client gem itself and its ecosystem (tool calling, streaming, structured output, Rails/MCP integration, tracing), see [ruby-llm/SKILL.md](../ruby-llm/SKILL.md)'s own gem table instead. For tokenization, tagging, lexical, or scoring gems, see [ruby-nlp/SKILL.md](../ruby-nlp/SKILL.md)'s own gem table instead.
+All gems listed below MUST have their API verified via Context7 MCP (or DeepWiki for the gem's GitHub repo) **at the point of use** — there is no central registry or verification skill to dispatch to. Query inline before writing code against any of these. For the `ruby_llm` client gem itself and its ecosystem (tool calling, streaming, structured output, Rails/MCP integration, tracing), see [RubyLLM guide](references/ruby-llm/guide.md)'s own gem table instead. For tokenization, tagging, lexical, or scoring gems, see [ruby-nlp/SKILL.md](../ruby-nlp/SKILL.md)'s own gem table instead.
 
 | Gem | Purpose | Context7 Library ID | Status |
 |:----|:--------|:-------------------|:-------|
 | `pgvector` | Vector embeddings in PostgreSQL | `/pgvector/pgvector-ruby` | ✅ Verified |
 | `sequel` | Database abstraction | `/jeremyevans/sequel` | ✅ Verified |
 | `fast-mcp` | MCP server framework | `/tompng/fast-mcp` | ✅ Verified |
-| `dspy.rb` | Structured prompting (Ruby port) — API surface owned by [dspy-ruby/SKILL.md](../dspy-ruby/SKILL.md) | `/vicentereig/dspy.rb` | ✅ Verified |
+| `dspy.rb` | Structured prompting (Ruby port) — API surface owned by [DSPy guide](references/dspy-ruby/guide.md) | `/vicentereig/dspy.rb` | ✅ Verified |
 | `circuit_breaker` | Fault tolerance | `/wsargent/circuit_breaker` | ✅ Verified |
 | `journald-logger` | Structured logging | `/theforeman/journald-logger` | ✅ Verified |
 | `dotenv` | Environment variables | `/bkeepers/dotenv` | ✅ Verified |
@@ -51,7 +65,7 @@ All gems listed below MUST have their API verified via Context7 MCP (or DeepWiki
 1. Verify each gem's API inline via Context7 MCP before use (no central dispatch step)
 2. Set environment variables (see `../../references/environment-variables.md`)
 3. Configure logging (see `../../references/logging-patterns.md`)
-4. For the LLM client itself (configuration, tool calling, tracing), see [ruby-llm/SKILL.md](../ruby-llm/SKILL.md)
+4. For the LLM client itself (configuration, tool calling, tracing), see [RubyLLM guide](references/ruby-llm/guide.md)
 
 ---
 
@@ -162,7 +176,7 @@ logger.info("embedding_generated", {
 
 ### 5. Distributed Tracing for LLM Calls
 
-A RAG pipeline has too many hops (retrieve, rerank, generate, tool-call) for latency logs alone to localize a slowdown — wrap each pipeline stage in its own OpenTelemetry span so the waterfall is visible across hops in one view (Honeycomb, Jaeger, Tempo, etc.), not just inside the LLM call itself. If the LLM client is `ruby_llm`, its auto-instrumentation gem and the exact tracing setup are covered in [ruby-llm/SKILL.md](../ruby-llm/SKILL.md) — this pipeline only needs its own outer spans around retrieve/rerank/generate/tool-call, the LLM call's own child span comes from that instrumentation.
+A RAG pipeline has too many hops (retrieve, rerank, generate, tool-call) for latency logs alone to localize a slowdown — wrap each pipeline stage in its own OpenTelemetry span so the waterfall is visible across hops in one view (Honeycomb, Jaeger, Tempo, etc.), not just inside the LLM call itself. If the LLM client is `ruby_llm`, its auto-instrumentation gem and the exact tracing setup are covered in [RubyLLM guide](references/ruby-llm/guide.md) — this pipeline only needs its own outer spans around retrieve/rerank/generate/tool-call, the LLM call's own child span comes from that instrumentation.
 
 ## Component Templates
 
@@ -253,7 +267,7 @@ end.sort_by { |i| -i[:final_score] }
 
 8. **No observability.** Log every LLM call with latency, token count, and cost estimates.
 
-9. **Tracing the LLM call but not the pipeline around it.** An LLM client's own instrumentation (see [ruby-llm/SKILL.md](../ruby-llm/SKILL.md) if using `ruby_llm`) auto-traces the API call itself; if you don't also wrap the surrounding retrieve/rerank/generate steps in your own spans, you still can't see where time went across the whole pipeline — only inside the LLM call.
+9. **Tracing the LLM call but not the pipeline around it.** An LLM client's own instrumentation (see [RubyLLM guide](references/ruby-llm/guide.md) if using `ruby_llm`) auto-traces the API call itself; if you don't also wrap the surrounding retrieve/rerank/generate steps in your own spans, you still can't see where time went across the whole pipeline — only inside the LLM call.
 
 ## Verification Checklist
 
@@ -262,7 +276,7 @@ end.sort_by { |i| -i[:final_score] }
 - [ ] RRF hybrid retrieval used (not pure semantic or pure keyword)
 - [ ] Circuit breakers wrap all LLM API calls
 - [ ] Structured logging with Journald (includes latency, tokens, model)
-- [ ] OpenTelemetry spans wrap each pipeline stage (retrieve, rerank, generate, tool call) — see [ruby-llm/SKILL.md](../ruby-llm/SKILL.md) for the LLM call's own instrumentation
+- [ ] OpenTelemetry spans wrap each pipeline stage (retrieve, rerank, generate, tool call) — see [RubyLLM guide](references/ruby-llm/guide.md) for the LLM call's own instrumentation
 - [ ] API keys loaded from ENV (not hardcoded)
 - [ ] Embeddings cached in database (not re-generated on every query)
 - [ ] Async used for concurrent operations (embedding generation, batch processing)
