@@ -1,6 +1,6 @@
 # ruby-dev
 
-**A task-driven Claude plugin routing Ruby work through 1 orchestrator (`rubyist`) and 4 phase subagents — specifier, implementer, cleaner-hardener, verifier — that load domain skills on demand.**
+**A task-driven Claude plugin routing Ruby work through 1 orchestrator (`rubyist`) and 5 phase subagents — specifier, implementer, cleaner, hardener, verifier — that load domain skills on demand.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Plugin Version](https://img.shields.io/badge/version-5.0.1-green.svg)](.claude-plugin/plugin.json)
@@ -32,23 +32,25 @@ The plugin follows an **orchestrator + phase subagent** pattern. `rubyist` is an
                  │  survey → plan → dispatch│
                  │  → compact → synthesize  │
                  └────────────┬─────────────┘
-     ┌────────────┬───────────┴──┬───────────────────┬────────────┐
-┌────▼─────┐  ┌───▼───────┐  ┌───▼──────────────┐  ┌─▼────────┐
-│specifier │→ │implementer│→ │ cleaner-hardener │→ │ verifier │
-│ Gherkin, │  │ tests +   │  │ CRAP score,      │  │ packwerk,│
-│ QA proc. │  │ code      │  │ mutant           │  │ SIFT,    │
-│ (no code)│  │           │  │                  │  │ cucumber │
-└──────────┘  └─────┬─────┘  └──────────────────┘  └──────────┘
+     ┌────────────┬───────────┴──┬───────────────┬──────────────┬────────────┐
+┌────▼─────┐  ┌───▼───────┐  ┌───▼─────┐  ┌──────▼─────┐  ┌─────▼────┐
+│specifier │→ │implementer│→ │ cleaner │→ │  hardener  │→ │ verifier │
+│ Gherkin, │  │ tests +   │  │ CRAP,   │  │ mutant,    │  │ packwerk,│
+│ STRIDE,  │  │ code,     │  │ CC      │  │ bundler-   │  │ Zeitwerk,│
+│ QA proc. │  │ gitleaks  │  │         │  │ audit,     │  │ SIFT,    │
+│ (no code)│  │           │  │         │  │ brakeman   │  │ cucumber │
+└──────────┘  └─────┬─────┘  └─────────┘  └────────────┘  └──────────┘
                     │ loads on demand
    scaffold · data-engineer · multi-db · tui · gui · ruby-nlp · genai · yardoc
 ```
 
 | Phase subagent | Role skill | Deterministic check | Writes code |
 |---|---|---|---|
-| `specifier` | `role-specifier` | `bundle exec cucumber --dry-run` | no |
-| `implementer` | `role-implementer` | `bundle exec rspec` or `rake test`, `bundle exec cucumber` | yes |
-| `cleaner-hardener` | `role-cleaner-hardener` | CRAP score (simplecov + rubocop complexity), `bundle exec mutant run` | yes |
-| `verifier` | `role-verifier` | `bundle exec packwerk check` (Rails projects with `package.yml`; otherwise reported not applicable), `bundle exec cucumber`, `bundle exec rubocop`, SIFT audit | no |
+| `specifier` | `role-specifier` | `bundle exec cucumber --dry-run`, STRIDE misuse scenarios present | no |
+| `implementer` | `role-implementer` | `bundle exec rspec` or `rake test`, `bundle exec cucumber`, `gitleaks` | yes |
+| `cleaner` | `role-cleaner` | CRAP score and CC (simplecov + rubocop complexity) | yes |
+| `hardener` | `role-hardener` | `bundle exec mutant run`, `bundle exec bundler-audit check`, `bundle exec brakeman` (Rails only) | tests only |
+| `verifier` | `role-verifier` | `bundle exec packwerk check` (Rails projects with `package.yml`; otherwise reported not applicable), Zeitwerk eager-load check, `bundle exec cucumber`, `bundle exec rubocop`, SIFT audit | no |
 
 ### Execution Pipeline
 
@@ -56,8 +58,9 @@ The plugin follows an **orchestrator + phase subagent** pattern. `rubyist` is an
 2. **Plan** — A dispatch plan is emitted before any subagent is spawned: which subagents, in what order, what each receives and returns
 3. **Dispatch** — Each stage runs as a phase subagent in isolated context, receiving a compact brief (`TASK` / `PATHS` / `CONSTRAINTS` / `UPSTREAM` / `RETURN`)
 4. **Report** — Every subagent returns a structured `CHANGED` / `FINDINGS` / `UNRESOLVED` / `NEXT` block. `rubyist` is the compaction boundary: briefs carry summaries, never transcripts
-5. **Verify** — SIFT quality gate by `verifier`, in a fresh context so the audit is independent of the builder's assumptions
-6. **Synthesize** — `rubyist` reports what changed, the verifier verdict, and anything unresolved
+5. **Gate** — After every stage the orchestrator runs a scope check against a pre-dispatch baseline and the stage's gate from [`references/quality-gates.md`](references/quality-gates.md); a blocking failure rolls back to the named phase (at most 2 rollbacks per gate, then it asks you). The route pauses after the `specifier` for your approval unless you pass `--no-checkpoint`. `/ruby-gate <phase> [--base <ref>]` runs one gate and the scope check on its own
+6. **Verify** — SIFT quality gate by `verifier`, in a fresh context so the audit is independent of the builder's assumptions
+7. **Synthesize** — `rubyist` reports what changed, the verifier verdict, and anything unresolved
 
 Non-stdlib gem APIs are verified via Context7 MCP or DeepWiki at the point of use, inside whichever subagent writes the code.
 
@@ -120,7 +123,7 @@ Use the verifier agent to run a SIFT quality audit on lib/my_app.rb
 ```
 
 ```
-Use the cleaner-hardener agent to profile and reduce allocations in the hot path
+Use the cleaner agent to profile and reduce allocations in the hot path
 ```
 
 ### Skill Reference
@@ -149,10 +152,11 @@ Shared conventions live in `references/` at the plugin root (dry-rb, OOD, loggin
 
 | Agent | Role | Loads |
 |-------|------|-------|
-| `rubyist` | Orchestrator | none (dispatches only the four below) |
+| `rubyist` | Orchestrator | none (dispatches only the five below) |
 | `specifier` | Gherkin acceptance scenarios, QA procedures, component plans | `role-specifier` → `genai` (architecture), `multi-db`, `analyse` |
 | `implementer` | Unit tests and production code | `role-implementer` → `scaffold`, `data-engineer`, `multi-db`, `tui`, `gui`, `ruby-nlp`, `genai`, `yardoc` |
-| `cleaner-hardener` | Diagnose, refactor to a CRAP threshold, mutation-test | `role-cleaner-hardener` → `analyse`, `refactor`, `perf`, `evals` |
+| `cleaner` | Diagnose, refactor to a CRAP threshold | `role-cleaner` → `analyse`, `refactor`, `perf`, `evals` |
+| `hardener` | Mutation-test, `bundler-audit`, `brakeman` | `role-hardener` |
 | `verifier` | Dependency rules, SIFT audit, acceptance tests; no code | `role-verifier` → `sift`, `analyse` |
 
 ## Code Conventions

@@ -7,7 +7,7 @@ description: "Internal phase skill, loaded by the `implementer` subagent; do not
 
 ## Purpose
 
-Write the unit tests and the production code that make the Specifier's Gherkin scenarios pass. The first implementation does not need to be clean; the Cleaner/Hardener phase refactors it.
+Write the unit tests and the production code that make the Specifier's Gherkin scenarios pass. The first implementation does not need to be clean; the Cleaner phase refactors it and the Hardener phase tests it.
 
 ## Inputs
 
@@ -27,8 +27,12 @@ Write the unit tests and the production code that make the Specifier's Gherkin s
 | Unit test runner (RSpec projects) | `rspec` | `bundle exec rspec` | `gem install rspec` |
 | Unit test runner (Minitest projects) | `minitest` | `bundle exec rake test` | bundled with Ruby; add `rake` to the `Gemfile` |
 | Gherkin acceptance runner | `cucumber` | `bundle exec cucumber` | `gem install cucumber` |
+| Secret scan over the diff | `gitleaks` | `gitleaks detect --no-git --source <PATHS>` | install from the gitleaks release page (not a gem) |
+| Cyclomatic complexity per method (report-only) | `rubocop` | `bundle exec rubocop --only Metrics/CyclomaticComplexity --format json` with `Metrics/CyclomaticComplexity: { Max: 1 }` in a temporary config | `gem install rubocop` |
 
 Use the runner the project already has. For a new project, default to RSpec. Both runners must pass before reporting when `features/` exists. Lite and docs-only work with no tests or features is checked with `ruby -c` on every touched file. A failing scenario is fixed in code, never edited away; if a scenario is wrong, report it under `UNRESOLVED` and let the orchestrator return it to the Specifier.
+
+The gate row is in `${CLAUDE_PLUGIN_ROOT}/references/quality-gates.md` (row: implementer). `gitleaks` must report zero findings; when it is not installed, report `not run: gitleaks unavailable`, never a pass. Report the worst per-method CC as a report-only line (target <= 4); a higher value does not block, and the Cleaner handles it.
 
 ## Task-to-skill loading
 
@@ -51,4 +55,4 @@ A named gem in the brief selects its guide directly. Generating embeddings is `g
 
 ## Report
 
-Follows `${CLAUDE_PLUGIN_ROOT}/references/subagent-mandates.md`. `FINDINGS` states the exact commands run and their pass counts. `NEXT` names the files the Cleaner/Hardener should target.
+Follows `${CLAUDE_PLUGIN_ROOT}/references/subagent-mandates.md`. `FINDINGS` states the exact commands run and their pass counts. `FINDINGS` also states the gate name (`implementer: suite + gitleaks`), the gitleaks result, and the worst per-method CC. `NEXT` names the files the Cleaner should target.

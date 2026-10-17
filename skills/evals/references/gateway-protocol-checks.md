@@ -23,11 +23,14 @@ The output of this tier is not a grade. It is a per-rule compliance rate, and th
 | G-10 | Gateway writes no Ruby | Constraint 1 | no `Edit`/`Write` event on a `.rb` path in the gateway's own turn | `GATEWAY_IMPLEMENTED` |
 | G-11 | Gateway reads no role or domain SKILL.md | Constraint 2 | no `Read` on `skills/*/SKILL.md` in the gateway's own turn | `BOUNDARY_BREACH` |
 | G-12 | Compaction boundary held | Step 3 | no `Agent` prompt contains >N lines verbatim-shared with a prior subagent report | `TRANSCRIPT_RELAY` |
-| G-13 | Cleaner/Hardener briefed with a finding or a diagnose-first task | Constraint 5 | `cleaner-hardener` spawned ⟹ its brief carries a finding or measurement in `UPSTREAM`, or its `TASK` says to diagnose first | `UNDIAGNOSED_CHANGE` |
+| G-13 | Cleaner briefed with a finding or a diagnose-first task | Constraint 5 | `cleaner` spawned ⟹ its brief carries a finding or measurement in `UPSTREAM`, or its `TASK` says to diagnose first | `UNDIAGNOSED_CHANGE` |
 | G-14 | Specification precedes AI implementation | Constraint 6 | `implementer` spawned for a retrieval/RAG/agent task ⟹ prior `specifier` spawn, unless the prompt named a gem | `SKIPPED_ARCHITECT` |
 | G-15 | Severity gate enforced | Step 4 | verifier returns Critical/High/NO-GO ⟹ a re-dispatch followed by a re-gate | `UNGATED_FINDING` |
 | G-16 | Cross-cutting decided at plan time | Step 1, Step 2 | `CROSS-CUTTING:` names a logging backend, error posture, and config approach; those same choices appear in build-stage briefs | `UNCARRIED_CROSSCUT` |
 | G-17 | Routing correctness | Phase sequence | the subagents spawned match the expected set in the case's `expect.yml` | `MISROUTE` |
+| G-18 | Checkpoint after the specifier | Constraint 11 | route has `specifier` and `implementer` and no `--no-checkpoint` ⟹ no `implementer` spawn until the user approves after the specifier's report | `SKIPPED_CHECKPOINT` |
+| G-19 | Scope check after every stage | Constraint 10 | after each subagent return, a `Bash` event runs `git diff`/`git status` against the recorded baseline before the next spawn | `UNCHECKED_SCOPE` |
+| G-20 | Rollback is capped | Constraint 12 | at most 2 re-dispatches of a rollback target for the same gate; a third dispatch ⟹ violation | `ROLLBACK_OVERRUN` |
 
 ## Notes on the harder ones
 

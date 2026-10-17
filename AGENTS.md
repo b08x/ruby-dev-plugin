@@ -1,13 +1,13 @@
 # ruby-dev-plugin
 
-Claude plugin providing 1 orchestrator agent, 4 phase subagents, and 13 domain skills for Ruby development workflows. Pure Markdown — no executable code, no build step.
+Claude plugin providing 1 orchestrator agent, 5 phase subagents, and 13 domain skills for Ruby development workflows. Pure Markdown — no executable code, no build step.
 
 ## Project Structure
 
 ```
 .claude-plugin/plugin.json   — Plugin metadata (name, version, keywords)
-agents/                       — 5 agent prompts: the `rubyist` orchestrator + specifier, implementer, cleaner-hardener, verifier
-skills/                       — 13 domain skill directories + 4 role skills (`role-*`), each SKILL.md + references/
+agents/                       — 6 agent prompts: the `rubyist` orchestrator + specifier, implementer, cleaner, hardener, verifier
+skills/                       — 13 domain skill directories + 5 role skills (`role-*`), each SKILL.md + references/
 references/                   — shared conventions loaded by skills and agents alike
 ```
 
@@ -31,7 +31,7 @@ references/                   — shared conventions loaded by skills and agents
 
 ### Orchestrator Pattern
 
-`agents/rubyist.md` is the entry point. It is an orchestrator agent, not a skill: it runs in its own context, plans a dispatch route, and delegates every stage to one of 4 phase subagents in `agents/`, in the fixed order specifier → implementer → cleaner-hardener → verifier, skipping stages that do not apply. When a task spans multiple concerns, start at `rubyist`. A single-concern task may go straight to its domain skill.
+`agents/rubyist.md` is the entry point. It is an orchestrator agent, not a skill: it runs in its own context, plans a dispatch route, and delegates every stage to one of 5 phase subagents in `agents/`, in the fixed order specifier → implementer → cleaner → hardener → verifier, skipping stages that do not apply. When a task spans multiple concerns, start at `rubyist`. A single-concern task may go straight to its domain skill.
 
 ### Skill Reference Loading
 
