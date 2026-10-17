@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [6.0.0] - 2026-10-17
+
+### BREAKING
+
+* **`cleaner-hardener` split into `cleaner` and `hardener`.** `rubyist` now dispatches five phase subagents: `ruby-dev:specifier`, `ruby-dev:implementer`, `ruby-dev:cleaner`, `ruby-dev:hardener`, `ruby-dev:verifier`. The identifier `ruby-dev:cleaner-hardener` and the skill `role-cleaner-hardener` are removed.
+
+### Added
+
+* `references/quality-gates.md`: numeric gates per phase, rollback targets (at most 2 rollbacks per gate), and four scope-escalation triggers.
+* Orchestrator post-stage scope check (content-hash baseline snapshot) and post-specifier checkpoint; `--no-checkpoint` skips the pause.
+* `tasks/gate-check.md` and the `/ruby-gate <phase> [--base <ref>]` command.
+* Specifier STRIDE misuse scenarios; `gitleaks` in the implementer; `mutant`, `bundler-audit`, `brakeman` in the hardener; `packwerk` and Zeitwerk eager-load in the verifier (Rails).
+
+### Known gaps
+
+* Gates for `mutant`, `bundler-audit`, `brakeman`, and the Rails `packwerk`/Zeitwerk checks were not exercised end to end; they report `not run` when the tool is unavailable.
+
 ## [5.0.1] - 2026-10-16
 
 ### Fixed
