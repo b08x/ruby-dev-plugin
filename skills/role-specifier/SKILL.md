@@ -20,6 +20,7 @@ Convert requirements into structured acceptance criteria from the human user's p
 ## Outputs
 
 1. **Gherkin acceptance files** in `features/*.feature` (Given/When/Then), one feature per user-visible behavior, each scenario independently checkable.
+   **STRIDE misuse cases:** for every trust-boundary crossing (user input, network call, file read, external process, credential use), write one Gherkin scenario where an attacker or faulty input attempts Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, or Elevation of privilege, and state the expected rejection or containment. A feature with no trust-boundary crossing states that in `FINDINGS`. The gate row is in `${CLAUDE_PLUGIN_ROOT}/references/quality-gates.md` (row: specifier).
 2. **QA procedure document** in `features/qa-procedure.md`: numbered steps a person or script can run against the finished application through its user interface or CLI, each with an explicit expected result.
 3. **Component plan** (AI/retrieval systems only): the plan format below.
 
@@ -66,4 +67,4 @@ The component plan lets the Implementer be dispatched once per layer. When two l
 
 ## Report
 
-Follows `${CLAUDE_PLUGIN_ROOT}/references/subagent-mandates.md` (`CHANGED` / `FINDINGS` / `UNRESOLVED` / `NEXT`). `NEXT` lists the feature files the Implementer must make pass.
+Follows `${CLAUDE_PLUGIN_ROOT}/references/subagent-mandates.md` (`CHANGED` / `FINDINGS` / `UNRESOLVED` / `NEXT`). `FINDINGS` states the gate name (`specifier: STRIDE`) and the count of trust-boundary crossings with the count of misuse scenarios. `NEXT` lists the feature files the Implementer must make pass.

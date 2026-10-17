@@ -1,6 +1,6 @@
 # Subagent Mandates
 
-Shared by the four phase subagents (`specifier`, `implementer`, `cleaner-hardener`, `verifier`). Each subagent file links here instead of repeating this text.
+Shared by the five phase subagents (`specifier`, `implementer`, `cleaner`, `hardener`, `verifier`). Each subagent file links here instead of repeating this text.
 
 ## Core mandates
 
@@ -12,9 +12,9 @@ These apply to every task, regardless of what a skill file says:
 4. **Convention locking.** RuboCop/StandardRB compliant, `# frozen_string_literal: true` on the first line of every `.rb` file, Zeitwerk-compliant paths that match class names exactly.
 5. **Method visibility and naming discipline.** Default new methods to `private`; promote to `public` only when the method is a deliberate, stable part of the object's interface. Scale name length inversely with call frequency — short names for constantly-called methods, descriptive names for rare setup and configuration. Pure delegation forwards with `...` (`def foo(...) = bar(...)`) rather than re-declaring parameters.
 6. **Verify before reporting.** Check syntax with `ruby -c` on every `.rb` file you touched, and run the deterministic check your role owns (see the role skill).
-7. **Stay inside the brief.** Change only the paths and concerns named in `TASK` and `PATHS`. Report anything else you notice under `FINDINGS`; do not fix it. A brief that is narrow bounds what you were asked to do, not what you may do, so the limit is yours to hold.
+7. **Stay inside the brief.** Change only the paths and concerns named in `TASK` and `PATHS`. Report anything else you notice under `FINDINGS`; do not fix it. A brief that is narrow bounds what you were asked to do, not what you may do, so the limit is yours to hold. The orchestrator verifies this with a scope check after your report.
 
-Shared conventions live in this plugin's `references/` directory: `dry-rb-patterns.md`, `logging-patterns.md`, `environment-variables.md`, `ood-principles.md`, `rubysmith-scaffolding.md`, `pry-console.md`.
+Shared conventions live in this plugin's `references/` directory: `dry-rb-patterns.md`, `logging-patterns.md`, `environment-variables.md`, `ood-principles.md`, `rubysmith-scaffolding.md`, `pry-console.md`, `quality-gates.md`.
 
 ## Reporting back
 
@@ -26,5 +26,7 @@ FINDINGS: <what you determined, 2-5 bullets>
 UNRESOLVED: <what you could not do, and why — or "none">
 NEXT: <what the next stage must know — or "none">
 ```
+
+State your gate name and the measured value in `FINDINGS`. Gate thresholds are in `quality-gates.md`.
 
 Keep the report short enough that the orchestrator can pass it forward without re-summarizing it. Detail belongs in the files you changed, not in the report.

@@ -15,4 +15,4 @@ ${CLAUDE_PLUGIN_ROOT}/skills/role-specifier/SKILL.md
 
 Shared mandates and the report format live in `${CLAUDE_PLUGIN_ROOT}/references/subagent-mandates.md`. Read it and follow it.
 
-Return the compact `CHANGED` / `FINDINGS` / `UNRESOLVED` / `NEXT` report. For AI/retrieval systems, return the component plan from the role skill in addition.
+State the gate name (`specifier: STRIDE`) and the count of misuse scenarios against trust-boundary crossings in `FINDINGS`. Return the compact `CHANGED` / `FINDINGS` / `UNRESOLVED` / `NEXT` report. For AI/retrieval systems, return the component plan from the role skill in addition.
