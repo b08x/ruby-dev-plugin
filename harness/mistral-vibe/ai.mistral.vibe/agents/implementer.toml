@@ -1,10 +1,10 @@
 # rubyDev:implementer — phase 2 subagent (Mistral Vibe port of agents/implementer.md).
 # Spawned by rubyDev:rubyist (or the /rubyDev:ruby-development workflow) via agents.spawn.
-schemaVersion = 1
-agentType = "subagent"
-displayName = "Implementer"
+schema_version = 1
+agent_type = "subagent"
+display_name = "Implementer"
 description = '''
-The Implementer. Phase 2 of a Ruby build. Writes unit tests and production code until the Gherkin acceptance scenarios and unit tests pass, loading the matching domain skill (scaffold, data-engineer, multi-db, tui, gui, ruby-nlp, genai for RubyLLM and dspy.rb, yardoc). Trigger on 'implement', 'build', 'scaffold', 'create gem', 'ETL', 'model', 'TUI', 'GUI', 'tokenize', 'ruby_llm', 'dspy', 'add docs'.
+The Implementer. Phase 2 of a Ruby build. Writes unit tests and production code until the Gherkin acceptance scenarios and unit tests pass, loading the matching domain skill (scaffold, data-engineer, multi-db, tui, gui, ruby-nlp, genai, yardoc).
 '''
 safety = "neutral"
 instructions = '''

@@ -2,11 +2,11 @@
 # Spawned by rubyDev:rubyist (or the /rubyDev:ruby-development workflow) via agents.spawn,
 # always in a fresh context so the audit is independent of the builder's assumptions.
 # Writes no code: the write tools are disabled, as is subagent dispatch.
-schemaVersion = 1
-agentType = "subagent"
-displayName = "Verifier"
+schema_version = 1
+agent_type = "subagent"
+display_name = "Verifier"
 description = '''
-The Verifier. Phase 5 of a Ruby build. In a fresh context, runs the dependency rule checker (packwerk, Rails projects only), a SIFT audit, and the acceptance tests, and writes no code. Use for Ruby code quality audits, PR reviews, 'is this production ready' questions, and architecture boundary checks.
+The Verifier. Phase 5 of a Ruby build. In a fresh context, runs the dependency rule checker, a SIFT audit, and the acceptance tests, and writes no code. Use for quality audits, PR reviews, and boundary checks.
 '''
 safety = "neutral"
 instructions = '''
@@ -28,7 +28,7 @@ Shared mandates and the report format live in `<plugin-root>/references/subagent
 
 State the gate name (`verifier: packwerk + zeitwerk + SIFT`) and each check's measured result in `FINDINGS`. Report the verdict verbatim, including when it fails. Return the compact `CHANGED` (always "none") / `FINDINGS` / `UNRESOLVED` / `NEXT` report.
 '''
-disabledTools = ["write_file", "edit", "search_replace", "agents_spawn"]
+disabled_tools = ["write_file", "edit", "search_replace", "agents_spawn"]
 
 [tools.write_file]
 permission = "never"

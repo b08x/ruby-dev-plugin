@@ -1,10 +1,10 @@
 # rubyDev:specifier — phase 1 subagent (Mistral Vibe port of agents/specifier.md).
 # Spawned by rubyDev:rubyist (or the /rubyDev:ruby-development workflow) via agents.spawn.
-schemaVersion = 1
-agentType = "subagent"
-displayName = "Specifier"
+schema_version = 1
+agent_type = "subagent"
+display_name = "Specifier"
 description = '''
-The Specifier. Phase 1 of a Ruby build. Turns requirements into Gherkin acceptance scenarios (Given/When/Then) and written QA procedures; for AI/retrieval systems it also produces the component plan. Writes no production code. Trigger on 'write acceptance tests', 'Gherkin', 'feature file', 'QA procedure', 'spec this out', 'design the RAG pipeline', 'component plan'.
+The Specifier. Phase 1 of a Ruby build. Turns requirements into Gherkin acceptance scenarios and written QA procedures; for AI/retrieval systems also produces the component plan. Writes no production code.
 '''
 safety = "neutral"
 instructions = '''

@@ -54,7 +54,7 @@ below if the changed files contained them.
 | `/ruby-development`, `/ruby-gate` commands | user-invocable skills `rubyDev:ruby-development`, `rubyDev:ruby-gate` |
 | `${CLAUDE_PLUGIN_ROOT}/...` paths | `<plugin-root>/...` with a locate-the-root note, or relative paths (`../../references/...`, `../<skill>/SKILL.md`) |
 | `${CLAUDE_PLUGIN_ROOT}/skills/X/SKILL.md` loads | the `skill` tool with name `rubyDev:X` |
-| `tools:` frontmatter gating | `disabledTools` + `[tools.*] permission = "never"` (rubyist and verifier cannot edit files) |
+| `tools:` frontmatter gating | `disabled_tools` + `[tools.*] permission = "never"` (rubyist and verifier cannot edit files) |
 | `$ARGUMENTS` in commands | the text the user typed after the `/rubyDev:<skill-name>` invocation |
 
 Namespace: the manifest sets `toolNamespace = "rubyDev"`, so every component is
@@ -80,3 +80,13 @@ namespaced at runtime: skills `rubyDev:scaffold`, `rubyDev:role-implementer`,
 > built-ins; use whatever lookup surface the session has (web search, configured
 > MCP servers) instead. The rule itself is unchanged: verify non-stdlib gem APIs
 > at point of use, never assume them from memory.
+
+> **Agent TOML schema note (verified against the runtime):** the loader
+> (`vibe/core/plugins/_native.py::_PluginAgentDocument`) requires **snake_case**
+> keys — `schema_version`, `agent_type`, `display_name`, `enabled_tools`,
+> `disabled_tools`, `instructions` — with `extra = "forbid"` (any unknown key
+> rejects the whole file) and `description` capped at 300 characters.
+> The shipped `vibe:create-plugin` skill documents camelCase examples
+> (`schemaVersion`, `agentType`, …), which the runtime rejects; a rejected
+> agent file is dropped silently (`plugin.agent.invalid` is non-fatal), so
+> validate against this note, not the skill doc.

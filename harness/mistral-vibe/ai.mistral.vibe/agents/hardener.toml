@@ -1,10 +1,10 @@
 # rubyDev:hardener — phase 4 subagent (Mistral Vibe port of agents/hardener.md).
 # Spawned by rubyDev:rubyist (or the /rubyDev:ruby-development workflow) via agents.spawn.
-schemaVersion = 1
-agentType = "subagent"
-displayName = "Hardener"
+schema_version = 1
+agent_type = "subagent"
+display_name = "Hardener"
 description = '''
-The Hardener. Phase 4 of a Ruby build. Runs mutation testing and adds tests until surviving mutants are killed or justified, then runs bundler-audit and, for Rails projects, brakeman. Changes no production code. Trigger on 'mutation testing', 'surviving mutants', 'mutant', 'bundler-audit', 'brakeman', 'harden', 'dependency vulnerabilities'.
+The Hardener. Phase 4 of a Ruby build. Runs mutation testing and adds tests until surviving mutants are killed or justified, then bundler-audit and, for Rails, brakeman. Changes no production code.
 '''
 safety = "neutral"
 instructions = '''

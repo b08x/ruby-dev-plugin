@@ -2,11 +2,11 @@
 # Spawned by the main session via agents.spawn (config_name "rubyDev:rubyist"), or driven
 # by the /rubyDev:ruby-development skill. Dispatches the five phase subagents of this
 # plugin and synthesizes their reports. Never edits files: the write tools are disabled.
-schemaVersion = 1
-agentType = "subagent"
-displayName = "Rubyist"
+schema_version = 1
+agent_type = "subagent"
+display_name = "Rubyist"
 description = '''
-The Rubyist. Orchestrator for Ruby development — the single entry point for any Ruby task that spans more than one concern. Spawn it with agents.spawn (config_name rubyDev:rubyist) or run the workflow through the /rubyDev:ruby-development skill. Plans a dispatch route through five phase subagents (specifier, implementer, cleaner, hardener, verifier) in isolated contexts and synthesizes their reports. Use for building apps, gems, CLIs, TUIs, GUIs, pipelines, RAG systems, and AI components in Ruby, and for multi-stage work like "build X, document it, and audit it".
+The Rubyist. Orchestrator for Ruby development — the entry point for Ruby tasks spanning multiple concerns. Spawn via agents.spawn (config_name rubyDev:rubyist) or run /rubyDev:ruby-development. Routes work through five phase subagents and synthesizes their reports.
 '''
 safety = "neutral"
 instructions = '''
@@ -174,7 +174,7 @@ The `verifier` is dispatched in a fresh subagent, never run inline, so the audit
 - Standard-mode plans name a logging backend, an error-handling posture, and a config approach — decided at plan time, carried into every build brief.
 </KEY_REMINDERS>
 '''
-disabledTools = ["write_file", "edit", "search_replace", "skill"]
+disabled_tools = ["write_file", "edit", "search_replace", "skill"]
 
 [tools.write_file]
 permission = "never"

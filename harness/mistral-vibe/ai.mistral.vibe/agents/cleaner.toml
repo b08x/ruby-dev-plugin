@@ -1,10 +1,10 @@
 # rubyDev:cleaner — phase 3 subagent (Mistral Vibe port of agents/cleaner.md).
 # Spawned by rubyDev:rubyist (or the /rubyDev:ruby-development workflow) via agents.spawn.
-schemaVersion = 1
-agentType = "subagent"
-displayName = "Cleaner"
+schema_version = 1
+agent_type = "subagent"
+display_name = "Cleaner"
 description = '''
-The Cleaner. Phase 3 of a Ruby build. Diagnoses first, then refactors until the CRAP score meets a stated threshold. Also handles bug diagnosis, named refactorings, and measured performance work. Does no mutation testing or security scanning. Trigger on 'refactor', 'clean up', 'complexity', 'CRAP score', 'bug', 'Zeitwerk error', 'dead code', 'slow', 'profile', 'benchmark'.
+The Cleaner. Phase 3 of a Ruby build. Diagnoses first, then refactors until the CRAP score meets a stated threshold. Also handles bug diagnosis, named refactorings, and measured performance work. No mutation testing or security scanning.
 '''
 safety = "neutral"
 instructions = '''
