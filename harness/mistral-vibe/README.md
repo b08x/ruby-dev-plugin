@@ -17,8 +17,10 @@ harness/mistral-vibe/
   references/                 # shared conventions (verbatim copies)
   tasks/                      # workflow step files (paths rebound)
   ai.mistral.vibe/
-    agents/                   # 6 subagent TOML profiles: rubyist + specifier, implementer,
+    agents/                   # 5 phase subagent TOML profiles: specifier, implementer,
                               #   cleaner, hardener, verifier (ported from agents/*.md)
+  agents/rubyist.toml         # main-thread orchestrator agent profile (vibe --agent rubyist)
+  prompts/rubyist.md          # its system prompt (system_prompt_id = "rubyist")
 ```
 
 ## Install
@@ -35,8 +37,17 @@ Project-scope instead (only active inside a trusted project), from the project r
 mkdir -p .vibe/plugins && rsync -a --delete harness/mistral-vibe/ .vibe/plugins/ruby-dev/
 ```
 
+Install the main-thread orchestrator agent profile as well (a plugin can only ship
+subagents, so rubyist lives as a user agent profile):
+
+```bash
+cp harness/mistral-vibe/agents/rubyist.toml ~/.vibe/agents/rubyist.toml
+cp harness/mistral-vibe/prompts/rubyist.md ~/.vibe/prompts/rubyist.md
+```
+
 Then run `/reload-plugins` (or `/reload`) in the Vibe session and confirm with
-`/plugins` that `ruby-dev` shows up with skills and agents components.
+`/plugins` that `ruby-dev` shows up with skills and agents components; start the
+orchestrator with `vibe --agent rubyist`.
 
 After pulling upstream changes, re-run the same rsync command to refresh the
 installed copy, then diff the copies under `skills/`, `references/`, and `tasks/`
@@ -48,9 +59,9 @@ below if the changed files contained them.
 | Claude Code mechanism | Mistral Vibe mechanism |
 |---|---|
 | `.claude-plugin/plugin.json` | `plugin.json` (native format takes precedence in Vibe) |
-| `agents/*.md` (frontmatter agents) | `ai.mistral.vibe/agents/*.toml` subagent profiles |
+| `agents/*.md` (frontmatter agents) | 5 phase agents → `ai.mistral.vibe/agents/*.toml` subagents; rubyist → `~/.vibe/agents/rubyist.toml` main-thread agent |
 | `Agent(ruby-dev:X)` dispatch | `agents.spawn` tool with `config_name` `rubyDev:X` |
-| `rubyist` as main-thread agent (`claude --agent`) | `rubyist` is a subagent, spawned by the main session; Vibe subagents can nest-dispatch |
+| `rubyist` as main-thread agent (`claude --agent`) | `rubyist` is a user agent profile in `~/.vibe/agents/` (`vibe --agent rubyist`); the five phases remain plugin subagents |
 | `/ruby-development`, `/ruby-gate` commands | user-invocable skills `rubyDev:ruby-development`, `rubyDev:ruby-gate` |
 | `${CLAUDE_PLUGIN_ROOT}/...` paths | `<plugin-root>/...` with a locate-the-root note, or relative paths (`../../references/...`, `../<skill>/SKILL.md`) |
 | `${CLAUDE_PLUGIN_ROOT}/skills/X/SKILL.md` loads | the `skill` tool with name `rubyDev:X` |
@@ -59,13 +70,12 @@ below if the changed files contained them.
 
 Namespace: the manifest sets `toolNamespace = "rubyDev"`, so every component is
 namespaced at runtime: skills `rubyDev:scaffold`, `rubyDev:role-implementer`,
-`rubyDev:ruby-development`, `rubyDev:ruby-gate`; agents `rubyDev:rubyist`,
-`rubyDev:specifier`, `rubyDev:implementer`, `rubyDev:cleaner`,
+`rubyDev:ruby-development`, `rubyDev:ruby-gate`; agents `rubyDev:specifier`,, `rubyDev:implementer`, `rubyDev:cleaner`,
 `rubyDev:hardener`, `rubyDev:verifier`.
 
 ## Invariants preserved from upstream
 
-- The orchestrator (`rubyDev:rubyist`) never writes Ruby: its write tools are
+- The orchestrator (`rubyist`, the main-thread agent) never writes Ruby: its write tools are
   disabled and set to `permission = "never"`.
 - Each phase subagent loads its own role skill first
   (`rubyDev:role-<name>`), which carries the task-to-skill table; the

@@ -6,7 +6,7 @@ user-invocable: true
 
 # Ruby Development Workflow
 
-This skill is the deterministic counterpart to the `rubyDev:rubyist` orchestrator subagent:
+This skill is the deterministic counterpart to the `rubyist` orchestrator agent (`vibe --agent rubyist`):
 same protocol (Survey → Plan → Dispatch/Reconcile → Verify/Gate), but each stage is a task
 file read on demand, so the orchestrating context stays lean regardless of how large the
 underlying Ruby task is. The dispatched subagents are the five phase subagents of this

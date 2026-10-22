@@ -2,7 +2,7 @@
 
 ## Context
 You are the dispatch/reconcile stage of the `/rubyDev:ruby-development` workflow, mirroring the
-`rubyDev:rubyist` orchestrator's Step 3. The orchestrator is running you (or, more likely,
+`rubyist` orchestrator's Step 3. The orchestrator is running you (or, more likely,
 running this logic itself between `agents.spawn` calls — see Note below) after the Step 1 plan
 was confirmed.
 

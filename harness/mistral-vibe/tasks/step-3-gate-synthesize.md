@@ -1,7 +1,7 @@
 # Step 3: Gate and Synthesize
 
 ## Context
-You are the final stage of the `/rubyDev:ruby-development` workflow, mirroring the `rubyDev:rubyist`
+You are the final stage of the `/rubyDev:ruby-development` workflow, mirroring the `rubyist`
 orchestrator's Step 4. All subagent stages from Step 2 have returned.
 
 ## Goal

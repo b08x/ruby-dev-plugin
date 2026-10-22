@@ -1,5 +1,5 @@
 # rubyDev:verifier — phase 5 subagent (Mistral Vibe port of agents/verifier.md).
-# Spawned by rubyDev:rubyist (or the /rubyDev:ruby-development workflow) via agents.spawn,
+# Spawned by the rubyist orchestrator agent (vibe --agent rubyist) or the /rubyDev:ruby-development workflow, via agents.spawn,
 # always in a fresh context so the audit is independent of the builder's assumptions.
 # Writes no code: the write tools are disabled, as is subagent dispatch.
 schema_version = 1

@@ -2,7 +2,7 @@
 
 ## Context
 You are the Survey/Planning stage of the `/rubyDev:ruby-development` workflow — the deterministic
-counterpart to the `rubyDev:rubyist` orchestrator's Step 1 (Survey) and Step 2 (Emit the dispatch
+counterpart to the `rubyist` orchestrator's Step 1 (Survey) and Step 2 (Emit the dispatch
 plan). You are running in an isolated sub-agent context so the orchestrator's own context
 stays lean.
 
@@ -34,7 +34,7 @@ project, its root path.
    should match. These become `PRIOR-ART` fields for each stage's brief.
 
 5. **Route through the fixed phase sequence** — the same sequence and skip rules the
-   `rubyDev:rubyist` agent itself uses: `specifier` → `implementer` → `cleaner` → `hardener` →
+   `rubyist` agent itself uses: `specifier` → `implementer` → `cleaner` → `hardener` →
    `verifier`. Keep every phase the task needs and drop the rest, stating the reason for
    each skipped phase in the plan:
    - Lite mode skips `specifier` and `verifier`.
@@ -63,7 +63,7 @@ project, its root path.
 
 ## Expected Output
 
-Return exactly this structure (the same template the `rubyDev:rubyist` agent uses):
+Return exactly this structure (the same template the `rubyist` agent uses):
 
 ```
 ROUTE: <one line — what is being built or fixed>

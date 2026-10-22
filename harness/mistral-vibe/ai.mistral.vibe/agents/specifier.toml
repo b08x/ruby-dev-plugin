@@ -1,5 +1,5 @@
 # rubyDev:specifier — phase 1 subagent (Mistral Vibe port of agents/specifier.md).
-# Spawned by rubyDev:rubyist (or the /rubyDev:ruby-development workflow) via agents.spawn.
+# Spawned by the rubyist orchestrator agent (vibe --agent rubyist) or the /rubyDev:ruby-development workflow, via agents.spawn.
 schema_version = 1
 agent_type = "subagent"
 display_name = "Specifier"
