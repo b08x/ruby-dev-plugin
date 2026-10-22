@@ -1,0 +1,89 @@
+{
+  "stage": "interview",
+  "title": "Adapt ruby-dev-plugin for Antigravity CLI (agy)",
+  "goalSlug": "antigravity-port",
+  "questions": [
+    {
+      "id": "port-location",
+      "prompt": "Where should the Antigravity port be housed in this repository?",
+      "description": "Per AGENTS.md, foreign harness ports isolate their deltas in `harness/<name>/` (e.g. `harness/mistral-vibe/`) so upstream Claude Code plugin files at the root remain clean and mergeable.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Isolate in harness/antigravity/ (mirrors harness/mistral-vibe/; root stays untouched).",
+      "recommendedOptionIds": ["isolated-harness"],
+      "options": [
+        { "id": "isolated-harness", "label": "Isolate in harness/antigravity/ (mirrors harness/mistral-vibe/; root stays untouched)" },
+        { "id": "dual-root", "label": "Dual-home at repository root (add Antigravity files alongside Claude Code files)" }
+      ],
+      "required": true
+    },
+    {
+      "id": "orchestrator-dispatch",
+      "prompt": "How should the `rubyist` orchestrator be configured and dispatch the 5 phase subagents in Antigravity?",
+      "description": "In Antigravity CLI (`agy`), sessions can be launched with `--agent <name>`. Subagents can be dispatched using `invoke_subagent` (referencing agent types). In addition, `rubyist` must never edit `.rb` files directly.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Dual mode: deploy rubyist orchestrator profile for `agy --agent rubyist`, which dispatches the 5 phase subagents (specifier, implementer, cleaner, hardener, verifier) via invoke_subagent, with define_subagent fallback.",
+      "recommendedOptionIds": ["hybrid-dispatch"],
+      "options": [
+        { "id": "hybrid-dispatch", "label": "Dual mode: rubyist agent profile using invoke_subagent with define_subagent fallback for the 5 phase agents" },
+        { "id": "subagent-dispatch", "label": "Strict invoke_subagent only (assumes all 5 phase agents are pre-registered via the plugin)" },
+        { "id": "collapsed-single-agent", "label": "Single-agent collapse (orchestrator executes all 5 phases sequentially in one context)" }
+      ],
+      "required": true
+    },
+    {
+      "id": "command-mapping",
+      "prompt": "How should workflow commands (`/ruby-development` and `/ruby-gate`) be mapped to Antigravity?",
+      "description": "Antigravity has deprecated `.agents/workflows/` in favor of skills (`skills/<name>/SKILL.md`). In `harness/mistral-vibe`, commands were mapped to user-invocable skills.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Map as user-invocable skills (skills/ruby-development/SKILL.md and skills/ruby-gate/SKILL.md) inside the plugin.",
+      "recommendedOptionIds": ["skills-format"],
+      "options": [
+        { "id": "skills-format", "label": "Map as user-invocable skills (skills/ruby-development/SKILL.md, skills/ruby-gate/SKILL.md)" },
+        { "id": "orchestrator-inline", "label": "Inline command logic into rubyist orchestrator prompt only (no separate skills)" },
+        { "id": "both-skills-and-rules", "label": "Map as skills and add routing shortcuts to rules/AGENTS.md" }
+      ],
+      "required": true
+    },
+    {
+      "id": "path-and-variable-resolution",
+      "prompt": "How should upstream `${CLAUDE_PLUGIN_ROOT}` and relative file links be resolved for Antigravity?",
+      "description": "Upstream agent prompts and skills use `${CLAUDE_PLUGIN_ROOT}` to locate role skills, shared conventions (`references/`), and task files. In Antigravity plugins, assets reside in the plugin directory.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Relative Markdown links + plugin-root fallback instructions (works both globally in ~/.gemini/config/plugins and locally in .agents/plugins).",
+      "recommendedOptionIds": ["relative-and-runtime-root"],
+      "options": [
+        { "id": "relative-and-runtime-root", "label": "Relative Markdown links + plugin-root fallback instructions (works globally & locally)" },
+        { "id": "static-global-path", "label": "Standardized global install path (~/.gemini/config/plugins/ruby-dev/)" }
+      ],
+      "required": true
+    },
+    {
+      "id": "gem-verification-mcp",
+      "prompt": "How should non-stdlib gem API verification be specified in Antigravity prompts?",
+      "description": "Upstream specifies verifying non-stdlib gem APIs via Context7 MCP or DeepWiki. In Antigravity CLI, both Context7 and DeepWiki are available MCP servers (or web search fallback).",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Reference Context7 / DeepWiki MCP tools with search_web fallback.",
+      "recommendedOptionIds": ["mcp-with-fallback"],
+      "options": [
+        { "id": "mcp-with-fallback", "label": "Reference Context7 / DeepWiki MCP tools with search_web fallback" },
+        { "id": "strict-mcp", "label": "Require Context7 / DeepWiki MCP exclusively" }
+      ],
+      "required": true
+    },
+    {
+      "id": "validation-and-install-tooling",
+      "prompt": "What installation and validation tooling should be included with the port?",
+      "description": "To ensure the port works out of the box and does not regress, we can include automated checks and installation helpers.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "Install script (global and project-local), `agy plugin validate` validation, cleanliness grep check, and rubyist agent profile installer.",
+      "recommendedOptionIds": ["install-script", "agy-validate", "cleanliness-check", "sample-agy-agent"],
+      "options": [
+        { "id": "install-script", "label": "Install script supporting both global (~/.gemini/config/plugins/ruby-dev) and project-local (.agents/plugins/ruby-dev)" },
+        { "id": "agy-validate", "label": "Validation pass with `agy plugin validate`" },
+        { "id": "cleanliness-check", "label": "Automated grep check for untranslated Claude tokens (${CLAUDE_PLUGIN_ROOT}, claude --agent, Agent()" },
+        { "id": "sample-agy-agent", "label": "Helper to link/copy rubyist.md to ~/.gemini/agents/ for `agy --agent rubyist`" }
+      ],
+      "required": true
+    }
+  ]
+}
