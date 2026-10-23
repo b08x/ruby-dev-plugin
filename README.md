@@ -19,7 +19,7 @@
 - **Diagnostics** — Gemba Walk, Muda Analysis, Root-Cause Tracing, and Five Whys for systematic debugging
 - **Surgical Refactoring** — Named pattern catalog (Zeitwerk, async, frozen strings, resilience) with before/after transforms
 - **Performance Optimization** — Profile-Benchmark-Optimize cycle with stackprof and benchmark-ips; keeps only measured wins
-- **YARD Documentation** — AST-informed type inference generating @param, @return, @example, and @raise tags
+- **Documentation comments** — decode-style tags (@parameter, @returns, @raises, @yields, @example) with coverage measured by `bake decode:index:coverage`; existing YARD tags are converted
 - **SIFT Quality Audits** — Structure, Idioms, Functionality, Testing assessment with Toulmin evidence framework
 
 ## Architecture
@@ -144,7 +144,7 @@ Shared conventions live in `references/` at the plugin root (dry-rb, OOD, loggin
 | `analyse` | Debugging: Gemba Walk, Muda, Five Whys | 2 (types, examples) |
 | `refactor` | Named refactoring pattern catalog | 1 (pattern definitions) |
 | `perf` | Profiling, benchmarking, allocation reduction | 1 (optimization catalog) |
-| `yardoc` | YARD documentation generation | 6 (patterns, types, errors, logging, dry-struct, Context7) |
+| `yardoc` | decode-style documentation comments and YARD-to-decode conversion | 6 (decode tags, types, errors, logging, dry-struct, Context7) |
 | `evals` | Evaluation harness for the plugin itself | 6 (challenge design, fixtures, protocol checks, harness, scoring, reporting) |
 | `sift` | SIFT quality audits with Toulmin evidence | 2 (assessment types, examples) |
 

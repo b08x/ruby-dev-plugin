@@ -47,7 +47,7 @@ Skills and agents reference shared patterns from `references/` at the plugin roo
 
 ### Gem Ecosystem Coverage
 
-Key gems this plugin covers deeply: `tty` (TUI), `dry-rb`, `glimmer-dsl-libui` (GUI), `ruby-llm`, `ohm`, `sequel`, `pgvector`, `rubocop`, `yard`.
+Key gems this plugin covers deeply: `tty` (TUI), `dry-rb`, `glimmer-dsl-libui` (GUI), `ruby-llm`, `ohm`, `sequel`, `pgvector`, `rubocop`, `decode`, `rubydex`.
 
 ## Forking to Other Harnesses
 

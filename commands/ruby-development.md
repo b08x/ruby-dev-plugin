@@ -48,7 +48,11 @@ Launch the named phase subagent directly (`ruby-dev:specifier`, `ruby-dev:implem
 start of this step for the exact brief template and reconciliation rules, then apply it
 yourself across all stages rather than re-reading it per stage.
 
-Before the first dispatch, record the baseline (`git rev-parse HEAD` plus the
+Before the baseline, read `${CLAUDE_PLUGIN_ROOT}/tasks/analysis-gems.md` and execute it:
+it adds `decode`, `bake`, and `rubydex` to the project Gemfile's development group when
+they are missing. Capture its `ANALYSIS-GEMS:` line for the completion report.
+
+Then, before the first dispatch, record the baseline (`git rev-parse HEAD` plus the
 content-hash snapshot defined in `${CLAUDE_PLUGIN_ROOT}/references/quality-gates.md`).
 
 After each stage returns: compact its report to `CHANGED`/`FINDINGS`/`UNRESOLVED`/`NEXT`.
@@ -84,3 +88,4 @@ Report to the user, citing file paths, not replaying full subagent output:
 1. What was built/fixed and which subagents ran
 2. `VERIFY-RESULT` and `GATE-VERDICT`, verbatim
 3. Any known-unresolved Medium/Low findings
+4. The `ANALYSIS-GEMS:` line (which gems were added to the Gemfile, if any)

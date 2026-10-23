@@ -49,7 +49,7 @@ Load the single skill the task names. Load a second only when the task crosses a
 | `ruby_llm` client: chat, tool calling, streaming, embeddings, structured output, `acts_as_chat`, MCP client | `${CLAUDE_PLUGIN_ROOT}/skills/genai/SKILL.md`, then `${CLAUDE_PLUGIN_ROOT}/skills/genai/references/ruby-llm/guide.md` |
 | `dspy.rb` typed programs: signatures, predictors, Toolsets, evals, MIPROv2/GEPA | `${CLAUDE_PLUGIN_ROOT}/skills/genai/SKILL.md`, then `${CLAUDE_PLUGIN_ROOT}/skills/genai/references/dspy-ruby/guide.md` |
 | RAG or agent pipeline layer from a component plan | `${CLAUDE_PLUGIN_ROOT}/skills/genai/SKILL.md` |
-| YARD documentation (`@param`, `@return`, `@example`) | `${CLAUDE_PLUGIN_ROOT}/skills/yardoc/SKILL.md` |
+| Documentation comments in decode tag style (`@parameter`, `@returns`, `@example`), including requests for "YARD docs" and conversion of existing YARD tags | `${CLAUDE_PLUGIN_ROOT}/skills/yardoc/SKILL.md` |
 
 A named gem in the brief selects its guide directly. Generating embeddings is `genai` (RubyLLM guide); storing and querying them is `multi-db`. Chunking and BM25 are `ruby-nlp`, not LLM work. A new project with a domain build loads `scaffold` first and the domain skill second.
 

@@ -7,7 +7,7 @@
     {
       "name": "ruby-dev",
       "source": "./",
-      "description": "Task-driven Ruby development toolkit: project scaffolding, data pipelines, multi-database (Ohm/Sequel/pgvector) modeling, GenAI components, RubyLLM client integration, typed LLM programs with dspy.rb, classical NLP toolkit, TUIs, desktop GUIs (glimmer-dsl-libui), diagnostics, refactoring, performance optimization, YARD documentation, and SIFT quality audits \u2014 routed by the `rubyist` orchestrator, which dispatches 5 phase subagents (specifier, implementer, cleaner, hardener, verifier) that load domain skills on demand."
+      "description": "Task-driven Ruby development toolkit: project scaffolding, data pipelines, multi-database (Ohm/Sequel/pgvector) modeling, GenAI components, RubyLLM client integration, typed LLM programs with dspy.rb, classical NLP toolkit, TUIs, desktop GUIs (glimmer-dsl-libui), diagnostics, refactoring, performance optimization, decode-style documentation comments (coverage via decode, code-graph queries and semantic lint via rubydex), and SIFT quality audits \u2014 routed by the `rubyist` orchestrator, which dispatches 5 phase subagents (specifier, implementer, cleaner, hardener, verifier) that load domain skills on demand."
     }
   ]
 }
