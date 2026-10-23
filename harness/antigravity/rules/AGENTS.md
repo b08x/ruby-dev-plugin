@@ -21,6 +21,10 @@ When writing, refactoring, or generating Ruby code in this workspace:
   - Verify non-stdlib gem APIs at the point of use using Context7 MCP (`query-docs` / `resolve-library-id`) or DeepWiki MCP.
   - If MCP tools are unavailable, gracefully fall back to web search (`search_web`) or local codebase discovery (`search_graph`, inspecting existing tests and implementation).
   - Never assume non-stdlib gem API signatures from memory.
+- **Ruby Code Structure Discovery**:
+  - In Ruby projects, query the rubydex MCP tools first (`search_declarations`, `get_declaration`, `get_file_declarations`, `find_constant_references`, `get_descendants`, `find_dead_code_candidates`, `codebase_stats`).
+  - Use codebase-memory discovery (`search_graph`) only when rubydex is not mounted, or for non-Ruby files. Confirm a rubydex "no references" result with `grep`, because rubydex does not see `send`/`method_missing`/DSL dispatch.
+- **Documentation Comments**: Write decode tags (`@parameter name [Type]`, `@returns`, `@raises`, `@yields`, `@option`, `@attribute`, `@example`), never YARD tags. decode reads `@param`/`@return` as plain text.
 
 ---
 
@@ -46,6 +50,8 @@ The `rubyist` orchestrator coordinates multi-phase development:
 | `cleaner` | CRAP | `simplecov` + `rubocop --only Metrics/CyclomaticComplexity` | CRAP <= 6 (or <= 8 if specified); CC <= 6 per method | `cleaner` |
 | `hardener` | mutation + audit | `bundle exec mutant run` && `bundler-audit check` && `brakeman` (Rails) | Mutant score >= 80% or 0 unexplained surviving mutants; 0 high/crit `bundler-audit` vulnerabilities; 0 high/crit `brakeman` warnings | `implementer` (for mutant test gaps) |
 | `verifier` | packwerk + zeitwerk + SIFT | `packwerk check` (Rails) && Zeitwerk eager load && `cucumber` && `rubocop` && SIFT | 0 packwerk errors; 0 Zeitwerk errors; cucumber passes; rubocop clean; SIFT verdict GO (0 Critical/High findings) | Target named by failing check row |
+
+Report-only analysis checks, which never fail a gate: the verifier runs `bundle exec rdx lint` and `bundle exec bake decode:index:coverage`; the cleaner runs `bundle exec rdx dead_code`. Before the baseline, the orchestrator runs `tasks/analysis-gems.md`, which adds `decode`, `bake`, and `rubydex` to the project Gemfile's development group when they are missing; that Gemfile change is part of the baseline and does not fire the protected-path trigger.
 
 ### Escalation Triggers (Working Tree Scope Checks)
 

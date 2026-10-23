@@ -30,9 +30,10 @@ harness/antigravity/
 │   └── <domain-skills>/      # analyse, data-engineer, genai, gui, multi-db, perf,
 │                             # refactor, ruby-nlp, scaffold, sift, tui, yardoc, evals
 ├── references/               # Shared conventions (dry-rb, quality gates, subagent mandates)
-├── tasks/                    # Deterministic workflow tasks (survey, dispatch, gate, synthesize)
+├── tasks/                    # Deterministic workflow tasks (analysis gems, survey, dispatch, gate, synthesize)
 └── scripts/
     ├── install.sh            # Global and project-local installer script
+    ├── rubydex-mcp.sh        # Starts the rubydex MCP server for the current project
     └── validate.sh           # Automated verification test script
 ```
 
@@ -80,6 +81,27 @@ agy --agent rubyist
 
 ---
 
+## rubydex MCP Server
+
+The subagents query Ruby code structure through the rubydex MCP server (`rdx mcp`). Antigravity reads MCP servers from the user-level `~/.gemini/config/mcp_config.json`, so register it there. Replace `<repo>` with the path of this checkout:
+
+```json
+{
+  "mcpServers": {
+    "rubydex": {
+      "command": "<repo>/harness/antigravity/scripts/rubydex-mcp.sh",
+      "args": []
+    }
+  }
+}
+```
+
+`scripts/rubydex-mcp.sh` starts `bundle exec rdx mcp` when the project's `Gemfile.lock` resolves `rubydex`, falls back to a global `rdx`, and exits with a message on stderr when the working directory has no Gemfile (rubydex 0.4.2 indexing raises `Bundler::GemfileNotFound` there). The script indexes its working directory, so the server must start in the project root. Whether `agy` starts MCP servers in the workspace directory has not been verified for this port.
+
+The orchestrator's `tasks/analysis-gems.md` step adds `rubydex`, `decode`, and `bake` to the project Gemfile, so after the first route the project bundle provides `rdx`.
+
+---
+
 ## Harness Translation Mapping Table
 
 | Claude Code Mechanism | Antigravity CLI (`agy`) Mechanism | Notes |
@@ -92,6 +114,8 @@ agy --agent rubyist
 | Claude plugin root path variable | Relative links (`../../references/`, `../skills/`) | Resolves cleanly across both local and global installations. |
 | Workspace Rules | `rules/AGENTS.md` | Automatically loaded by Antigravity's hierarchical rule discovery. |
 | Gem API lookups (Context7 MCP / DeepWiki) | Context7 MCP / DeepWiki MCP with fallback | Instructs subagents to query MCP tools, falling back to `search_web` or codebase discovery if unmounted. |
+| Plugin MCP server (`.claude-plugin/plugin.json` `mcpServers.rubydex`) | User-level `~/.gemini/config/mcp_config.json` entry pointing at `scripts/rubydex-mcp.sh` | Tools are called by bare name (`search_declarations`, ...). See "rubydex MCP Server". |
+| Analysis gems step (`tasks/analysis-gems.md`) | `tasks/analysis-gems.md`, run by `rubyist` before the baseline | Adds `decode`, `bake`, `rubydex` to the project Gemfile's development group. |
 
 ---
 

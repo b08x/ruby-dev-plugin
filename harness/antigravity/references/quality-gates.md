@@ -12,6 +12,8 @@ Single source of truth for gate thresholds, rollback routes, and escalation trig
 | hardener | `bundle exec mutant run --use rspec -- '<Namespace>*'`; `bundle exec bundler-audit check --update`; `bundle exec brakeman -q --no-pager` (Rails projects only) | Zero unexplained mutant survivors (each equivalent mutant justified in `FINDINGS`); zero high or critical findings from bundler-audit and brakeman (a bundler-audit advisory with no stated criticality counts as high) | blocking | implementer |
 | verifier | `bundle exec packwerk check` (Rails projects only); Zeitwerk eager-load check (`bin/rails zeitwerk:check` for Rails; otherwise `bundle exec ruby -Ilib -e 'require "<entrypoint>"; Zeitwerk::Loader.eager_load_all'`, where `<entrypoint>` is the require path of the gemspec, else `lib/<project name>.rb`, else the file the brief names); acceptance tests. The SIFT audit and verdict are not run by the gate: they come from the verifier subagent's report, which the orchestrator passes to the gate | Zero errors from packwerk and Zeitwerk; zero cucumber failures. The Zeitwerk check is attempted on every project: it is `not applicable: project does not use Zeitwerk` when the Gemfile, Gemfile.lock and gemspec all lack `zeitwerk` and the project is not Rails, and `not run: zeitwerk unavailable` when the project declares it but the gem is not installed; no Critical or High SIFT finding and verdict not NO-GO, read from the verifier's report | blocking | implementer |
 
+Report-only analysis checks, which never fail a gate: the verifier runs `bundle exec rdx lint` (rubydex semantic lint) and `bundle exec bake decode:index:coverage` (decode documentation coverage), and the cleaner runs `bundle exec rdx dead_code`. Their results go in `FINDINGS`. The gems come from `tasks/analysis-gems.md`, which the orchestrator runs before the baseline; a missing gem is recorded as `not run: <gem> unavailable` and does not make the gate `fail (not run)`.
+
 ## Rollback
 
 1. On a blocking failure, the orchestrator re-dispatches the phase named in "Rollback target" with the failure (command, measured value, failing row) as the new `TASK`.
@@ -27,7 +29,7 @@ The orchestrator compares the working tree to the pre-dispatch baseline after ev
 
 1. A changed file lies outside `PATHS`.
 2. A test file was deleted, or a `skip`, `pending`, `xit`, or `xdescribe` was added.
-3. A protected path changed and is not listed in `PATHS`: `*.gemspec`, `Gemfile`, `Gemfile.lock`, `db/schema.rb`, `db/migrate/`, or an authentication or session path.
+3. A protected path changed and is not listed in `PATHS`: `*.gemspec`, `Gemfile`, `Gemfile.lock`, `db/schema.rb`, `db/migrate/`, or an authentication or session path. The orchestrator's own `tasks/analysis-gems.md` edit to `Gemfile` and `Gemfile.lock` runs before the baseline, so it is part of the baseline and does not fire this trigger.
 4. The count of changed files exceeds max(5, 2 x files in `PATHS`).
 
 Baseline: before the first dispatch, record `git rev-parse HEAD` and a content-hash snapshot of every modified, deleted, or untracked file. The tree may already be dirty, so a status listing alone would miss a further edit to a file that was already modified. The snapshot includes staged paths (`git diff --cached --name-only`), because a staged deletion (`git rm`) does not appear in `git ls-files -d`.

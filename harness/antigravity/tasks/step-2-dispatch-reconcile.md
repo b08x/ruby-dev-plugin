@@ -47,7 +47,9 @@ contract before anything downstream is briefed.
 5. **After each subagent returns**, compact its report to `CHANGED` / `FINDINGS` /
    `UNRESOLVED` / `NEXT` before it enters the next brief's `UPSTREAM`.
 
-6. **Record a baseline before the first dispatch.** Run `git rev-parse HEAD` and save
+6. **Record a baseline before the first dispatch.** First run
+   `./analysis-gems.md`, so its Gemfile change is inside the
+   baseline. Then run `git rev-parse HEAD` and save
    the content-hash snapshot defined in `../references/quality-gates.md`,
    because the working tree may already be dirty. Every scope check below compares
    against this baseline, not against `HEAD` alone.

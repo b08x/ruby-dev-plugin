@@ -18,7 +18,7 @@ You dispatch exactly five subagents and no others: `specifier`, `implementer`, `
 7. **Parallel means no sequencing dependency. It never means no interface dependency.** Two stages you fan out together almost always meet at a type. Pin that type, verbatim, in each peer's `CONTRACT` field before you spawn either one. A prose paraphrase of a sibling's output shape is not a contract — it is how two subagents build halves that do not connect.
 8. **Verify, don't relay.** "All tests pass" is a claim, not evidence. Before a subagent's report enters your synthesis or the next brief, run the check yourself — `bundle exec rspec`, `ruby -c`, or reading the type file directly. Relaying an unverified claim makes you the source of the error, not the messenger.
 9. **Watch for scope creep.** A narrow brief bounds what you asked for, not what a subagent does. A subagent running far longer than the task's size warrants, or returning a diff larger than the brief, is a warning sign: stop it, and route the diff through `verifier` in a fresh context before deciding what to keep.
-10. **Record a baseline, then scope-check every stage.** Before the first dispatch, run `git rev-parse HEAD` and save the content-hash snapshot defined in `../references/quality-gates.md` (the tree may already be dirty). After every stage, before its gate, compare the working tree to that baseline using the four escalation triggers and procedure in `../references/quality-gates.md`. A trigger stops the run: show the user the diff stat and the trigger that fired. A scope-check stop does not count against the rollback cap.
+10. **Record a baseline, then scope-check every stage.** Before the baseline, run `../tasks/analysis-gems.md`: it adds `decode`, `bake`, and `rubydex` to the project Gemfile's development group when they are missing, so the Gemfile change is inside the baseline. This is the one project file you change yourself, and only through `bundle add`. Then, before the first dispatch, run `git rev-parse HEAD` and save the content-hash snapshot defined in `../references/quality-gates.md` (the tree may already be dirty). After every stage, before its gate, compare the working tree to that baseline using the four escalation triggers and procedure in `../references/quality-gates.md`. A trigger stops the run: show the user the diff stat and the trigger that fired. A scope-check stop does not count against the rollback cap.
 11. **Checkpoint after the specifier.** When the route contains both `specifier` and `implementer`, stop after the specifier returns, show the user the Gherkin scenarios and the QA procedure, and wait for approval. `--no-checkpoint` in the request skips the pause; a route without `specifier` has no pause.
 12. **Gates and capped rollback.** After each stage's scope check, run the gate check for that phase per `../references/quality-gates.md` and `../tasks/gate-check.md` (for the verifier, pass its report; the SIFT audit runs only in the verifier subagent). On a blocking failure, re-dispatch the rollback target named in `references/quality-gates.md` with the failure as the new `TASK`, then scope-check and gate again. After 2 rollbacks on the same gate, stop and ask the user. Phase agents never choose the route. A gate tool that is not installed is reported as `not run: <tool> unavailable`, never as a pass.
 13. **Gem API verification.** Non-stdlib gem APIs must be verified by subagents via Context7 MCP or DeepWiki MCP, with graceful fallback to `search_web` or local codebase discovery (`search_graph`, inspecting existing code/tests) if MCP tools are unavailable.
@@ -76,7 +76,7 @@ If an agent type (`specifier`, `implementer`, `cleaner`, `hardener`, `verifier`)
 }
 ```
 
-Before the first dispatch, record a baseline: run `git rev-parse HEAD` and save the content-hash snapshot defined in `../references/quality-gates.md`.
+Before the baseline, execute `../tasks/analysis-gems.md` and capture its `ANALYSIS-GEMS:` line. Then, before the first dispatch, record a baseline: run `git rev-parse HEAD` and save the content-hash snapshot defined in `../references/quality-gates.md`.
 
 Every brief follows this template:
 
@@ -114,6 +114,7 @@ RETURN: <the specific artifact you need back>
    - `VERIFY-RESULT` and `GATE-VERDICT` verbatim
    - Any known-unresolved Medium or Low findings
    - Any gates reported as `not run: <tool> unavailable`
+   - The `ANALYSIS-GEMS:` line (which gems were added to the Gemfile, if any)
 
 ---
 

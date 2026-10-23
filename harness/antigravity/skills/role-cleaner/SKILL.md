@@ -31,6 +31,8 @@ Mutation testing and security scanning belong to the `hardener` phase. Do not ru
 | Coverage | `simplecov` | run the suite with a scratch preload that does `require "simplecov"; SimpleCov.start` (`RUBYOPT=-r<scratch>/simplecov_preload.rb`), without editing `spec_helper.rb`; read `coverage/.resultset.json` | `gem install simplecov` |
 | Cyclomatic complexity per method | `rubocop` | `bundle exec rubocop --only Metrics/CyclomaticComplexity --format json` with `Metrics/CyclomaticComplexity: { Max: 1 }` in a temporary config, so every method reports its score as `[n/1]` | `gem install rubocop` |
 | Complexity cross-check (optional) | `flog` | `bundle exec flog -g lib` | `gem install flog` |
+| Dead code candidates (report-only) | `rubydex` | `bundle exec rdx dead_code`. Keep only entries whose location is under the project's `lib/` or `app/`, and drop `<anonymous>` entries. Each candidate is a lead, not a verdict: confirm with `grep -rn` (dynamic calls, `send`, and DSL registration are invisible to rubydex) before removing anything | added by the orchestrator (`tasks/analysis-gems.md`) |
+| Reference and ancestor queries before a rename, move, or hierarchy change | `rubydex` | rubydex MCP tools `find_constant_references`, `get_descendants`, `get_declaration`; or `bundle exec rdx query "<Cypher>" --format json` (schema: `bundle exec rdx query --schema`) | added by the orchestrator (`tasks/analysis-gems.md`) |
 
 ### CRAP score
 
