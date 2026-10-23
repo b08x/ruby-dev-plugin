@@ -64,6 +64,8 @@ The plugin follows an **orchestrator + phase subagent** pattern. `rubyist` is an
 
 Non-stdlib gem APIs are verified via Context7 MCP or DeepWiki at the point of use, inside whichever subagent writes the code.
 
+Where the workflow matrix, the SIFT protocol, and the diagnostic methods came from is documented in [Sources & Influences](#sources--influences).
+
 ## Installation
 
 This is a Claude plugin. Install by cloning into your Claude skills directory or adding via the plugin registry.
@@ -169,6 +171,29 @@ When this plugin generates Ruby code, it enforces:
 - Methods default to `private`; promoted to `public` only for stable interfaces
 - Undeclared parameters forwarded with `...` (`def foo(...) = bar(...)`)
 - Non-stdlib gem APIs verified via Context7 MCP or DeepWiki at the point of use — never assumed from memory
+
+## Sources & Influences
+
+This plugin is assembled work. Its skeleton — the pipeline, the audit protocol, the diagnostic discipline — was extracted and adapted from named sources rather than invented, and the assembly deserves its credit.
+
+### The workflow matrix — from an interview with Robert C. Martin
+
+The plugin's spine is the fixed phase matrix — `specifier` → `implementer` → `cleaner` → `hardener` → `verifier`, each phase doing one kind of work and owning one deterministic check — which was extracted from [an interview with Robert C. Martin](https://www.youtube.com/watch?v=zcLPGC-tvgk). What survived the extraction is the *shape*: a route through small, single-purpose stages, gated before handoff, in a fixed order with explicit skip rules — rather than one agent improvising a fresh approach per task. What the plugin added is the Ruby-specific machinery at each stop: a `cucumber --dry-run` on the spec, a CRAP threshold after refactoring, `mutant` and `bundler-audit` for hardening, and a SIFT audit in a fresh context at the end — plus the invariant that the orchestrator routes but never writes Ruby. The matrix as shipped lives in the phase sequence table in [`agents/rubyist.md`](agents/rubyist.md), with the routing and skip rules formalized in [`tasks/step-1-survey-plan.md`](tasks/step-1-survey-plan.md).
+
+### SIFT — adapted from the SIFT Toolbox
+
+The [`sift`](skills/sift/SKILL.md) skill's quality protocol is an adaptation of [the SIFT Toolbox](https://checkplease.neocities.org/sift-toolbox/) from the Check, Please! web-literacy course, where SIFT is a four-move method for evaluating sources: Stop; Investigate the source; Find better coverage; Trace claims to their original context. The plugin keeps the scaffold — a compact four-part lens a reviewer can hold in mind — and re-expands the acronym for code: **S**tructure, **I**dioms, **F**unctionality, **T**esting. It also keeps the insistence that evaluation is evidence work: every finding must arrive as a Toulmin argument — claim, data, warrant, backing, qualifier, rebuttal — before it counts. The dimension weights, score bands, and the four report modes (Full, System Design, Tech Advisory, Backlog) are this plugin's own additions.
+
+### Structured diagnostic analysis — adapted from context-engineering-kit
+
+The [`analyse`](skills/analyse/SKILL.md) skill's core mandate — understand before acting, never refactor without diagnosis — was adapted from [Neo Lab's context-engineering-kit](https://github.com/NeoLabHQ/context-engineering-kit). What the plugin took is the structure: a method-selection matrix that routes each problem type to exactly one diagnostic method, and findings keyed for handoff (`muda:inventory`, `root-cause:zeitwerk`) so the fixing phase consumes structured findings rather than prose. The diagnostic vocabulary is older, and the skill names it as such: Gemba Walk, Muda Analysis, Root-Cause Tracing, and Five Whys are Kaizen-derived — lean manufacturing's terms — re-grounded here in Ruby-specific waste (unused gems as Inventory, blocking I/O as Waiting) and Ruby-specific failures (Zeitwerk naming).
+
+### Also in the mix
+
+- **Kaizen / Toyota Production System** — the waste taxonomy and diagnostic vocabulary behind `analyse`
+- **Toulmin argumentation** (Stephen Toulmin, *The Uses of Argument*) — the evidence format every SIFT finding must satisfy
+- **Gherkin & Cucumber, STRIDE threat modeling, CRAP scoring, mutation testing, packwerk** — the acceptance and gate mechanics each phase owns
+- **The gem ecosystem itself** — dry-rb, rubysmith/gemsmith, the TTY toolkit, glimmer-dsl-libui, RubyLLM, dspy.rb, Ohm, Sequel, pgvector: the reference material documents these projects' own conventions, verified via Context7 MCP or DeepWiki at the point of use rather than recalled from memory
 
 ## Contributing
 
