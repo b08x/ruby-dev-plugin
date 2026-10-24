@@ -14,7 +14,7 @@
 - **Multi-Database Modeling** — Ohm (Redis) and Sequel (PostgreSQL/pgvector) design, ORM porting, dual-database retrieval patterns
 - **GenAI, RAG, and LLM clients (`genai`)** — Retrieval pipeline architecture, LLM agents, MCP servers, pgvector integration; the RubyLLM client (multi-provider chat, tool calling, streaming, embeddings, structured output); typed dspy.rb programs (Sorbet-typed signatures, Predict/ChainOfThought/ReAct/CodeAct, Toolsets, `DSPy::Evals`, MIPROv2 & GEPA)
 - **Classical NLP** — Tokenization, POS tagging, dependency parsing, WordNet lookup, TF-IDF/BM25 ranking, topic modeling
-- **Terminal UIs** — 21 TTY toolkit gems: prompts, tables, progress bars, spinners, pagers, trees, and rich CLI output
+- **Terminal UIs** — 21 TTY toolkit gems: prompts, tables, progress bars, spinners, pagers, trees, boxes, and clickable links
 - **Desktop GUIs** — Native cross-platform windows with glimmer-dsl-libui and data-bound MVP architecture
 - **Diagnostics** — Gemba Walk, Muda Analysis, Root-Cause Tracing, and Five Whys for systematic debugging
 - **Surgical Refactoring** — Named pattern catalog (Zeitwerk, async, frozen strings, resilience) with before/after transforms
@@ -50,11 +50,11 @@ The plugin follows an **orchestrator + phase subagent** pattern. `rubyist` is an
 | `implementer` | `role-implementer` | `bundle exec rspec` or `rake test`, `bundle exec cucumber`, `gitleaks` | yes |
 | `cleaner` | `role-cleaner` | CRAP score and CC (simplecov + rubocop complexity) | yes |
 | `hardener` | `role-hardener` | `bundle exec mutant run`, `bundle exec bundler-audit check`, `bundle exec brakeman` (Rails only) | tests only |
-| `verifier` | `role-verifier` | `bundle exec packwerk check` (Rails projects with `package.yml`; otherwise reported not applicable), Zeitwerk eager-load check, `bundle exec cucumber`, `bundle exec rubocop`, SIFT audit | no |
+| `verifier` | `role-verifier` | `bundle exec packwerk check` (Rails projects with `package.yml`; otherwise reported not applicable), Zeitwerk eager-load check, `bundle exec cucumber`, `bundle exec rubocop`, SIFT audit, plus report-only `rdx lint` and decode coverage | no |
 
 ### Execution Pipeline
 
-1. **Survey** — `rubyist` reads only enough to route. Classifies Lite Mode (scripts < 50 lines, stdlib only) or Standard Mode (multi-file, gem-dependent)
+1. **Survey** — `rubyist` reads only enough to route. Classifies Lite Mode (scripts under ~50 lines, stdlib only) or Standard Mode (multi-file, gem-dependent)
 2. **Plan** — A dispatch plan is emitted before any subagent is spawned: which subagents, in what order, what each receives and returns
 3. **Dispatch** — Each stage runs as a phase subagent in isolated context, receiving a compact brief (`TASK` / `PATHS` / `CONSTRAINTS` / `UPSTREAM` / `RETURN`)
 4. **Report** — Every subagent returns a structured `CHANGED` / `FINDINGS` / `UNRESOLVED` / `NEXT` block. `rubyist` is the compaction boundary: briefs carry summaries, never transcripts

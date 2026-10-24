@@ -1,13 +1,13 @@
 # ruby-dev-plugin
 
-Claude plugin providing 1 orchestrator agent, 5 phase subagents, and 13 domain skills for Ruby development workflows. Markdown throughout — no build step; the only non-Markdown file at the plugin root is the `rubydex` MCP launcher, `scripts/rubydex-mcp.sh`.
+Claude plugin providing 1 orchestrator agent, 5 phase subagents, and 13 domain skills for Ruby development workflows. Markdown throughout — no build step; the only script in the plugin's machinery is the `rubydex` MCP launcher, `scripts/rubydex-mcp.sh`; the `harness/` ports carry their own shell scripts.
 
 ## Project Structure
 
 ```
 .claude-plugin/                — plugin.json (plugin metadata, rubydex MCP server) + marketplace.json
 agents/                        — 6 agent prompts: the `rubyist` orchestrator + specifier, implementer, cleaner, hardener, verifier
-skills/                        — 13 domain skill directories + 5 role skills (`role-*`), each SKILL.md + references/
+skills/                        — 13 domain skill directories + 5 role skills (`role-*`), each SKILL.md; references/ subdirectories in domain skills except data-engineer
 references/                    — shared conventions loaded by skills and agents alike
 commands/                      — `/ruby-development` and `/ruby-gate` entry points
 tasks/                         — workflow step files the commands drive (step-1-survey-plan, step-2-dispatch-reconcile, gate-check, step-3-gate-synthesize, analysis-gems)
@@ -21,7 +21,7 @@ goals/                         — working notes from integration/port sessions 
 
 ### File Format
 
-- **Skills**: `skills/<name>/SKILL.md` with YAML frontmatter (`name`, `description`) + `references/` subdirectory
+- **Skills**: `skills/<name>/SKILL.md` with YAML frontmatter (`name`, `description`) + `references/` subdirectory where present
 - **Agents**: `agents/<name>.md` with YAML frontmatter (`name`, `description`) + pointer to their role skill via `${CLAUDE_PLUGIN_ROOT}/skills/role-<name>/SKILL.md`
 - **Role skills**: `skills/role-<name>/SKILL.md` — one per phase subagent; each holds a task-to-skill loading table and the deterministic checks that phase owns. Shared mandates live in `references/subagent-mandates.md`.
 - Subagent files are thin wrappers; real logic lives in the role skill and the domain skills it loads. The exception is `agents/rubyist.md`, the orchestrator: it has no skill, routes rather than implements, and must never load a role or domain SKILL.md into its own context.
@@ -59,7 +59,7 @@ Key gems this plugin covers deeply: `tty` (TUI), `dry-rb`, `glimmer-dsl-libui` (
 
 The plugin is pure Markdown, so forking to another agent harness (mistral-vibe, antigravity, hermes-agent, …) means translating the harness contract, not rewriting content.
 
-**Roadmap direction — harness conversion pipeline.** The hand-written fork procedure below is on its way to being superseded: the plan is a generic converter that takes the base structure and, invoked for a particular harness (Hermes, say), emits that harness's required format. It already exists, implemented and tested in the sibling `python-dev-plugin` repo — `scripts/convert-harness.py`, driven by per-harness adapter TOMLs in `harness-adapters/`, generating committed `harness/<name>/` trees with a `CONVERSION-REPORT.md` and `--check`/`--strict` drift guards (planned in that repo's `goals/python-dev-port/`). The `harness/` trees in this repo are hand-written and predate the converter — its plan cites them as a secondary reference only.
+**Roadmap direction — harness conversion pipeline.** The hand-written fork procedure below is on its way to being superseded: the plan is a generic converter that takes the base structure and, invoked for a particular harness (Hermes, say), emits that harness's required format. It already exists, implemented and tested in the sibling `python-dev-plugin` repo — `scripts/convert-harness.py`, driven by per-harness adapter TOMLs in `harness-adapters/`, generating committed `harness/<name>/` trees with a `CONVERSION-REPORT.md` and `--check`/`--strict` drift guards (the plan lives in that repo's `goals/python-dev-port/`). The `harness/` trees in this repo are hand-written and predate the converter — its plan cites them as a secondary reference only.
 
 ### What ports unchanged
 
@@ -95,5 +95,5 @@ The plugin is pure Markdown, so forking to another agent harness (mistral-vibe, 
 
 - No tests or CI — this is a prompt-only plugin. Validate changes by reading the Markdown for coherence.
 - Agent files use `${CLAUDE_PLUGIN_ROOT}` as the path variable, not relative paths.
-- The `tui/` skill has 21 reference files for `tty-*` gems — the largest skill by reference count.
+- The `tui/` skill has 21 reference files for `tty-*` gems — the most top-level references of any skill; `genai/` has 74 in total, nested under `dspy-ruby/` and `ruby-llm/`.
 - Skills cross-reference each other via relative Markdown links (e.g., `../refactor/SKILL.md`).
