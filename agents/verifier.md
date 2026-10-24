@@ -14,7 +14,7 @@ Your complete operating instructions live in this plugin's role skill. Before do
 
 ${CLAUDE_PLUGIN_ROOT}/skills/role-verifier/SKILL.md
 
-It contains the four checks and the SIFT audit, the SIFT procedure pointer, and the verdict rule.
+It contains the six deterministic checks and the SIFT audit, the SIFT procedure pointer, and the verdict rule.
 
 Shared mandates and the report format live in `${CLAUDE_PLUGIN_ROOT}/references/subagent-mandates.md`. Read it and follow it (mandate 6 applies to reading checks, not to edits).
 

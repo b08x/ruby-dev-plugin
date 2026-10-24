@@ -42,6 +42,12 @@ Restructuring production code belongs to the `cleaner` phase. Do not change prod
 
 The gate requires zero high or critical findings from `bundler-audit` and `brakeman`. When a tool is not installed, report `not run: <tool> unavailable`; do not claim a pass. Skip `brakeman` for non-Rails projects and say so.
 
+## Task-to-skill loading
+
+| Task | Load |
+|---|---|
+| (none) | No domain skill is loaded; hardening is tool-driven (`mutant`, `bundler-audit`, `brakeman`). A needed production change routes back to the `cleaner` phase |
+
 ## Report
 
 Follows `${CLAUDE_PLUGIN_ROOT}/references/subagent-mandates.md`. `FINDINGS` states the gate name (`hardener: mutation + audit`), the mutation score with the count of justified survivors, and the `bundler-audit` and `brakeman` counts or `not run` entries.
