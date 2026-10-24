@@ -1,16 +1,20 @@
 # ruby-dev-plugin
 
-Claude plugin providing 1 orchestrator agent, 5 phase subagents, and 13 domain skills for Ruby development workflows. Pure Markdown — no executable code, no build step.
+Claude plugin providing 1 orchestrator agent, 5 phase subagents, and 13 domain skills for Ruby development workflows. Markdown throughout — no build step; the only non-Markdown file at the plugin root is the `rubydex` MCP launcher, `scripts/rubydex-mcp.sh`.
 
 ## Project Structure
 
 ```
-.claude-plugin/plugin.json   — Plugin metadata (name, version, keywords)
-agents/                       — 6 agent prompts: the `rubyist` orchestrator + specifier, implementer, cleaner, hardener, verifier
-skills/                       — 13 domain skill directories + 5 role skills (`role-*`), each SKILL.md + references/
-references/                   — shared conventions loaded by skills and agents alike
-commands/                     — `/ruby-development` and `/ruby-gate` entry points
-tasks/                        — workflow step files the commands drive (survey-plan, dispatch-reconcile, gate-check, gate-synthesize)
+.claude-plugin/                — plugin.json (plugin metadata, rubydex MCP server) + marketplace.json
+agents/                        — 6 agent prompts: the `rubyist` orchestrator + specifier, implementer, cleaner, hardener, verifier
+skills/                        — 13 domain skill directories + 5 role skills (`role-*`), each SKILL.md + references/
+references/                    — shared conventions loaded by skills and agents alike
+commands/                      — `/ruby-development` and `/ruby-gate` entry points
+tasks/                         — workflow step files the commands drive (step-1-survey-plan, step-2-dispatch-reconcile, gate-check, step-3-gate-synthesize, analysis-gems)
+scripts/                       — rubydex-mcp.sh, the rubydex MCP server launcher registered in plugin.json
+docs/                          — Workflow_matrix.csv, the extracted workflow-matrix source reference
+harness/                       — hand-written ports to other harnesses: `antigravity/` and `mistral-vibe/`
+goals/                         — working notes from integration/port sessions (not plugin surface)
 ```
 
 ## Conventions
@@ -44,6 +48,8 @@ Skills and agents reference shared patterns from `references/` at the plugin roo
 - `environment-variables.md` — Env var conventions
 - `pry-console.md` — Debugging with Pry
 - `rubysmith-scaffolding.md` — Project scaffolding flags
+- `quality-gates.md` — Per-phase gate thresholds, rollback targets, escalation triggers
+- `subagent-mandates.md` — Shared subagent mandates and report format
 
 ### Gem Ecosystem Coverage
 
@@ -52,6 +58,8 @@ Key gems this plugin covers deeply: `tty` (TUI), `dry-rb`, `glimmer-dsl-libui` (
 ## Forking to Other Harnesses
 
 The plugin is pure Markdown, so forking to another agent harness (mistral-vibe, antigravity, hermes-agent, …) means translating the harness contract, not rewriting content.
+
+**Roadmap direction — harness conversion pipeline.** The hand-written fork procedure below is on its way to being superseded: the plan is a generic converter that takes the base structure and, invoked for a particular harness (Hermes, say), emits that harness's required format. It already exists, implemented and tested in the sibling `python-dev-plugin` repo — `scripts/convert-harness.py`, driven by per-harness adapter TOMLs in `harness-adapters/`, generating committed `harness/<name>/` trees with a `CONVERSION-REPORT.md` and `--check`/`--strict` drift guards (planned in that repo's `goals/python-dev-port/`). The `harness/` trees in this repo are hand-written and predate the converter — its plan cites them as a secondary reference only.
 
 ### What ports unchanged
 
@@ -79,9 +87,9 @@ The plugin is pure Markdown, so forking to another agent harness (mistral-vibe, 
 
 ### Per-harness notes
 
-- **mistral-vibe** — verify how it declares skills and subagents; if it has no subagent concept, use the single-agent collapse from step 4.
-- **antigravity** — check whether `AGENTS.md` is its discovery surface; the orchestrator contract may need to be inlined there rather than in `agents/`.
-- **hermes-agent** — skills are in-repo `SKILL.md` with frontmatter plus a validator; run the validator after translation and expect stricter frontmatter than Claude's.
+- **mistral-vibe** — ported; see `harness/mistral-vibe/`. Vibe declares subagents as TOML profiles under `ai.mistral.vibe/agents/`, so the pipeline was not collapsed; the `rubyist` orchestrator installs as a user agent profile (`agents/rubyist.toml` + `prompts/rubyist.md`, run with `vibe --agent rubyist`), and the two commands are ported as skills.
+- **antigravity** — ported; see `harness/antigravity/`. Agents stay as Markdown under `agents/`; the port adds `rules/AGENTS.md` plus `scripts/install.sh` and `scripts/validate.sh`.
+- **hermes-agent** — skills are in-repo `SKILL.md` with frontmatter plus a validator; run the validator after translation and expect stricter frontmatter than Claude's. The realized shape (per the converter in the `python-dev-plugin` sibling repo) is a profile distribution: `distribution.yaml`, a `SOUL.md` orchestrator prompt, `config.yaml` with delegation settings, and one `phase-<name>` skill per phase agent.
 
 ## Gotchas
 

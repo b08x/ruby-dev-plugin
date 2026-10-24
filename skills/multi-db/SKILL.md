@@ -12,7 +12,7 @@ This skill covers Ruby projects that store data in **more than one database** �
 Two reference layers back this skill:
 
 - **[references/orm-idiom-patterns.md](references/orm-idiom-patterns.md)** — generic Ohm ↔ Sequel idiom table, picking guidance, and porting-between-ORMs mapping. Read this when designing or porting *any* Ohm/Sequel model, in any project.
-- **[references/sfl-engine-case-study.md](references/sfl-engine-case-study.md)** — a concrete, actionable worked instantiation of these patterns from `sfl-engine` (a stance-filtered RAG engine at `/home/b08x/WorkspaceV3/sfl-engine`): three-table payload-separated storage, hybrid RRF retrieval with scalar filters, and the two-pass annotation pipeline. Read this when working inside `sfl-engine/lib/sfl/store/`, `lib/sfl/llm/`, `lib/sfl/core/`, or `lib/sfl/retrieval/` — the class names, file paths, and invariants (F1, F6-F8, F11, D9) are real and load-bearing, not illustrative.
+- **[references/sfl-engine-case-study.md](references/sfl-engine-case-study.md)** — a concrete, actionable worked instantiation of these patterns from `sfl-engine` (a stance-filtered RAG engine, a sibling project): three-table payload-separated storage, hybrid RRF retrieval with scalar filters, and the two-pass annotation pipeline. Read this when working inside `sfl-engine/lib/sfl/store/`, `lib/sfl/llm/`, `lib/sfl/core/`, or `lib/sfl/retrieval/` — the class names, file paths, and invariants (F1, F6-F8, F11, D9) are real and load-bearing, not illustrative.
 
 ## When to Use
 

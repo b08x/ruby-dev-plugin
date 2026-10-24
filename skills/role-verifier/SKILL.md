@@ -19,7 +19,7 @@ Independently verify finished work. The Verifier runs in a fresh context so the 
 
 ## Outputs
 
-- Results of the four checks below.
+- Results of the six checks below.
 - A SIFT report with a verdict and per-finding severity.
 
 ## Deterministic checks

@@ -3,7 +3,7 @@
 **A task-driven Claude plugin routing Ruby work through 1 orchestrator (`rubyist`) and 5 phase subagents — specifier, implementer, cleaner, hardener, verifier — that load domain skills on demand.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Plugin Version](https://img.shields.io/badge/version-5.0.1-green.svg)](.claude-plugin/plugin.json)
+[![Plugin Version](https://img.shields.io/badge/version-6.1.0-green.svg)](.claude-plugin/plugin.json)
 [![Claude Plugin](https://img.shields.io/badge/Claude-Plugin-purple.svg)](.claude-plugin/plugin.json)
 
 ## Features
@@ -75,7 +75,7 @@ This is a Claude plugin. Install by cloning into your Claude skills directory or
 
 ```bash
 # Clone into your Claude skills directory
-git clone https://github.com/syncopated-context/ruby-dev-plugin.git ~/.claude/plugins/ruby-dev-plugin
+git clone https://github.com/b08x/ruby-dev-plugin.git ~/.claude/plugins/ruby-dev-plugin
 
 # Or symlink from an existing checkout
 ln -s /path/to/ruby-dev-plugin ~/.claude/plugins/ruby-dev-plugin
@@ -88,10 +88,10 @@ ln -s /path/to/ruby-dev-plugin ~/.claude/plugins/ruby-dev-plugin
 
 ```bash
 # Clone the repo
-git clone https://github.com/syncopated-context/ruby-dev-plugin.git
+git clone https://github.com/b08x/ruby-dev-plugin.git
 cd ruby-dev-plugin
 
-# No build step required — pure Markdown plugin
+# No build step required — Markdown plugin plus the rubydex MCP launcher script
 # Validate structure by checking plugin.json
 cat .claude-plugin/plugin.json
 ```
@@ -130,14 +130,14 @@ Use the cleaner agent to profile and reduce allocations in the hot path
 
 ### Skill Reference
 
-Shared conventions live in `references/` at the plugin root (dry-rb, OOD, logging, env, pry, scaffolding) and are loaded by skills and agents alike.
+Shared conventions live in `references/` at the plugin root (dry-rb, OOD, logging, env, pry, scaffolding, quality gates, subagent mandates) and are loaded by skills and agents alike.
 
 | Skill | Purpose | Reference Files |
 |-------|---------|-----------------|
 | `scaffold` | Project scaffolding with rubysmith/gemsmith | 1 (flag presets) |
 | `data-engineer` | CSV/JSON parsing, ETL pipelines | — |
 | `multi-db` | Ohm/Sequel modeling, dual-database patterns | 2 (ORM idioms, SFL case study) |
-| `genai` | RAG pipelines, LLM agents, MCP servers; RubyLLM client; typed dspy.rb programs | 2 + RubyLLM guide + DSPy guide with API snapshots |
+| `genai` | RAG pipelines, LLM agents, MCP servers; RubyLLM client; typed dspy.rb programs | 74 (component templates, project setup, RubyLLM guide, DSPy guide + vendored dspy.rb docs) |
 | `ruby-nlp` | Tokenization, POS tagging, TF-IDF, BM25 | 1 (gem catalog) |
 | `tui` | Terminal UIs with TTY toolkit | 21 (one per tty-* gem) |
 | `gui` | Desktop GUIs with glimmer-dsl-libui | 4 (area, controls, custom, data-binding) |
@@ -172,6 +172,13 @@ When this plugin generates Ruby code, it enforces:
 - Undeclared parameters forwarded with `...` (`def foo(...) = bar(...)`)
 - Non-stdlib gem APIs verified via Context7 MCP or DeepWiki at the point of use — never assumed from memory
 
+## Harness Ports
+
+The plugin has been ported to two other agent harnesses; the ports live in this repo under `harness/`, content-identical to upstream where possible, with the harness-specific deltas isolated per the fork procedure in [AGENTS.md](AGENTS.md). Both trees were hand-written port-by-port; the roadmap direction is a harness conversion pipeline that regenerates them — and new targets such as Hermes — from the base structure, already implemented in the sibling `python-dev-plugin` repo (`scripts/convert-harness.py` + `harness-adapters/`):
+
+- **`harness/mistral-vibe/`** — Mistral Vibe. The five phase subagents are TOML profiles under `ai.mistral.vibe/agents/`; the `rubyist` orchestrator installs as a user agent profile (`agents/rubyist.toml` + `prompts/rubyist.md`, run with `vibe --agent rubyist`); the two commands are ported as skills.
+- **`harness/antigravity/`** — Google Antigravity CLI. Agents stay as Markdown under `agents/`; the port adds `rules/AGENTS.md` plus `scripts/install.sh` and `scripts/validate.sh`.
+
 ## Sources & Influences
 
 This plugin is assembled work. Its skeleton — the pipeline, the audit protocol, the diagnostic discipline — was extracted and adapted from named sources rather than invented, and the assembly deserves its credit. Each of the three principal sources gets its own accounting below: what the source actually says, what survived the extraction, and what this plugin added on top.
@@ -182,7 +189,7 @@ The plugin's spine is the fixed phase matrix — `specifier` → `implementer` �
 
 Martin's position in that conversation: agents write code fast but messy, and they treat detailed written instructions as suggestions — long prompts lose their middles — so the leverage is not in *steering* them with more words but in deterministic tools run *after* they generate: CRAP scoring, mutation testing, acceptance tests. Old analysis tools, too slow to run by hand across a working day, become practical once an agent runs them. On that basis he sketches a five-role pipeline: a specifier that turns human requirements into Gherkin acceptance tests and QA procedures; a coder that writes unit tests and production code to make them pass; a cleaner that runs CRAP analysis and code review; a hardener that mutation-tests until the surviving mutants die; a QA agent that turns the QA procedures into executable scripts. Plus a cross-cutting architectural check — deterministic module-dependency rules — kept because partitioned code stays legible to humans and agents both. The trade he characterizes roughly as an hour of pipeline against five minutes of single-agent output, and the hour is what buys the quality.
 
-The extraction artifacts are checked into this repo: [`Agent Software Development Workflow Matrix - Table 1.csv`](Agent%20Software%20Development%20Workflow%20Matrix%20-%20Table%201.csv) and [`Workflow_matrix_updated.csv`](Workflow_matrix_updated.csv) at the root, with the adaptation decisions recorded in [`goals/workflow-matrix-integration/`](goals/workflow-matrix-integration/).
+The source matrix is checked into this repo at [`docs/Workflow_matrix.csv`](docs/Workflow_matrix.csv) — the root-level extraction CSVs this paragraph used to link to are gone from the tree, and the links should not have outlived them.
 
 What survived the extraction is the *shape*: a route through small, single-purpose stages, gated before handoff, in a fixed order with explicit skip rules — rather than one agent improvising a fresh approach per task. What the plugin changed: it split the matrix's combined cleaner/hardener row into two subagents, dropped a separate architect agent by folding module-dependency checking into the verifier's gate, and let the `verifier` inherit the QA agent's job — the written QA procedures become executable acceptance checks — while adding a SIFT audit on top. It added the Ruby-specific machinery at each stop: `cucumber --dry-run` on the spec, a CRAP threshold after refactoring, `mutant` and `bundler-audit` for hardening, a SIFT audit in a fresh context at the end. One invariant is the plugin's own, not the interview's: the `rubyist` orchestrator routes but never writes Ruby. The matrix as shipped lives in the phase sequence table in [`agents/rubyist.md`](agents/rubyist.md), with routing and skip rules formalized in [`tasks/step-1-survey-plan.md`](tasks/step-1-survey-plan.md) and gate thresholds, rollback targets, and escalation triggers in [`references/quality-gates.md`](references/quality-gates.md).
 
