@@ -1,33 +1,33 @@
-# Yardoc Context7 Integration
+# Yardoc Context7 Integration (decode tag style)
 
 ## Contents
-- YARD gem compatibility verification workflow
-- Resolving the YARD library ID
+- decode tag-syntax verification workflow
+- The decode library ID
 - Verifying method signatures
 - Batch verification for multiple gems
 - Query patterns table
 - Fallback strategy
 
-## YARD Gem Compatibility Verification
+## decode Tag-Syntax and Gem API Verification
 
-Use Context7 to verify YARD gem compatibility and versioning before generating documentation. This ensures type annotations and API references are accurate and up-to-date.
+Use Context7 for two lookups before generating documentation: the decode tag syntax (`/socketry/decode`), and the API of each non-stdlib gem whose types appear in `@parameter`, `@returns`, or `@attribute` tags.
 
 **Verification Workflow:**
 
-1. **Resolve YARD gem library ID** using Context7's library resolution
-2. **Query YARD documentation** for specific API methods and types
+1. **Query `/socketry/decode`** when a tag or type notation is not covered by [decode-tags.md](decode-tags.md)
+2. **Resolve and query each gem's library ID** for the methods and types the documented code uses
 3. **Validate gem version compatibility** against project requirements
 4. **Cache verified signatures** for offline use with fallback warnings
 
-**Example: Resolving YARD Library ID:**
+**Example: Querying the decode library:**
 
 ```ruby
-# Use Context7 MCP tools to resolve YARD gem library ID
-# Library ID format: /yard/yard or /yard/yard/version
+# The decode library ID is known; no resolve step is needed
+# Library ID: /socketry/decode (docs site index: /websites/socketry_github_io_decode)
 
-# Query Context7 for YARD gem documentation
-library_id = "/yard/yard"  # or "/yard/yard/v0.9.37" for specific version
-query = "How to use @param tag with type annotations in YARD"
+# Query Context7 for decode tag syntax
+library_id = "/socketry/decode"
+query = "@yields pragma with nested @parameter tags for block arguments"
 
 # The Context7 response provides:
 # - Verified method signatures
@@ -39,11 +39,11 @@ query = "How to use @param tag with type annotations in YARD"
 **Example: Verifying Method Signatures via Context7:**
 
 ```ruby
-# When documenting a method that uses YARD gem APIs
+# When documenting a method whose parameters or return values are gem types
 # First, verify the gem context via Context7
 
-def verify_yard_api_compatibility(method_name, gem_version = nil)
-  library_id = gem_version ? "/yard/yard/#{gem_version}" : "/yard/yard"
+def verify_gem_api(library_id, method_name, gem_version = nil)
+  library_id = "#{library_id}/#{gem_version}" if gem_version
 
   # Query Context7 for the specific method
   query = "#{method_name} method signature, parameters, and return types"
@@ -68,7 +68,7 @@ def verify_yard_api_compatibility(method_name, gem_version = nil)
   else
     # Fallback to cached or conservative types
     Failure[:context7_unavailable,
-            "YARD API verification failed: #{context7_result[:error]}"]
+            "Gem API verification failed: #{context7_result[:error]}"]
   end
 end
 ```
@@ -126,20 +126,20 @@ def extract_gem_dependencies(file_path)
 end
 ```
 
-## Context7 Query Patterns for YARD
+## Context7 Query Patterns
 
 | Query Type | Example Query | Use Case |
 |------------|---------------|----------|
-| Method signature | "YARD::CodeObjects::MethodObject#docstring method parameters" | Verify @param tag generation |
-| Type annotation | "How to document Hash{Symbol => Array<String>} in YARD" | Complex type formatting |
-| Tag syntax | "YARD @raise tag format and examples" | Exception documentation |
-| Version compatibility | "YARD 0.9.37 vs 0.9.38 @example tag changes" | Version-specific patterns |
-| Gem integration | "Using YARD with dry-struct classes" | Framework-specific docs |
+| Method signature | "Sequel::Dataset#where parameters and return type" (gem library ID) | Verify the type in a `@parameter` or `@returns` tag |
+| Type notation | "Hash(Symbol, Array(String)) and Interface(:each) type signatures" (`/socketry/decode`) | Composite and duck-typed type formatting |
+| Tag syntax | "@raises and @throws pragma format" (`/socketry/decode`) | Exception and throw documentation |
+| RBS output | "@rbs pragma and bake decode:rbs:generate" (`/socketry/decode`) | Explicit RBS signatures in comments |
+| Coverage | "bake decode:index:coverage and @namespace" (`/socketry/decode`) | Coverage measurement and namespace-only modules |
 
 ## Fallback Strategy
 
 When Context7 is unavailable or returns incomplete results:
 1. Use cached signatures from previous sessions (with `# type annotation based on stale cache — verify before publishing`)
 2. Apply conservative type inference (String, Object, etc.)
-3. Document the uncertainty in the generated YARD comments
+3. Document the uncertainty in the generated decode comments
 4. Flag for manual review in the quality assurance phase

@@ -30,9 +30,10 @@ end
 
 module RubyDev
   module Yardoc
-    # Type annotation for YARD tags
+    # Type annotation for decode tags (@parameter, @returns, @attribute)
     TagType = Types::String.enum(
-      "param", "return", "example", "raise", "since", "see", "deprecated", "note"
+      "parameter", "option", "returns", "raises", "throws", "yields", "attribute",
+      "example", "deprecated", "asynchronous", "public", "private", "namespace", "rbs"
     )
 
     # Complex type representation
@@ -91,7 +92,7 @@ module RubyDev
       attribute :error, Types::String.optional
     end
 
-    # Individual documentation entry from YARD parsing
+    # Individual documentation entry from decode parsing (Decode::Index)
     class DocumentationEntry < Dry::Struct
       attribute :name, Types::String
       attribute :type, Types::String
@@ -99,8 +100,8 @@ module RubyDev
       attribute :tags, Types::Array.of(Types::String).default([].freeze)
     end
 
-    # YARD documentation parsing result
-    class YardResult < Dry::Struct
+    # decode documentation parsing result
+    class ParseResult < Dry::Struct
       attribute :success, Types::Bool
       attribute :message, Types::String
       attribute :entries, Types::Array.of(DocumentationEntry).default([].freeze)
@@ -111,6 +112,6 @@ end
 
 ## Type Explanations
 
-**YardResult**: Represents the result of YARD documentation parsing operations. The `success` field indicates whether the parsing was successful, `message` contains status or error information, and `entries` holds an array of parsed documentation entries.
+**ParseResult**: Represents the result of decode documentation parsing operations. The `success` field indicates whether the parsing was successful, `message` contains status or error information, and `entries` holds an array of parsed documentation entries.
 
-**DocumentationEntry**: Represents an individual documentation entry extracted from YARD parsing. Contains the `name` of the documented item (method, class, etc.), its `type` (method, class, module, etc.), a `description` of its purpose, and `tags` for categorization and filtering.
+**DocumentationEntry**: Represents an individual documentation entry extracted from decode parsing. Contains the `name` of the documented item (method, class, etc.), its `type` (method, class, module, etc.), a `description` of its purpose, and `tags` for categorization and filtering.
